@@ -1,0 +1,130 @@
+{
+    "setName": "Calculus",
+    "questions": [
+        {
+            "question": "What is the primary branch of mathematics that studies change?",
+            "answer": "Calculus.",
+            "review": 0
+        },
+        {
+            "question": "Calculus is broadly divided into what two main branches?",
+            "answer": "Differential calculus and Integral calculus.",
+            "review": 0
+        },
+        {
+            "question": "What concept in calculus describes the value that a function 'approaches' as the input (or independent variable) approaches some value?",
+            "answer": "A limit.",
+            "review": 0
+        },
+        {
+            "question": "What mathematical property of a function requires that the limit exists, the function is defined at the point, and the limit equals the function's value?",
+            "answer": "Continuity.",
+            "review": 0
+        },
+        {
+            "question": "What rule is used to evaluate limits of indeterminate forms like 0/0 or ∞/∞?",
+            "answer": "L'Hôpital's Rule.",
+            "review": 0
+        },
+        {
+            "question": "What does the derivative of a function geometrically represent at a specific point?",
+            "answer": "The slope of the tangent line to the curve at that point.",
+            "review": 0
+        },
+        {
+            "question": "What is the limit definition of the derivative, f'(x)?",
+            "answer": "f'(x) = lim (h→0) [f(x+h) - f(x)] / h.",
+            "review": 0
+        },
+        {
+            "question": "State the Power Rule for differentiation: If f(x) = x^n, what is f'(x)?",
+            "answer": "f'(x) = n*x^(n-1).",
+            "review": 0
+        },
+        {
+            "question": "What is the derivative of the natural logarithm function, ln(x)?",
+            "answer": "1/x.",
+            "review": 0
+        },
+        {
+            "question": "What is the derivative of the exponential function e^x?",
+            "answer": "e^x.",
+            "review": 0
+        },
+        {
+            "question": "What rule is used to find the derivative of a composite function, such as f(g(x))?",
+            "answer": "The Chain Rule.",
+            "review": 0
+        },
+        {
+            "question": "The derivative of sin(x) is?",
+            "answer": "cos(x).",
+            "review": 0
+        },
+        {
+            "question": "The derivative of cos(x) is?",
+            "answer": "-sin(x).",
+            "review": 0
+        },
+        {
+            "question": "What are the points where the derivative of a function is zero or undefined called?",
+            "answer": "Critical points.",
+            "review": 0
+        },
+        {
+            "question": "What derivative test is used to determine if a critical point corresponds to a local maximum, local minimum, or neither by examining the sign change of the first derivative?",
+            "answer": "The First Derivative Test.",
+            "review": 0
+        },
+        {
+            "question": "What derivative test uses the sign of the second derivative at a critical point to determine if it's a local maximum or minimum?",
+            "answer": "The Second Derivative Test.",
+            "review": 0
+        },
+        {
+            "question": "What is the term for the process of finding a function whose derivative is a given function?",
+            "answer": "Antidifferentiation (or Integration).",
+            "review": 0
+        },
+        {
+            "question": "What is an integral that does not have specific limits of integration called?",
+            "answer": "An indefinite integral.",
+            "review": 0
+        },
+        {
+            "question": "What constant is always added to the result of an indefinite integral?",
+            "answer": "The constant of integration (C).",
+            "review": 0
+        },
+        {
+            "question": "What type of integral has upper and lower limits of integration?",
+            "answer": "A definite integral.",
+            "review": 0
+        },
+        {
+            "question": "What does a definite integral geometrically represent between a function's curve and the x-axis over a given interval?",
+            "answer": "The net signed area.",
+            "review": 0
+        },
+        {
+            "question": "What theorem connects differential calculus and integral calculus by relating the derivative of an integral to the original function?",
+            "answer": "The Fundamental Theorem of Calculus.",
+            "review": 0
+        },
+        {
+            "question": "What integration technique is used when the integrand involves a product of two functions that are difficult to integrate directly?",
+            "answer": "Integration by Parts.",
+            "review": 0
+        },
+        {
+            "question": "What integration technique involves substituting a new variable for a part of the integrand to simplify the integral?",
+            "answer": "Substitution (or u-substitution).",
+            "review": 0
+        },
+        {
+            "question": "In the context of optimization, what term refers to finding the maximum or minimum value of a function?",
+            "answer": "Extrema.",
+            "review": 0
+        }
+    ]
+}
