@@ -1,5 +1,6 @@
 package entities;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Represents a collection of flashcards (a set).
@@ -9,10 +10,14 @@ import java.util.List;
 public class FlashCardSet {
     private String setName;
     private List<Flashcard> flashcards;
-    public FlashCardSet(String setName, List<Flashcard> flashcards) {
+    public FlashCardSet(String setName) {
         this.setName = setName;
-        this.flashcards = flashcards;
+        this.flashcards = new ArrayList<>();
     }
+    public void addFlashcard(Flashcard card) {
+        flashcards.add(card);
+    }
+
     public String getSetName() {
         return setName;
     }
