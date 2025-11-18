@@ -1,0 +1,130 @@
+{
+    "setName": "Calculus",
+    "questions": [
+        {
+            "question": "What is the primary concept calculus is built upon?",
+            "answer": "Calculus is primarily built upon the concept of limits.",
+            "review": 0
+        },
+        {
+            "question": "Define a limit in calculus informally.",
+            "answer": "A limit describes the value that a function approaches as the input approaches some value.",
+            "review": 0
+        },
+        {
+            "question": "What does a derivative represent graphically?",
+            "answer": "The derivative represents the slope of the tangent line to a curve at a given point.",
+            "review": 0
+        },
+        {
+            "question": "What does a derivative represent physically or conceptually?",
+            "answer": "The derivative represents the instantaneous rate of change of a function.",
+            "review": 0
+        },
+        {
+            "question": "State the Power Rule for differentiation.",
+            "answer": "If f(x) = x^n, then f'(x) = n*x^(n-1) for any real number n.",
+            "review": 0
+        },
+        {
+            "question": "What is the derivative of a constant function, f(x) = c?",
+            "answer": "The derivative of a constant function is 0.",
+            "review": 0
+        },
+        {
+            "question": "State the Product Rule for differentiation.",
+            "answer": "If h(x) = f(x)g(x), then h'(x) = f'(x)g(x) + f(x)g'(x).",
+            "review": 0
+        },
+        {
+            "question": "State the Quotient Rule for differentiation.",
+            "answer": "If h(x) = f(x)/g(x), then h'(x) = [f'(x)g(x) - f(x)g'(x)] / [g(x)]^2.",
+            "review": 0
+        },
+        {
+            "question": "State the Chain Rule for differentiation.",
+            "answer": "If h(x) = f(g(x)), then h'(x) = f'(g(x)) * g'(x).",
+            "review": 0
+        },
+        {
+            "question": "What is the derivative of sin(x)?",
+            "answer": "The derivative of sin(x) is cos(x).",
+            "review": 0
+        },
+        {
+            "question": "What is the derivative of cos(x)?",
+            "answer": "The derivative of cos(x) is -sin(x).",
+            "review": 0
+        },
+        {
+            "question": "What is the derivative of e^x?",
+            "answer": "The derivative of e^x is e^x.",
+            "review": 0
+        },
+        {
+            "question": "What is the derivative of ln(x)?",
+            "answer": "The derivative of ln(x) is 1/x for x > 0.",
+            "review": 0
+        },
+        {
+            "question": "What is an antiderivative?",
+            "answer": "An antiderivative of a function f(x) is a function F(x) whose derivative is f(x).",
+            "review": 0
+        },
+        {
+            "question": "What does an indefinite integral represent?",
+            "answer": "An indefinite integral represents the family of all antiderivatives of a function.",
+            "review": 0
+        },
+        {
+            "question": "What does a definite integral represent geometrically?",
+            "answer": "A definite integral represents the net signed area between the function's graph and the x-axis over a given interval.",
+            "review": 0
+        },
+        {
+            "question": "State the Power Rule for integration (indefinite integral).",
+            "answer": "The integral of x^n dx = [x^(n+1)]/(n+1) + C, for n ≠ -1.",
+            "review": 0
+        },
+        {
+            "question": "What is the integral of 1/x dx?",
+            "answer": "The integral of 1/x dx is ln|x| + C.",
+            "review": 0
+        },
+        {
+            "question": "What is U-substitution used for in integration?",
+            "answer": "U-substitution is used to simplify integrals by transforming them into a simpler form, often by reversing the chain rule.",
+            "review": 0
+        },
+        {
+            "question": "State Part 1 of the Fundamental Theorem of Calculus.",
+            "answer": "If F(x) is defined as the integral from a to x of f(t) dt, then F'(x) = f(x).",
+            "review": 0
+        },
+        {
+            "question": "State Part 2 of the Fundamental Theorem of Calculus.",
+            "answer": "If F is an antiderivative of f, then the definite integral of f(x) from a to b is F(b) - F(a).",
+            "review": 0
+        },
+        {
+            "question": "What is an inflection point of a function?",
+            "answer": "An inflection point is a point on a curve where the concavity changes (from concave up to concave down, or vice versa).",
+            "review": 0
+        },
+        {
+            "question": "How do you find local maxima and minima using derivatives?",
+            "answer": "Find critical points where f'(x) = 0 or f'(x) is undefined, then use the First or Second Derivative Test.",
+            "review": 0
+        },
+        {
+            "question": "What is the average value of a function f(x) over the interval [a, b]?",
+            "answer": "The average value is (1 / (b-a)) * ∫[a,b] f(x) dx.",
+            "review": 0
+        },
+        {
+            "question": "What is the squeeze theorem (or sandwich theorem) used for?",
+            "answer": "The squeeze theorem is used to find the limit of a function by comparing it to two other functions whose limits are known and equal.",
+            "review": 0
+        }
+    ]
+}
