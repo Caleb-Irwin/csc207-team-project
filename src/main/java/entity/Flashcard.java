@@ -4,11 +4,11 @@ package entity;
  * Represents a single flashcard with a question and an answer.
  * Stores the question, answer the flashcard.
  */
-public class Flashcard {
+public class FlashCard {
     private String question;
     private String answer;
 
-    public Flashcard(String question, String answer) {
+    public FlashCard(String question, String answer) {
         this.question = question;
         this.answer = answer;
 

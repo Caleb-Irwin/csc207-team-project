@@ -9,9 +9,9 @@ import java.util.List;
 
 public class FlashCardSet {
     private String setName;
-    private List<Flashcard> flashcards;
+    private List<FlashCard> flashcards;
 
-    public FlashCardSet(String setName, List<Flashcard> flashcards) {
+    public FlashCardSet(String setName, List<FlashCard> flashcards) {
         this.setName = setName;
         this.flashcards = flashcards;
     }
@@ -24,11 +24,11 @@ public class FlashCardSet {
         this.setName = setName;
     }
 
-    public List<Flashcard> getFlashcards() {
+    public List<FlashCard> getFlashcards() {
         return flashcards;
     }
 
-    public void setFlashcards(List<Flashcard> flashcards) {
+    public void setFlashcards(List<FlashCard> flashcards) {
         this.flashcards = flashcards;
     }
 

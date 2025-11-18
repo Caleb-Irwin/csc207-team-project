@@ -3,10 +3,14 @@ package app;
 import javax.swing.*;
 
 import view.HomePage;
+import view.ReviewFlashcards;
 
 public class Main {
     public static void main(String[] args) {
-        HomePage.homepageMock();
+        ReviewFlashcards reviewFlashcards = new ReviewFlashcards();
+        reviewFlashcards.reviewFlashcardsMock();
+        // HomePage.homepageMock();
+
         // AppBuilder appBuilder = new AppBuilder();
         // JFrame application = appBuilder
         // .addLoginView()
