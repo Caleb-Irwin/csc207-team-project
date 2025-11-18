@@ -32,4 +32,8 @@ public class FlashCardSet {
         this.flashcards = flashcards;
     }
 
+    public void addFlashcard(FlashCard flashcard) {
+        this.flashcards.add(flashcard);
+    }
+
 }
