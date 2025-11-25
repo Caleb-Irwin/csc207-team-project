@@ -9,10 +9,10 @@ public class Main {
     public static void main(String[] args) {
         ReviewFlashcards reviewFlashcards = new ReviewFlashcards();
         reviewFlashcards.reviewFlashcardsMock();
-        // HomePage.homepageMock();
 
-        // AppBuilder appBuilder = new AppBuilder();
-        // JFrame application = appBuilder
+         AppBuilder appBuilder = new AppBuilder();
+         JFrame application = appBuilder
+                 .addHomePage()
         // .addLoginView()
         // .addSignupView()
         // .addLoggedInView()
@@ -20,10 +20,11 @@ public class Main {
         // .addLoginUseCase()
         // .addChangePasswordUseCase()
         // .addLogoutUseCase()
-        // .build();
+                 .addSettingsView()
+         .build();
 
-        // application.pack();
-        // application.setLocationRelativeTo(null);
-        // application.setVisible(true);
+         application.pack();
+         application.setLocationRelativeTo(null);
+         application.setVisible(true);
     }
 }
