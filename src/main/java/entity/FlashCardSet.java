@@ -1,5 +1,6 @@
 package entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,7 +14,7 @@ public class FlashCardSet {
 
     public FlashCardSet(String setName, List<FlashCard> flashcards) {
         this.setName = setName;
-        this.flashcards = flashcards;
+        this.flashcards = new ArrayList<>();
     }
 
     public String getSetName() {

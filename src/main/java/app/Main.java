@@ -1,29 +1,22 @@
 package app;
 
 import javax.swing.*;
-
 import view.HomePage;
 import view.ReviewFlashcards;
 
 public class Main {
     public static void main(String[] args) {
-        ReviewFlashcards reviewFlashcards = new ReviewFlashcards();
-        reviewFlashcards.reviewFlashcardsMock();
-        // HomePage.homepageMock();
+         ReviewFlashcards reviewFlashcards = new ReviewFlashcards();
+         reviewFlashcards.reviewFlashcardsMock();
+         HomePage.homepageMock();
 
-        // AppBuilder appBuilder = new AppBuilder();
-        // JFrame application = appBuilder
-        // .addLoginView()
-        // .addSignupView()
-        // .addLoggedInView()
-        // .addSignupUseCase()
-        // .addLoginUseCase()
-        // .addChangePasswordUseCase()
-        // .addLogoutUseCase()
-        // .build();
+         AppBuilder app = new AppBuilder();
+         app.buildCreateFlashcardUI();
 
-        // application.pack();
-        // application.setLocationRelativeTo(null);
-        // application.setVisible(true);
+        JFrame frame = new JFrame("Create Flashcard");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 300);
+
+        frame.setVisible(true);
     }
 }
