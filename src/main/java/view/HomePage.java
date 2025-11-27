@@ -35,6 +35,11 @@ public class HomePage extends JPanel {
 
         this.add(rightPanel, BorderLayout.CENTER);
         this.setVisible(true);
+
+
+        }
+    public String getViewName() {
+        return "homePage";
     }
 }
 

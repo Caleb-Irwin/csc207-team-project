@@ -11,6 +11,7 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.navigation.NavigationController;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -26,10 +27,7 @@ import use_case.logout.LogoutOutputBoundary;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
-import view.LoggedInView;
-import view.LoginView;
-import view.SignupView;
-import view.ViewManager;
+import view.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,9 +54,23 @@ public class AppBuilder {
     private LoggedInViewModel loggedInViewModel;
     private LoggedInView loggedInView;
     private LoginView loginView;
+    private SidebarView sidebarView;
+    private HomePage homePage;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
+    }
+
+    public AppBuilder setSidebar(NavigationController controller) {
+        this.sidebarView = new SidebarView(controller);
+
+        JPanel mainPanel = new JPanel(new BorderLayout());
+
+        mainPanel.add(this.sidebarView, BorderLayout.WEST);
+        mainPanel.add(this.cardPanel, BorderLayout.CENTER);
+        this.cardPanel.setLayout(new BorderLayout());
+        this.cardPanel.add(mainPanel);
+        return this;
     }
 
     public AppBuilder addSignupView() {
@@ -72,6 +84,12 @@ public class AppBuilder {
         loginViewModel = new LoginViewModel();
         loginView = new LoginView(loginViewModel);
         cardPanel.add(loginView, loginView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addHomePageView(NavigationController controller) {
+        homePage = new HomePage(controller);
+        cardPanel.add(homePage, homePage.getViewName());
         return this;
     }
 
@@ -135,11 +153,14 @@ public class AppBuilder {
     public JFrame build() {
         final JFrame application = new JFrame("User Login Example");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
+        application.setSize(1000, 700);
+        application.setLocationRelativeTo(null);
         application.add(cardPanel);
 
-        viewManagerModel.setState(signupView.getViewName());
+        viewManagerModel.setState(homePage.getViewName());
         viewManagerModel.firePropertyChange();
+
+        application.setVisible(true);
 
         return application;
     }
