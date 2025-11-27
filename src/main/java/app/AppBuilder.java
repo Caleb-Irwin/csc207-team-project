@@ -37,137 +37,171 @@ import view.SignupView;
 import view.ViewManager;
 
 import javax.swing.*;
+import java.awt.*;
+
+// Create Flashcard imports
+import data_access.JsonFlashcardSetDataAccessObject;
+import interface_adapter.create_flashcard.CreateFlashcardController;
+import interface_adapter.create_flashcard.CreateFlashcardPresenter;
+import interface_adapter.create_flashcard.CreateFlashcardView;
+import use_case.create_flashcard.CreateFlashcardDataAccessInterface;
+import use_case.create_flashcard.CreateFlashcardInputBoundary;
+import use_case.create_flashcard.CreateFlashcardInteractor;
 
 public class AppBuilder {
+        private final JPanel cardPanel = new JPanel();
+        private final CardLayout cardLayout = new CardLayout();
+        final UserFactory userFactory = new UserFactory();
+        final ViewManagerModel viewManagerModel = new ViewManagerModel();
+        ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    public JFrame buildCreateFlashcardUI() {
+        // set which data access implementation to use, can be any
+        // of the classes from the data_access package
 
-    // DAO version using a shared external database
-    // final DBUserDataAccessObject userDataAccessObject = new
-    // DBUserDataAccessObject(userFactory);
+        // DAO version using local file storage
+        final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
 
-        CreateFlashcardPresenter presenter =
-                new CreateFlashcardPresenter();
+        // DAO version using a shared external database
+        // final DBUserDataAccessObject userDataAccessObject = new
+        // DBUserDataAccessObject(userFactory);
 
-    private ReviewFlashCardsViewModel reviewFlashCardsViewModel;
-    private ReviewFlashCardsView reviewFlashCardsView;
-    private ReviewFlashCardsController reviewFlashCardsController;
+        private SignupView signupView;
+        private SignupViewModel signupViewModel;
+        private LoginViewModel loginViewModel;
+        private LoggedInViewModel loggedInViewModel;
+        private LoggedInView loggedInView;
+        private LoginView loginView;
 
-    public AppBuilder() {
-        cardPanel.setLayout(cardLayout);
-    }
-      
-    // TODO: Make conform to builder pattern!
-    public JFrame buildCreateFlashcardUI() {
+        private ReviewFlashCardsViewModel reviewFlashCardsViewModel;
+        private ReviewFlashCardsView reviewFlashCardsView;
+        private ReviewFlashCardsController reviewFlashCardsController;
 
-        CreateFlashcardDataAccessInterface dataAccess =
-                new JsonFlashcardSetDataAccessObject();
+        public AppBuilder() {
+                cardPanel.setLayout(cardLayout);
+        }
 
-        CreateFlashcardPresenter presenter =
-                new CreateFlashcardPresenter();
+        public AppBuilder addReviewFlashCardsView() {
+                reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
+                // TODO: Data loading logic
+                reviewFlashCardsViewModel.setState(ReviewFlashCardsView.generateMockViewModel().getState());
 
-        CreateFlashcardInputBoundary interactor =
-                new CreateFlashcardInteractor(dataAccess);
+                ReviewFlashCardsPresenter reviewFlashCardsPresenter = new ReviewFlashCardsPresenter(
+                                reviewFlashCardsViewModel);
+                ReviewFlashCardsInteractor reviewFlashCardsInteractor = new ReviewFlashCardsInteractor(
+                                reviewFlashCardsPresenter);
+                reviewFlashCardsController = new ReviewFlashCardsController(reviewFlashCardsInteractor);
+                reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController);
+                cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
+                return this;
+        }
 
-        CreateFlashcardController controller =
-                new CreateFlashcardController(interactor);
+        public JFrame buildCreateFlashcardUI() {
 
-        CreateFlashcardView view =
-                new CreateFlashcardView(controller);
+                CreateFlashcardDataAccessInterface dataAccess = new JsonFlashcardSetDataAccessObject();
 
-        JFrame frame = new JFrame("Create Flashcard");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 600);
-        frame.add(view);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+                CreateFlashcardPresenter presenter = new CreateFlashcardPresenter();
 
-        return frame;
-    }
+                CreateFlashcardInputBoundary interactor = new CreateFlashcardInteractor(dataAccess);
 
-    public AppBuilder addReviewFlashCardsView() {
-        reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
-        // TODO: Data loading logic
-        reviewFlashCardsViewModel.setState(ReviewFlashCardsView.generateMockViewModel().getState());
+                CreateFlashcardController controller = new CreateFlashcardController(interactor);
 
-        ReviewFlashCardsPresenter reviewFlashCardsPresenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel);
-        ReviewFlashCardsInteractor reviewFlashCardsInteractor = new ReviewFlashCardsInteractor(
-                reviewFlashCardsPresenter);
-        reviewFlashCardsController = new ReviewFlashCardsController(reviewFlashCardsInteractor);
-        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController);
-        cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
-        return this;
-    }
+                CreateFlashcardView view = new CreateFlashcardView(controller);
 
-    public AppBuilder addSignupView() {
-        signupViewModel = new SignupViewModel();
-        signupView = new SignupView(signupViewModel);
-        cardPanel.add(signupView, signupView.getViewName());
-        return this;
-    }
+                JFrame frame = new JFrame("Create Flashcard");
+                frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                frame.setSize(500, 600);
+                frame.add(view);
+                frame.setLocationRelativeTo(null);
+                frame.setVisible(true);
 
-        CreateFlashcardView view =
-                new CreateFlashcardView(controller);
+                return frame;
+        }
 
-        JFrame frame = new JFrame("Create Flashcard");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 600);
-        frame.add(view);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        public AppBuilder addSignupView() {
+                signupViewModel = new SignupViewModel();
+                signupView = new SignupView(signupViewModel);
+                cardPanel.add(signupView, signupView.getViewName());
+                return this;
+        }
 
-        return frame;
-    }
+        public AppBuilder addLoginView() {
+                loginViewModel = new LoginViewModel();
+                loginView = new LoginView(loginViewModel);
+                cardPanel.add(loginView, loginView.getViewName());
+                return this;
+        }
 
-    public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-        final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
+        public AppBuilder addLoggedInView() {
+                loggedInViewModel = new LoggedInViewModel();
+                loggedInView = new LoggedInView(loggedInViewModel);
+                cardPanel.add(loggedInView, loggedInView.getViewName());
+                return this;
+        }
 
-        LoginController loginController = new LoginController(loginInteractor);
-        loginView.setLoginController(loginController);
-        return this;
-    }
+        public AppBuilder addSignupUseCase() {
+                final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
+                                signupViewModel, loginViewModel);
+                final SignupInputBoundary userSignupInteractor = new SignupInteractor(
+                                userDataAccessObject, signupOutputBoundary, userFactory);
 
-    public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
-                loggedInViewModel);
+                SignupController controller = new SignupController(userSignupInteractor);
+                signupView.setSignupController(controller);
+                return this;
+        }
 
-        final ChangePasswordInputBoundary changePasswordInteractor = new ChangePasswordInteractor(userDataAccessObject,
-                changePasswordOutputBoundary, userFactory);
+        public AppBuilder addLoginUseCase() {
+                final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
+                                loggedInViewModel, loginViewModel);
+                final LoginInputBoundary loginInteractor = new LoginInteractor(
+                                userDataAccessObject, loginOutputBoundary);
 
-        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
-        return this;
-    }
+                LoginController loginController = new LoginController(loginInteractor);
+                loginView.setLoginController(loginController);
+                return this;
+        }
 
-    /**
-     * Adds the Logout Use Case to the application.
-     * 
-     * @return this builder
-     */
-    public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
+        public AppBuilder addChangePasswordUseCase() {
+                final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(
+                                viewManagerModel,
+                                loggedInViewModel);
 
-        final LogoutInputBoundary logoutInteractor = new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+                final ChangePasswordInputBoundary changePasswordInteractor = new ChangePasswordInteractor(
+                                userDataAccessObject,
+                                changePasswordOutputBoundary, userFactory);
 
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
-        return this;
-    }
+                ChangePasswordController changePasswordController = new ChangePasswordController(
+                                changePasswordInteractor);
+                loggedInView.setChangePasswordController(changePasswordController);
+                return this;
+        }
 
-    public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
-        application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        /**
+         * Adds the Logout Use Case to the application.
+         * 
+         * @return this builder
+         */
+        public AppBuilder addLogoutUseCase() {
+                final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
+                                loggedInViewModel, loginViewModel);
 
-        application.add(cardPanel);
+                final LogoutInputBoundary logoutInteractor = new LogoutInteractor(userDataAccessObject,
+                                logoutOutputBoundary);
 
-        viewManagerModel.setState(reviewFlashCardsView.getViewName());
-        viewManagerModel.firePropertyChange();
+                final LogoutController logoutController = new LogoutController(logoutInteractor);
+                loggedInView.setLogoutController(logoutController);
+                return this;
+        }
 
-        return application;
-    }
+        public JFrame build() {
+                final JFrame application = new JFrame("User Login Example");
+                application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+
+                application.add(cardPanel);
+
+                viewManagerModel.setState(reviewFlashCardsView.getViewName());
+                viewManagerModel.firePropertyChange();
+
+                return application;
+        }
 
 }
