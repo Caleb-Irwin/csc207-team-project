@@ -11,6 +11,9 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.review_flashcards.ReviewFlashCardsController;
+import interface_adapter.review_flashcards.ReviewFlashCardsPresenter;
+import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
 import interface_adapter.signup.SignupViewModel;
@@ -23,11 +26,13 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.review_flashcards.ReviewFlashCardsInteractor;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
 import view.LoggedInView;
 import view.LoginView;
+import view.ReviewFlashCardsView;
 import view.SignupView;
 import view.ViewManager;
 
@@ -48,7 +53,8 @@ public class AppBuilder {
     final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
 
     // DAO version using a shared external database
-    // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    // final DBUserDataAccessObject userDataAccessObject = new
+    // DBUserDataAccessObject(userFactory);
 
     private SignupView signupView;
     private SignupViewModel signupViewModel;
@@ -57,8 +63,26 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoginView loginView;
 
+    private ReviewFlashCardsViewModel reviewFlashCardsViewModel;
+    private ReviewFlashCardsView reviewFlashCardsView;
+    private ReviewFlashCardsController reviewFlashCardsController;
+
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
+    }
+
+    public AppBuilder addReviewFlashCardsView() {
+        reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
+        // TODO: Data loading logic
+        reviewFlashCardsViewModel.setState(ReviewFlashCardsView.generateMockViewModel().getState());
+
+        ReviewFlashCardsPresenter reviewFlashCardsPresenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel);
+        ReviewFlashCardsInteractor reviewFlashCardsInteractor = new ReviewFlashCardsInteractor(
+                reviewFlashCardsPresenter);
+        reviewFlashCardsController = new ReviewFlashCardsController(reviewFlashCardsInteractor);
+        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController);
+        cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
+        return this;
     }
 
     public AppBuilder addSignupView() {
@@ -108,8 +132,8 @@ public class AppBuilder {
         final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
                 loggedInViewModel);
 
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
+        final ChangePasswordInputBoundary changePasswordInteractor = new ChangePasswordInteractor(userDataAccessObject,
+                changePasswordOutputBoundary, userFactory);
 
         ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
         loggedInView.setChangePasswordController(changePasswordController);
@@ -118,14 +142,14 @@ public class AppBuilder {
 
     /**
      * Adds the Logout Use Case to the application.
+     * 
      * @return this builder
      */
     public AppBuilder addLogoutUseCase() {
         final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
                 loggedInViewModel, loginViewModel);
 
-        final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
+        final LogoutInputBoundary logoutInteractor = new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
 
         final LogoutController logoutController = new LogoutController(logoutInteractor);
         loggedInView.setLogoutController(logoutController);
@@ -138,11 +162,10 @@ public class AppBuilder {
 
         application.add(cardPanel);
 
-        viewManagerModel.setState(signupView.getViewName());
+        viewManagerModel.setState(reviewFlashCardsView.getViewName());
         viewManagerModel.firePropertyChange();
 
         return application;
     }
-
 
 }
