@@ -3,6 +3,7 @@ package app;
 import data_access.FileUserDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
+import interface_adapter.generate_flashcard.*;
 import interface_adapter.logged_in.ChangePasswordController;
 import interface_adapter.logged_in.ChangePasswordPresenter;
 import interface_adapter.logged_in.LoggedInViewModel;
@@ -22,6 +23,9 @@ import interface_adapter.signup.SignupViewModel;
 import use_case.change_password.ChangePasswordInputBoundary;
 import use_case.change_password.ChangePasswordInteractor;
 import use_case.change_password.ChangePasswordOutputBoundary;
+import use_case.generate_flashcard.GeneratorInputBoundary;
+import use_case.generate_flashcard.GeneratorInteractor;
+import use_case.generate_flashcard.GeneratorOutputBoundary;
 import use_case.login.LoginInputBoundary;
 import use_case.login.LoginInteractor;
 import use_case.login.LoginOutputBoundary;
@@ -75,6 +79,9 @@ public class AppBuilder {
     private SidebarView sidebarView;
     private HomePage homePage;
 
+    private GeneratorView generatorView;
+    private GeneratorViewModel generatorViewModel;
+
     private ReviewFlashCardsViewModel reviewFlashCardsViewModel;
     private ReviewFlashCardsView reviewFlashCardsView;
     private ReviewFlashCardsController reviewFlashCardsController;
@@ -94,6 +101,29 @@ public class AppBuilder {
         NavigationController navigationController = new NavigationController(interactor);
         this.sidebarView = new SidebarView(navigationController);
         return this;
+    }
+
+    public AppBuilder addGeneratorView() {
+        generatorViewModel = new GeneratorViewModel();
+        generatorView = new GeneratorView(generatorViewModel);
+        cardPanel.add(generatorView, generatorView.getViewName());
+        return this;
+    }
+
+    public AppBuilder addGeneratorUseCase() {
+
+        final GeneratorOutputBoundary presenter = new GeneratorPresenter(
+                generatorViewModel, viewManagerModel);
+        final GeneratorApiCaller apiCaller = new GeneratorApiCaller();
+        final GeneratorJsonParser parser = new GeneratorJsonParser();
+        final GeneratorSetSaver saver = new GeneratorSetSaver();
+
+        final GeneratorInputBoundary generatorInteractor = new GeneratorInteractor(presenter, apiCaller, parser, saver);
+
+        final GeneratorController generatorController = new GeneratorController(generatorInteractor);
+        generatorView.setGeneratorController(generatorController);
+        return this;
+
     }
 
     public AppBuilder addSignupView() {
@@ -229,7 +259,7 @@ public class AppBuilder {
 
         application.add(cardContainer);
 
-        viewManagerModel.setState(reviewFlashCardsView.getViewName());
+        viewManagerModel.setState(generatorView.getViewName());
         viewManagerModel.firePropertyChange();
 
         application.setVisible(true);
