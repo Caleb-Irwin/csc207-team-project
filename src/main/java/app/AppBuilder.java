@@ -37,31 +37,17 @@ import view.SignupView;
 import view.ViewManager;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class AppBuilder {
-    private final JPanel cardPanel = new JPanel();
-    private final CardLayout cardLayout = new CardLayout();
-    final UserFactory userFactory = new UserFactory();
-    final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // set which data access implementation to use, can be any
-    // of the classes from the data_access package
-
-    // DAO version using local file storage
-    final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
+    public JFrame buildCreateFlashcardUI() {
 
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new
     // DBUserDataAccessObject(userFactory);
 
-    private SignupView signupView;
-    private SignupViewModel signupViewModel;
-    private LoginViewModel loginViewModel;
-    private LoggedInViewModel loggedInViewModel;
-    private LoggedInView loggedInView;
-    private LoginView loginView;
+        CreateFlashcardPresenter presenter =
+                new CreateFlashcardPresenter();
 
     private ReviewFlashCardsViewModel reviewFlashCardsViewModel;
     private ReviewFlashCardsView reviewFlashCardsView;
@@ -69,6 +55,34 @@ public class AppBuilder {
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
+    }
+      
+    // TODO: Make conform to builder pattern!
+    public JFrame buildCreateFlashcardUI() {
+
+        CreateFlashcardDataAccessInterface dataAccess =
+                new JsonFlashcardSetDataAccessObject();
+
+        CreateFlashcardPresenter presenter =
+                new CreateFlashcardPresenter();
+
+        CreateFlashcardInputBoundary interactor =
+                new CreateFlashcardInteractor(dataAccess);
+
+        CreateFlashcardController controller =
+                new CreateFlashcardController(interactor);
+
+        CreateFlashcardView view =
+                new CreateFlashcardView(controller);
+
+        JFrame frame = new JFrame("Create Flashcard");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 600);
+        frame.add(view);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        return frame;
     }
 
     public AppBuilder addReviewFlashCardsView() {
@@ -92,29 +106,17 @@ public class AppBuilder {
         return this;
     }
 
-    public AppBuilder addLoginView() {
-        loginViewModel = new LoginViewModel();
-        loginView = new LoginView(loginViewModel);
-        cardPanel.add(loginView, loginView.getViewName());
-        return this;
-    }
+        CreateFlashcardView view =
+                new CreateFlashcardView(controller);
 
-    public AppBuilder addLoggedInView() {
-        loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
-        cardPanel.add(loggedInView, loggedInView.getViewName());
-        return this;
-    }
+        JFrame frame = new JFrame("Create Flashcard");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(500, 600);
+        frame.add(view);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
 
-    public AppBuilder addSignupUseCase() {
-        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
-                signupViewModel, loginViewModel);
-        final SignupInputBoundary userSignupInteractor = new SignupInteractor(
-                userDataAccessObject, signupOutputBoundary, userFactory);
-
-        SignupController controller = new SignupController(userSignupInteractor);
-        signupView.setSignupController(controller);
-        return this;
+        return frame;
     }
 
     public AppBuilder addLoginUseCase() {

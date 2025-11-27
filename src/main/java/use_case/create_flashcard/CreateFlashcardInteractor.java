@@ -1,45 +1,64 @@
 package use_case.create_flashcard;
 
+import entity.FlashCard;
 import entity.FlashCardSet;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import entity.FlashCard;
-
-/**
- * Interactor for the Create Flashcard use case.
- */
 public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
 
     private final CreateFlashcardDataAccessInterface dataAccess;
-    private final CreateFlashcardOutputBoundary presenter;
 
-    public CreateFlashcardInteractor(CreateFlashcardDataAccessInterface dataAccess,
-            CreateFlashcardOutputBoundary presenter) {
+    public CreateFlashcardInteractor(CreateFlashcardDataAccessInterface dataAccess) {
         this.dataAccess = dataAccess;
-        this.presenter = presenter;
     }
 
+    /**
+     * Handle a single flashcard creation
+     */
     @Override
     public void execute(CreateFlashcardInputData inputData) {
+
         String setName = inputData.getSetName();
         String question = inputData.getQuestions();
         String answer = inputData.getAnswers();
 
-        FlashCardSet set = dataAccess.load(setName);
-        if (set == null) {
+        FlashCardSet set;
+
+        if (dataAccess.existsByName(setName)) {
+            set = dataAccess.load(setName);
+        } else {
             set = new FlashCardSet(setName, new ArrayList<>());
         }
 
-        FlashCard flashcard = new FlashCard(question, answer);
-        set.addFlashcard(flashcard);
+        FlashCard card = new FlashCard(question, answer);
+        set.addFlashcard(card);
 
         dataAccess.saveSet(set);
+    }
 
-        // Output data
-        CreateFlashcardOutputData output = new CreateFlashcardOutputData(
-                setName, question, answer, true, "Flashcard created successfully!");
+    /**
+     * (Save button).
+     */
+    @Override
+    public void saveFlashcards(String setName, List<String> questions, List<String> answers) {
 
-        presenter.present(output);
+        FlashCardSet set = new FlashCardSet(setName, new ArrayList<>());
+
+        for (int i = 0; i < questions.size(); i++) {
+            FlashCard card = new FlashCard(questions.get(i), answers.get(i));
+            set.addFlashcard(card);
+        }
+
+        dataAccess.saveSet(set);
+    }
+
+    /**
+     * Delete a flashcard set.
+     */
+    @Override
+    public void deleteSet(String setName) {
+        dataAccess.deleteSet(setName);
     }
 }
