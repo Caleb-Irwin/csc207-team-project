@@ -106,21 +106,19 @@ public class AppBuilder {
     public AppBuilder addGeneratorView() {
         generatorViewModel = new GeneratorViewModel();
         generatorView = new GeneratorView(generatorViewModel);
-        cardPanel.add(generatorView);
+        cardPanel.add(generatorView, generatorView.getViewName());
         return this;
     }
 
-    public AppBuilder addGeneratorUseCase(){
-
+    public AppBuilder addGeneratorUseCase() {
 
         final GeneratorOutputBoundary presenter = new GeneratorPresenter(
-                generatorViewModel,  viewManagerModel);
+                generatorViewModel, viewManagerModel);
         final GeneratorApiCaller apiCaller = new GeneratorApiCaller();
         final GeneratorJsonParser parser = new GeneratorJsonParser();
         final GeneratorSetSaver saver = new GeneratorSetSaver();
 
-        final GeneratorInputBoundary generatorInteractor =
-                new GeneratorInteractor(presenter, apiCaller, parser, saver);
+        final GeneratorInputBoundary generatorInteractor = new GeneratorInteractor(presenter, apiCaller, parser, saver);
 
         final GeneratorController generatorController = new GeneratorController(generatorInteractor);
         generatorView.setGeneratorController(generatorController);
@@ -261,7 +259,7 @@ public class AppBuilder {
 
         application.add(cardContainer);
 
-        viewManagerModel.setState(reviewFlashCardsView.getViewName());
+        viewManagerModel.setState(generatorView.getViewName());
         viewManagerModel.firePropertyChange();
 
         application.setVisible(true);
