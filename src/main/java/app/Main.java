@@ -3,27 +3,24 @@ package app;
 import javax.swing.*;
 
 import view.HomePage;
-import view.ReviewFlashcards;
 
 public class Main {
     public static void main(String[] args) {
-        ReviewFlashcards reviewFlashcards = new ReviewFlashcards();
-        reviewFlashcards.reviewFlashcardsMock();
         // HomePage.homepageMock();
 
-        // AppBuilder appBuilder = new AppBuilder();
-        // JFrame application = appBuilder
-        // .addLoginView()
-        // .addSignupView()
-        // .addLoggedInView()
-        // .addSignupUseCase()
-        // .addLoginUseCase()
-        // .addChangePasswordUseCase()
-        // .addLogoutUseCase()
-        // .build();
+        AppBuilder appBuilder = new AppBuilder();
+        JFrame application = appBuilder.addReviewFlashCardsView()
+                // .addLoginView()
+                // .addSignupView()
+                // .addLoggedInView()
+                // .addSignupUseCase()
+                // .addLoginUseCase()
+                // .addChangePasswordUseCase()
+                // .addLogoutUseCase()
+                .build();
 
-        // application.pack();
-        // application.setLocationRelativeTo(null);
-        // application.setVisible(true);
+        application.pack();
+        application.setLocationRelativeTo(null);
+        application.setVisible(true);
     }
 }
