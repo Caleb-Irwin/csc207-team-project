@@ -10,8 +10,6 @@ import view.mainFrame;
 
 public class Main {
     public static void main(String[] args) {
-//        ReviewFlashcards reviewFlashcards = new ReviewFlashcards();
-//        reviewFlashcards.reviewFlashcardsMock();
         // Create ViewManagerModel
         ViewManagerModel viewManagerModel = new ViewManagerModel();
 
@@ -24,24 +22,7 @@ public class Main {
         // Create Controller
         NavigationController navigationController = new NavigationController(interactor);
 
-        // Create and show HomePage
+        // Create and show mainFrame
         new mainFrame(navigationController, viewManagerModel);
-        // HomePage now handles everything internally
-        // HomePage.homepageMock();
-
-        // AppBuilder appBuilder = new AppBuilder();
-        // JFrame application = appBuilder
-        // .addLoginView()
-        // .addSignupView()
-        // .addLoggedInView()
-        // .addSignupUseCase()
-        // .addLoginUseCase()
-        // .addChangePasswordUseCase()
-        // .addLogoutUseCase()
-        // .build();
-
-        // application.pack();
-        // application.setLocationRelativeTo(null);
-        // application.setVisible(true);
     }
 }
