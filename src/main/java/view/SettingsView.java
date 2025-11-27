@@ -16,9 +16,8 @@ public class SettingsView extends JPanel implements PropertyChangeListener {
 
     public SettingsView(SettingsViewModel viewModel, ViewManagerModel viewManagerModel) {
         this.viewModel = viewModel;
-//        viewModel.addPropertyChangeListener(this);
+        viewModel.addPropertyChangeListener(this);
 
-        setLayout(new BorderLayout());
 
         // Components:
 
@@ -28,21 +27,31 @@ public class SettingsView extends JPanel implements PropertyChangeListener {
         // API key:
         JPanel apiPanel = new JPanel();
         apiPanel.add(new JLabel("API Key:"));
-        JTextField apiKey = new JTextField();
+        JTextField apiKey = new JTextField(15);
         apiPanel.add(apiKey);
 
         // Directory:
         JPanel directoryPanel = new JPanel();
         directoryPanel.add(new JLabel("Directory:"));
-        JTextField directory = new  JTextField();
+        JTextField directory = new  JTextField(15);
         directoryPanel.add(directory);
 
         // Buttons:
         JPanel buttonsPanel = new JPanel();
         JButton save = new JButton("Save");
         JButton cancel = new JButton("Cancel");
+        cancel.addActionListener(e -> {
+            viewManagerModel.setState("");
+            viewManagerModel.firePropertyChange();
+        });
+        save.addActionListener(e -> {
+            if (controller==null) {
+                controller.saveSettings(apiKey.getText(), directory.getText());
+            }
+        });
         buttonsPanel.add(cancel);
         buttonsPanel.add(save);
+
 
 
         // Main Panel:
@@ -57,7 +66,7 @@ public class SettingsView extends JPanel implements PropertyChangeListener {
         this.controller = controller;
     }
 
-    public String getViewName() { return VIEW_NAME; };
+    public String getViewName() { return VIEW_NAME; }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

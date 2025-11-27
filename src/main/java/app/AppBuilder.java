@@ -62,6 +62,8 @@ public class AppBuilder {
     private LoginView loginView;
     private SettingsView settingsView;
     private SettingsViewModel settingsViewModel;
+    private SettingsController settingsController;
+
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -131,8 +133,11 @@ public class AppBuilder {
 
     public AppBuilder addSettingsView() {
         settingsViewModel = new SettingsViewModel();
+        settingsController = new SettingsController(settingsViewModel);
         settingsView = new SettingsView(settingsViewModel, viewManagerModel);
+        settingsView.setSettingsController(settingsController);
         cardPanel.add(settingsView, settingsView.getViewName());
+
         return this;
     }
 
