@@ -1,10 +1,49 @@
 package view;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import interface_adapter.navigation.NavigationController;
 
-public class HomePage {
+import javax.swing.*;
+import java.awt.*;
+
+public class HomePage extends JPanel {
+
+    private final NavigationController navigationController;
+
+    public HomePage(NavigationController navigationController) {
+        this.navigationController = navigationController;
+        // Set up main Layout
+        this.setLayout(new BorderLayout());
+
+        this.setSize(1000, 700);
+        this.setLocation(650, 500);
+
+        JPanel rightPanel = new JPanel();
+        rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
+        JLabel question = new JLabel("What do you want to learn today?");
+        JTextField prompt = new JTextField(10);
+        prompt.setMaximumSize(new Dimension(500, 30));
+        JButton generate = new JButton("Generate");
+        rightPanel.add(question);
+        rightPanel.add(prompt);
+        rightPanel.add(generate);
+
+
+        // right now the set name is the first two words
+        generate.addActionListener(e -> {
+            navigationController.loadSet(prompt.getText().substring(0,2));
+        });
+
+        this.add(rightPanel, BorderLayout.CENTER);
+        this.setVisible(true);
+
+
+        }
+    public String getViewName() {
+        return "homePage";
+    }
+}
+
+    /**
     public static void homepageMock() {
         SwingUtilities.invokeLater(() -> {
             JPanel main = new JPanel();
@@ -40,4 +79,4 @@ public class HomePage {
 
         });
     }
-}
+} */
