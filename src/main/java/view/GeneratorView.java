@@ -82,7 +82,8 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         return viewName;
     }
 
-    public void setGeneratorController(GeneratorController controller) {
+    public void setGeneratorController(GeneratorController controller)
+    {
         this.generatorController = controller;
     }
 }

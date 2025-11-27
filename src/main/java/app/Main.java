@@ -8,6 +8,7 @@ public class Main {
         JFrame application = appBuilder.addSidebar()
                 .addReviewFlashCardsView()
                 .addGeneratorView()
+                .addGeneratorUseCase()
                 .build();
 
         // appBuilder.buildCreateFlashcardUI();
