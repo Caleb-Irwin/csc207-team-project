@@ -4,8 +4,11 @@ import javax.swing.*;
 
 import entity.FlashCard;
 import entity.FlashCardSet;
+import interface_adapter.review_flashcards.ReviewFlashCardsController;
 import interface_adapter.review_flashcards.ReviewFlashCardsState;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
+import use_case.review_flashcards.ReviewFlashCardsActionName;
+import use_case.review_flashcards.ReviewFlashCardsInputData;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,7 +25,8 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     private JButton nextButton;
     private JButton prevButton;
 
-    public ReviewFlashCardsView(ReviewFlashCardsViewModel reviewFlashCardsViewModel) {
+    public ReviewFlashCardsView(ReviewFlashCardsViewModel reviewFlashCardsViewModel,
+            ReviewFlashCardsController reviewFlashCardsController) {
         this.viewModel = reviewFlashCardsViewModel;
         this.viewModel.addPropertyChangeListener(this);
 
@@ -49,42 +53,31 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         prevButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        // if (currentCardIndex > 0) {
-                        // currentCardIndex--;
-                        // } else {
-                        // currentCardIndex = flashCardSet.getFlashcards().size() - 1;
-                        // }
-
-                        // showingQuestion = true;
-                        // flipCard.setText("See Question");
-                        // contentArea.setText(flashCardSet.getFlashcards().get(currentCardIndex).getQuestion());
+                        reviewFlashCardsController
+                                .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.PREVIOUS_CARD,
+                                        viewModel.getState().getCurrentCardIndex(),
+                                        viewModel.getState().isShowingQuestion(),
+                                        viewModel.getState().getFlashCardSet()));
                     }
                 });
         nextButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        // if (currentCardIndex < flashCardSet.getFlashcards().size() - 1) {
-                        // currentCardIndex++;
-                        // } else {
-                        // currentCardIndex = 0;
-                        // }
-
-                        // showingQuestion = true;
-                        // flipCard.setName("See Question");
-                        // contentArea.setText(flashCardSet.getFlashcards().get(currentCardIndex).getQuestion());
+                        reviewFlashCardsController
+                                .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.NEXT_CARD,
+                                        viewModel.getState().getCurrentCardIndex(),
+                                        viewModel.getState().isShowingQuestion(),
+                                        viewModel.getState().getFlashCardSet()));
                     }
                 });
         flipButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        // showingQuestion = !showingQuestion;
-                        // if (showingQuestion) {
-                        // contentArea.setText(flashCardSet.getFlashcards().get(currentCardIndex).getQuestion());
-                        // flipCard.setText("See Answer");
-                        // } else {
-                        // contentArea.setText(flashCardSet.getFlashcards().get(currentCardIndex).getAnswer());
-                        // flipCard.setText("See Question");
-                        // }
+                        reviewFlashCardsController
+                                .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.FLIP_CARD,
+                                        viewModel.getState().getCurrentCardIndex(),
+                                        viewModel.getState().isShowingQuestion(),
+                                        viewModel.getState().getFlashCardSet()));
                     }
                 });
 
@@ -110,9 +103,8 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        final ReviewFlashCardsState state = (ReviewFlashCardsState) evt.getNewValue();
-        // setFields(state);
-        // usernameErrorField.setText(state.getLoginError());
+        ReviewFlashCardsState state = (ReviewFlashCardsState) evt.getNewValue();
+        update(state);
     }
 
     private void update(ReviewFlashCardsState state) {
@@ -157,6 +149,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         return viewName;
     }
 
+    // TODO Remove mock data generator
     public static FlashCardSet generateMockFlashCardSet() {
         FlashCard flashCard1 = new FlashCard("What is the capital of France?", "Paris");
         FlashCard flashCard2 = new FlashCard("What is 2 + 2?", "4");
@@ -167,5 +160,15 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         cards.add(flashCard2);
         cards.add(flashCard3);
         return new FlashCardSet("Test0", cards);
+    }
+
+    public static ReviewFlashCardsViewModel generateMockViewModel() {
+        ReviewFlashCardsViewModel viewModel = new ReviewFlashCardsViewModel();
+        ReviewFlashCardsState state = new ReviewFlashCardsState();
+        state.setFlashCardSet(generateMockFlashCardSet());
+        state.setCurrentCardIndex(0);
+        state.setShowingQuestion(true);
+        viewModel.setState(state);
+        return viewModel;
     }
 }

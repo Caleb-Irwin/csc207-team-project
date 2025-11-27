@@ -1,10 +1,6 @@
 package use_case.review_flashcards;
 
-enum ReviewFlashCardsActionName {
-    NEXT_CARD,
-    PREVIOUS_CARD,
-    FLIP_CARD
-}
+import entity.FlashCardSet;
 
 /**
  * The Input Data for the Review Flashcards Use Case.
@@ -12,13 +8,32 @@ enum ReviewFlashCardsActionName {
 public class ReviewFlashCardsInputData {
 
     private final ReviewFlashCardsActionName actionName;
+    private final int currentCardIndex;
+    private final boolean showingQuestion;
+    private final FlashCardSet flashCardSet;
 
-    public ReviewFlashCardsInputData(ReviewFlashCardsActionName actionName) {
+    public ReviewFlashCardsInputData(ReviewFlashCardsActionName actionName, int currentCardIndex,
+            boolean showingQuestion, FlashCardSet flashCardSet) {
         this.actionName = actionName;
+        this.currentCardIndex = currentCardIndex;
+        this.showingQuestion = showingQuestion;
+        this.flashCardSet = flashCardSet;
     }
 
     public ReviewFlashCardsActionName getActionName() {
         return actionName;
+    }
+
+    public int getCurrentCardIndex() {
+        return currentCardIndex;
+    }
+
+    public boolean isShowingQuestion() {
+        return showingQuestion;
+    }
+
+    public FlashCardSet getFlashCardSet() {
+        return flashCardSet;
     }
 
 }

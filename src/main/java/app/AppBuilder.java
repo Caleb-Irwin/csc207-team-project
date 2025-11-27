@@ -11,6 +11,8 @@ import interface_adapter.login.LoginPresenter;
 import interface_adapter.login.LoginViewModel;
 import interface_adapter.logout.LogoutController;
 import interface_adapter.logout.LogoutPresenter;
+import interface_adapter.review_flashcards.ReviewFlashCardsController;
+import interface_adapter.review_flashcards.ReviewFlashCardsPresenter;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 import interface_adapter.signup.SignupController;
 import interface_adapter.signup.SignupPresenter;
@@ -24,6 +26,7 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.review_flashcards.ReviewFlashCardsInteractor;
 import use_case.signup.SignupInputBoundary;
 import use_case.signup.SignupInteractor;
 import use_case.signup.SignupOutputBoundary;
@@ -62,6 +65,7 @@ public class AppBuilder {
 
     private ReviewFlashCardsViewModel reviewFlashCardsViewModel;
     private ReviewFlashCardsView reviewFlashCardsView;
+    private ReviewFlashCardsController reviewFlashCardsController;
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
@@ -69,7 +73,14 @@ public class AppBuilder {
 
     public AppBuilder addReviewFlashCardsView() {
         reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
-        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel);
+        // TODO: Data loading logic
+        reviewFlashCardsViewModel.setState(ReviewFlashCardsView.generateMockViewModel().getState());
+
+        ReviewFlashCardsPresenter reviewFlashCardsPresenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel);
+        ReviewFlashCardsInteractor reviewFlashCardsInteractor = new ReviewFlashCardsInteractor(
+                reviewFlashCardsPresenter);
+        reviewFlashCardsController = new ReviewFlashCardsController(reviewFlashCardsInteractor);
+        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController);
         cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
         return this;
     }

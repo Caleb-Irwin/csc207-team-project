@@ -14,8 +14,8 @@ public class ReviewFlashCardsPresenter implements ReviewFlashCardsOutputBoundary
     public void prepareSuccessView(use_case.review_flashcards.ReviewFlashCardsOutputData outputData) {
         ReviewFlashCardsState state = viewModel.getState();
         state.setFlashCardSet(outputData.getFlashcardSet());
-        state.setCurrentCardIndex(0);
-        state.setShowingQuestion(true);
-        viewModel.setState(state);
+        state.setCurrentCardIndex(outputData.getCurrentCardIndex());
+        state.setShowingQuestion(outputData.isShowingQuestion());
+        viewModel.firePropertyChange();
     }
 }
