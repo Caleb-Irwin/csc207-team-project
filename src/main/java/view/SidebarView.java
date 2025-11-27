@@ -8,11 +8,11 @@ import java.awt.event.ActionListener;
 
 // Implements the side bar and its functionality
 public class SidebarView extends JPanel {
-    // have flash card ai header
-// when + clicked, go to prompt page (j button action listener, e-> go to homepage)
-    // when generate clicked create a new set jbutton
+    // have flash card ai header -done
+// when + clicked, go to prompt page -done
+    // when generate clicked create a new set jbutton should be done
     //when a set jbutton is clicked, go to the flash cards button
-    // have a settings button
+    // have a settings button -done
     //when settings is clicked (not my job)
     //when a new flashcard is created with an unrecognixed set name, create a new set
     private final JButton newSetButton;

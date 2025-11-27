@@ -39,8 +39,10 @@ public class mainFrame extends JFrame {
 
         cardContainer.add(new SettingsView(navigationController), "SETTINGS_PAGE");
 
+
         this.add(cardContainer, BorderLayout.CENTER); // add the card container to the JFrame
 
+        // Starting page (subject to change, might me sign in page?)
          viewManagerModel.setState("PROMPT_PAGE");
          viewManagerModel.firePropertyChange();
 

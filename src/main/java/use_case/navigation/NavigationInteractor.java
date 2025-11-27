@@ -1,4 +1,4 @@
-package use_case.Navigation;
+package use_case.navigation;
 
 public class NavigationInteractor implements NavigationInputBoundary {
     private final NavigationOutputBoundary presenter;
@@ -12,8 +12,12 @@ public class NavigationInteractor implements NavigationInputBoundary {
     public void goToPromptPage() {
         presenter.presentPromptPage();
     }
-
+    @Override
     public void goToSettingsPage() {
         presenter.presentSettingsPage();
+    }
+    @Override
+    public void goToSet(String setName) {
+        presenter.presentSet(setName);
     }
 }

@@ -27,6 +27,12 @@ public class HomePage extends JPanel {
         rightPanel.add(prompt);
         rightPanel.add(generate);
 
+
+        // right now the set name is the first two words
+        generate.addActionListener(e -> {
+            navigationController.loadSet(prompt.getText().substring(0,2));
+        });
+
         this.add(rightPanel, BorderLayout.CENTER);
         this.setVisible(true);
     }

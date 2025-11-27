@@ -1,17 +1,12 @@
 package app;
 
-import javax.swing.*;
-
 import interface_adapter.ViewManagerModel;
 import interface_adapter.navigation.NavigationController;
 import interface_adapter.navigation.NavigationPresenter;
-import use_case.Navigation.NavigationInputBoundary;
-import use_case.Navigation.NavigationOutputBoundary;
-import view.HomePage;
-import view.ReviewFlashcards;
+import use_case.navigation.NavigationInputBoundary;
+import use_case.navigation.NavigationInteractor;
+import use_case.navigation.NavigationOutputBoundary;
 import view.mainFrame;
-
-import java.awt.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,8 +18,11 @@ public class Main {
         // Create Presenter
         NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel);
 
+        // Create Interactor
+        NavigationInputBoundary interactor = new NavigationInteractor(presenter);
+
         // Create Controller
-        NavigationController navigationController = new NavigationController(presenter);
+        NavigationController navigationController = new NavigationController(interactor);
 
         // Create and show HomePage
         new mainFrame(navigationController, viewManagerModel);

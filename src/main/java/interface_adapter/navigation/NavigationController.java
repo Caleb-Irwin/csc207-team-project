@@ -1,23 +1,26 @@
 package interface_adapter.navigation;
 
-import use_case.Navigation.NavigationOutputBoundary;
+import use_case.navigation.NavigationInputBoundary;
 
 /**
  * The Controller for the create_set use case
  */
 
 public class NavigationController {
-    private final NavigationOutputBoundary loadSetUseCase;
+    private final NavigationInputBoundary interactor;
 
-    public NavigationController(NavigationOutputBoundary loadSetUseCase) {
-        this.loadSetUseCase = loadSetUseCase;
+    public NavigationController(NavigationInputBoundary interactor) {
+        this.interactor = interactor;
     }
 
     public void goToPromptPage() {
-        loadSetUseCase.presentPromptPage();
+        interactor.goToPromptPage();
     }
 
     public void openSettings() {
-        loadSetUseCase.presentSettingsPage();
+        interactor.goToSettingsPage();
+    }
+    public void loadSet(String setName) {
+        interactor.goToSet(setName);
     }
 }

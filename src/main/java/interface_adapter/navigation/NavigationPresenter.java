@@ -1,7 +1,7 @@
 package interface_adapter.navigation;
 
 import interface_adapter.ViewManagerModel;
-import use_case.Navigation.NavigationOutputBoundary;
+import use_case.navigation.NavigationOutputBoundary;
 
 public class NavigationPresenter implements NavigationOutputBoundary {
 
@@ -20,6 +20,12 @@ public class NavigationPresenter implements NavigationOutputBoundary {
     @Override
     public void presentSettingsPage() {
         viewManagerModel.setState("SETTINGS_PAGE");
+        viewManagerModel.firePropertyChange();
+    }
+
+    @Override
+    public void presentSet(String setName) {
+        viewManagerModel.setState("SET_PAGE_" + setName);
         viewManagerModel.firePropertyChange();
     }
 }

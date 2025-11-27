@@ -1,7 +1,6 @@
 package view;
 
 import interface_adapter.navigation.NavigationController;
-import use_case.Navigation.NavigationOutputBoundary;
 
 import javax.swing.*;
 import java.awt.*;
