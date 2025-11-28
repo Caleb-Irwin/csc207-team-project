@@ -27,6 +27,7 @@ public class SidebarView extends JPanel {
         this.controller = controller;
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setPreferredSize(new Dimension(200, 0));
 
         // create the panel that stores the content in the scroll pane
         scrollContent = new JPanel();
