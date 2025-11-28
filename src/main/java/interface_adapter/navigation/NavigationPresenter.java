@@ -3,6 +3,10 @@ package interface_adapter.navigation;
 import interface_adapter.ViewManagerModel;
 import use_case.navigation.NavigationOutputBoundary;
 
+/**
+ * The Navigation presenter
+ */
+
 public class NavigationPresenter implements NavigationOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
@@ -13,13 +17,13 @@ public class NavigationPresenter implements NavigationOutputBoundary {
 
     @Override
     public void presentPromptPage() {
-        viewManagerModel.setState("PROMPT_PAGE");
+        viewManagerModel.setState("generator");
         viewManagerModel.firePropertyChange();
     }
 
     @Override
     public void presentSettingsPage() {
-        viewManagerModel.setState("SETTINGS_PAGE");
+        viewManagerModel.setState("settings");
         viewManagerModel.firePropertyChange();
     }
 
