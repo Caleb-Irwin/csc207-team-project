@@ -1,5 +1,8 @@
 package use_case.navigation;
 
+/**
+ *  The Input Boundary Interface of the Navigation Use Case
+ */
 public interface NavigationInputBoundary {
     void goToPromptPage();
     void goToSettingsPage();

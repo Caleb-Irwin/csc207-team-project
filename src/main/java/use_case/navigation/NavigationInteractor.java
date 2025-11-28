@@ -1,5 +1,8 @@
 package use_case.navigation;
 
+/**
+ * The Navigation Interactor
+ */
 public class NavigationInteractor implements NavigationInputBoundary {
     private final NavigationOutputBoundary presenter;
 

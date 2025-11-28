@@ -3,6 +3,7 @@ package view;
 import interface_adapter.generate_flashcard.GeneratorController;
 import interface_adapter.generate_flashcard.GeneratorState;
 import interface_adapter.generate_flashcard.GeneratorViewModel;
+import view.SidebarView;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,9 +26,12 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
     private final JButton generateButton;
 
-    public GeneratorView(GeneratorViewModel viewModel) {
+    private final SidebarView sidebarView;
+
+    public GeneratorView(GeneratorViewModel viewModel, SidebarView sidebarView) {
         this.generatorViewModel = viewModel;
         this.generatorViewModel.addPropertyChangeListener(this);
+        this.sidebarView = sidebarView;
 
         final JLabel title = new JLabel("FlashAI");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -69,6 +73,8 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         if (e.getSource() == generateButton) {
             GeneratorState state = generatorViewModel.getState();
             generatorController.execute(state.getSubject());
+
+            sidebarView.addSetButton("new set");
         }
     }
 

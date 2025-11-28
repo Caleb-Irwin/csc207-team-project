@@ -3,7 +3,7 @@ package interface_adapter.navigation;
 import use_case.navigation.NavigationInputBoundary;
 
 /**
- * The Controller for the create_set use case
+ * The Controller for the Navigation use case
  */
 
 public class NavigationController {
@@ -20,6 +20,7 @@ public class NavigationController {
     public void openSettings() {
         interactor.goToSettingsPage();
     }
+
     public void loadSet(String setName) {
         interactor.goToSet(setName);
     }
