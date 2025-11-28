@@ -5,20 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ea85d885-0038-48cd-8ea8-25d14447ef74" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/test/java/use_case/navigation/NavigationInteractorTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/app/AppBuilder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/navigation/NavigationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/navigation/NavigationController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/interface_adapter/navigation/NavigationPresenter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/interface_adapter/navigation/NavigationPresenter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/navigation/NavigationInputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/navigation/NavigationInputBoundary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/navigation/NavigationInteractor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/navigation/NavigationInteractor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/use_case/navigation/NavigationOutputBoundary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/use_case/navigation/NavigationOutputBoundary.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/GeneratorView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/GeneratorView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/HomePage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/SettingsView.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/SidebarView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/SidebarView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/mainFrame.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,12 +34,22 @@
     &quot;assignee&quot;: &quot;Crystal12334&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Caleb-Irwin/csc207-team-project.git&quot;,
-    &quot;accountId&quot;: &quot;34e55844-8143-4e22-9ad5-4256afea2563&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Caleb-Irwin/csc207-team-project.git",
+    "accountId": "34e55844-8143-4e22-9ad5-4256afea2563"
+  },
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
+    },
+    "owner": "Caleb-Irwin",
+    "repository": "csc207-team-project"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -69,7 +66,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "newsidebar",
+    "git-widget-placeholder": "#15 on newsidebar",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "/Users/wdh/IdeaProjects/csc207-team-project",
     "node.js.detected.package.eslint": "true",
