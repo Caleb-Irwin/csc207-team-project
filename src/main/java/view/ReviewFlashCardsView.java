@@ -159,7 +159,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         cards.add(flashCard1);
         cards.add(flashCard2);
         cards.add(flashCard3);
-        return new FlashCardSet("Test0", cards);
+        return new FlashCardSet("Test0", cards, 0);
     }
 
     public static ReviewFlashCardsViewModel generateMockViewModel() {

@@ -1,6 +1,7 @@
 package app;
 
 import data_access.FileUserDataAccessObject;
+import data_access.JsonDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.generate_flashcard.*;
@@ -65,6 +66,8 @@ public class AppBuilder {
 
     // DAO version using local file storage
     final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
+
+    final JsonDataAccessObject flashcardDataAccessObject = new JsonDataAccessObject("data/");
 
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new
