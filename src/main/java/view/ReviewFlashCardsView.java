@@ -4,9 +4,11 @@ import javax.swing.*;
 
 import entity.FlashCard;
 import entity.FlashCardSet;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.review_flashcards.ReviewFlashCardsController;
 import interface_adapter.review_flashcards.ReviewFlashCardsState;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
+import use_case.FlashCardSetsDataAccessInterface;
 import use_case.review_flashcards.ReviewFlashCardsActionName;
 import use_case.review_flashcards.ReviewFlashCardsInputData;
 
@@ -17,6 +19,8 @@ import java.beans.PropertyChangeListener;
 
 public class ReviewFlashCardsView extends JPanel implements ActionListener, PropertyChangeListener {
     private ReviewFlashCardsViewModel viewModel;
+    private FlashCardSetsDataAccessInterface flashCardSetsDAO;
+    private ViewManagerModel viewManagerModel;
     private final String viewName = "review flashcards";
 
     private JLabel titleLabel;
@@ -26,8 +30,11 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     private JButton prevButton;
 
     public ReviewFlashCardsView(ReviewFlashCardsViewModel reviewFlashCardsViewModel,
-            ReviewFlashCardsController reviewFlashCardsController) {
+            ReviewFlashCardsController reviewFlashCardsController,
+            FlashCardSetsDataAccessInterface flashCardSetsDAO,
+            ViewManagerModel viewManagerModel) {
         this.viewModel = reviewFlashCardsViewModel;
+        this.flashCardSetsDAO = flashCardSetsDAO;
         this.viewModel.addPropertyChangeListener(this);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -56,8 +63,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
                         reviewFlashCardsController
                                 .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.PREVIOUS_CARD,
                                         viewModel.getState().getCurrentCardIndex(),
-                                        viewModel.getState().isShowingQuestion(),
-                                        viewModel.getState().getFlashCardSet()));
+                                        viewModel.getState().isShowingQuestion()));
                     }
                 });
         nextButton.addActionListener(
@@ -66,8 +72,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
                         reviewFlashCardsController
                                 .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.NEXT_CARD,
                                         viewModel.getState().getCurrentCardIndex(),
-                                        viewModel.getState().isShowingQuestion(),
-                                        viewModel.getState().getFlashCardSet()));
+                                        viewModel.getState().isShowingQuestion()));
                     }
                 });
         flipButton.addActionListener(
@@ -76,8 +81,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
                         reviewFlashCardsController
                                 .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.FLIP_CARD,
                                         viewModel.getState().getCurrentCardIndex(),
-                                        viewModel.getState().isShowingQuestion(),
-                                        viewModel.getState().getFlashCardSet()));
+                                        viewModel.getState().isShowingQuestion()));
                     }
                 });
 
@@ -108,7 +112,8 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     }
 
     private void update(ReviewFlashCardsState state) {
-        FlashCardSet flashCardSet = state.getFlashCardSet();
+        int currentFlashCardSetId = viewManagerModel.getCurrentFlashCardSetId();
+        FlashCardSet flashCardSet = flashCardSetsDAO.getFlashCardSetById(currentFlashCardSetId);
         int currentCardIndex = state.getCurrentCardIndex();
         boolean showingQuestion = state.isShowingQuestion();
 
@@ -147,28 +152,5 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
 
     public String getViewName() {
         return viewName;
-    }
-
-    // TODO Remove mock data generator
-    public static FlashCardSet generateMockFlashCardSet() {
-        FlashCard flashCard1 = new FlashCard("What is the capital of France?", "Paris");
-        FlashCard flashCard2 = new FlashCard("What is 2 + 2?", "4");
-        FlashCard flashCard3 = new FlashCard("What is the largest planet in our solar system?", "Jupiter");
-
-        java.util.ArrayList<FlashCard> cards = new java.util.ArrayList<>();
-        cards.add(flashCard1);
-        cards.add(flashCard2);
-        cards.add(flashCard3);
-        return new FlashCardSet("Test0", cards, 0);
-    }
-
-    public static ReviewFlashCardsViewModel generateMockViewModel() {
-        ReviewFlashCardsViewModel viewModel = new ReviewFlashCardsViewModel();
-        ReviewFlashCardsState state = new ReviewFlashCardsState();
-        state.setFlashCardSet(generateMockFlashCardSet());
-        state.setCurrentCardIndex(0);
-        state.setShowingQuestion(true);
-        viewModel.setState(state);
-        return viewModel;
     }
 }

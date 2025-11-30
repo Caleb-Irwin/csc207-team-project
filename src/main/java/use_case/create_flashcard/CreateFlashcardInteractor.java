@@ -29,7 +29,7 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
         if (dataAccess.existsByName(setName)) {
             set = dataAccess.load(setName);
         } else {
-            set = new FlashCardSet(setName, new ArrayList<>());
+            set = new FlashCardSet(setName, new ArrayList<>(), 0);
         }
 
         FlashCard card = new FlashCard(question, answer);
@@ -44,7 +44,7 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
     @Override
     public void saveFlashcards(String setName, List<String> questions, List<String> answers) {
 
-        FlashCardSet set = new FlashCardSet(setName, new ArrayList<>());
+        FlashCardSet set = new FlashCardSet(setName, new ArrayList<>(), 0);
 
         for (int i = 0; i < questions.size(); i++) {
             FlashCard card = new FlashCard(questions.get(i), answers.get(i));

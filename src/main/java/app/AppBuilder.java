@@ -67,7 +67,7 @@ public class AppBuilder {
     // DAO version using local file storage
     final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
 
-    final JsonDataAccessObject flashcardDataAccessObject = new JsonDataAccessObject("data/");
+    final JsonDataAccessObject DAO = new JsonDataAccessObject("data/");
 
     // DAO version using a shared external database
     // final DBUserDataAccessObject userDataAccessObject = new
@@ -137,15 +137,15 @@ public class AppBuilder {
 
     public AppBuilder addReviewFlashCardsView() {
         reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
-        // TODO: Data loading logic
-        reviewFlashCardsViewModel.setState(ReviewFlashCardsView.generateMockViewModel().getState());
 
         ReviewFlashCardsPresenter reviewFlashCardsPresenter = new ReviewFlashCardsPresenter(
                 reviewFlashCardsViewModel);
         ReviewFlashCardsInteractor reviewFlashCardsInteractor = new ReviewFlashCardsInteractor(
-                reviewFlashCardsPresenter);
+                reviewFlashCardsPresenter, DAO, viewManagerModel);
         reviewFlashCardsController = new ReviewFlashCardsController(reviewFlashCardsInteractor);
-        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController);
+        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController,
+                DAO,
+                viewManagerModel);
         cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
         return this;
     }
