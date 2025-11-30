@@ -67,6 +67,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == generateButton) {
             GeneratorState state = generatorViewModel.getState();
+            generatorController.execute(state.getSubject());
         }
     }
 
