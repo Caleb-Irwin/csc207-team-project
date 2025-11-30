@@ -75,7 +75,7 @@ public class AppBuilder {
 
     public AppBuilder addGeneratorUseCase() {
         GeneratorOutputBoundary presenter = new GeneratorPresenter(generatorViewModel, viewManagerModel);
-        GeneratorApiCaller apiCaller = new GeneratorApiCaller();
+        GeneratorApiCaller apiCaller = new GeneratorApiCaller(DAO);
         GeneratorJsonParser parser = new GeneratorJsonParser();
         GeneratorSetSaver saver = new GeneratorSetSaver();
 
