@@ -5,10 +5,19 @@ package interface_adapter;
  * is currently active. An initial state of "" is used.
  */
 public class ViewManagerModel extends ViewModel<String> {
+    private int currentFlashCardSetId;
 
     public ViewManagerModel() {
         super("view manager");
         this.setState("");
+    }
+
+    public int getCurrentFlashCardSetId() {
+        return currentFlashCardSetId;
+    }
+
+    public void setCurrentFlashCardSetId(int currentFlashCardSetId) {
+        this.currentFlashCardSetId = currentFlashCardSetId;
     }
 
 }

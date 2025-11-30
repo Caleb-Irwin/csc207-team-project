@@ -13,7 +13,6 @@ public class ReviewFlashCardsPresenter implements ReviewFlashCardsOutputBoundary
     @Override
     public void prepareSuccessView(use_case.review_flashcards.ReviewFlashCardsOutputData outputData) {
         ReviewFlashCardsState state = viewModel.getState();
-        state.setFlashCardSet(outputData.getFlashcardSet());
         state.setCurrentCardIndex(outputData.getCurrentCardIndex());
         state.setShowingQuestion(outputData.isShowingQuestion());
         viewModel.firePropertyChange();

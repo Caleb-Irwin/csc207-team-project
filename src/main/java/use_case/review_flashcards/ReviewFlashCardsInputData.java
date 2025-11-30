@@ -1,7 +1,5 @@
 package use_case.review_flashcards;
 
-import entity.FlashCardSet;
-
 /**
  * The Input Data for the Review Flashcards Use Case.
  */
@@ -10,14 +8,12 @@ public class ReviewFlashCardsInputData {
     private final ReviewFlashCardsActionName actionName;
     private final int currentCardIndex;
     private final boolean showingQuestion;
-    private final FlashCardSet flashCardSet;
 
     public ReviewFlashCardsInputData(ReviewFlashCardsActionName actionName, int currentCardIndex,
-            boolean showingQuestion, FlashCardSet flashCardSet) {
+            boolean showingQuestion) {
         this.actionName = actionName;
         this.currentCardIndex = currentCardIndex;
         this.showingQuestion = showingQuestion;
-        this.flashCardSet = flashCardSet;
     }
 
     public ReviewFlashCardsActionName getActionName() {
@@ -31,9 +27,4 @@ public class ReviewFlashCardsInputData {
     public boolean isShowingQuestion() {
         return showingQuestion;
     }
-
-    public FlashCardSet getFlashCardSet() {
-        return flashCardSet;
-    }
-
 }

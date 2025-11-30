@@ -1,32 +1,40 @@
-package interface_adapter.create_flashcard;
+package view;
 
+import interface_adapter.create_flashcard.CreateFlashcardController;
+import interface_adapter.create_flashcard.CreateFlashcardViewModel;
+import interface_adapter.create_flashcard.CreateFlashcardState;
 import javax.swing.JTextField;
 import javax.swing.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.List;
 import java.util.ArrayList;
 
-public class CreateFlashcardView extends JPanel {
+public class CreateFlashcardView extends JPanel implements PropertyChangeListener {
     private final JTextField setNameField = new JTextField(20);
     private final List<JTextField> questionFields = new ArrayList<>();
     private final List<JTextField> answerFields = new ArrayList<>();
     private final JLabel messageLabel = new JLabel("");
+
     private final JButton newButton = new JButton("+ New");
     private final JButton saveButton = new JButton("Save");
     private final JButton deleteButton = new JButton("Delete");
+
     private JPanel formPanel;
+    private int questionCounter = 1;
 
 
     private final CreateFlashcardController controller;
+    private final CreateFlashcardViewModel viewModel;
 
-    // Counter to keep track of the question numbers
-    private int questionCounter = 1;
-
-    public CreateFlashcardView(CreateFlashcardController controller) {
+    public CreateFlashcardView(CreateFlashcardViewModel viewModel,
+                               CreateFlashcardController controller) {
         this.controller = controller;
+        this.viewModel = viewModel;
+        this.viewModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
-
         formPanel = new JPanel();
 
         formPanel.setLayout(new GridBagLayout());
@@ -150,4 +158,16 @@ public class CreateFlashcardView extends JPanel {
 
         messageLabel.setText("Set deleted!");
     }
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if (!CreateFlashcardViewModel.STATE_PROPERTY.equals(evt.getPropertyName())) return;
+
+        CreateFlashcardState state = (CreateFlashcardState) evt.getNewValue();
+        messageLabel.setText(state.getMessage());
+    }
+
+    public String getViewName() {
+        return "create flashcard";
+    }
+
 }

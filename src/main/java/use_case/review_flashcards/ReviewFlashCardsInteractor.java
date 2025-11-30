@@ -1,21 +1,29 @@
 package use_case.review_flashcards;
 
 import entity.FlashCardSet;
+import interface_adapter.ViewManagerModel;
+import use_case.FlashCardSetsDataAccessInterface;
 
 /**
  * The Review Flashcards Interactor.
  */
 public class ReviewFlashCardsInteractor implements ReviewFlashCardsInputBoundary {
     private final ReviewFlashCardsOutputBoundary reviewFlashCardsPresenter;
+    private final FlashCardSetsDataAccessInterface flashCardSetsDAO;
+    private final ViewManagerModel viewManagerModel;
 
-    public ReviewFlashCardsInteractor(ReviewFlashCardsOutputBoundary reviewFlashCardsOutputBoundary) {
+    public ReviewFlashCardsInteractor(ReviewFlashCardsOutputBoundary reviewFlashCardsOutputBoundary,
+            FlashCardSetsDataAccessInterface flashCardSetsDAO, ViewManagerModel viewManagerModel) {
         this.reviewFlashCardsPresenter = reviewFlashCardsOutputBoundary;
+        this.flashCardSetsDAO = flashCardSetsDAO;
+        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
     public void execute(ReviewFlashCardsInputData reviewFlashCardsInputData) {
         final ReviewFlashCardsActionName actionName = reviewFlashCardsInputData.getActionName();
-        final FlashCardSet flashCardSet = reviewFlashCardsInputData.getFlashCardSet();
+        final FlashCardSet flashCardSet = flashCardSetsDAO.getFlashCardSetById(
+                viewManagerModel.getCurrentFlashCardSetId());
         int currentCardIndex = reviewFlashCardsInputData.getCurrentCardIndex();
         boolean showingQuestion = reviewFlashCardsInputData.isShowingQuestion();
 
@@ -42,7 +50,6 @@ public class ReviewFlashCardsInteractor implements ReviewFlashCardsInputBoundary
         }
 
         reviewFlashCardsPresenter.prepareSuccessView(new ReviewFlashCardsOutputData(
-                flashCardSet,
                 currentCardIndex,
                 showingQuestion));
     }

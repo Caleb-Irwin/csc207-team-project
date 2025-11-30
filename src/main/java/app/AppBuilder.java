@@ -26,15 +26,6 @@ import view.*;
 import javax.swing.*;
 import java.awt.*;
 
-// Create Flashcard imports
-import data_access.JsonFlashcardSetDataAccessObject;
-import interface_adapter.create_flashcard.CreateFlashcardController;
-import interface_adapter.create_flashcard.CreateFlashcardPresenter;
-import interface_adapter.create_flashcard.CreateFlashcardView;
-import use_case.create_flashcard.CreateFlashcardDataAccessInterface;
-import use_case.create_flashcard.CreateFlashcardInputBoundary;
-import use_case.create_flashcard.CreateFlashcardInteractor;
-
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -98,15 +89,15 @@ public class AppBuilder {
 
     public AppBuilder addReviewFlashCardsView() {
         reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
-        // TODO: Data loading logic
-        reviewFlashCardsViewModel.setState(ReviewFlashCardsView.generateMockViewModel().getState());
 
         ReviewFlashCardsPresenter reviewFlashCardsPresenter = new ReviewFlashCardsPresenter(
                 reviewFlashCardsViewModel);
         ReviewFlashCardsInteractor reviewFlashCardsInteractor = new ReviewFlashCardsInteractor(
-                reviewFlashCardsPresenter);
+                reviewFlashCardsPresenter, DAO, viewManagerModel);
         reviewFlashCardsController = new ReviewFlashCardsController(reviewFlashCardsInteractor);
-        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController);
+        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController,
+                DAO,
+                viewManagerModel);
         cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
         return this;
     }
