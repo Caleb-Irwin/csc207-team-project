@@ -25,22 +25,20 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     private final JLabel errorMessageLabel = new JLabel();
     private final JButton generateButton;
 
-    // --- NEW FIELD ADDED (LoadingPopup initialization is here) ---
+
     private final LoadingPopup loadingPopup;
-    // The dependency on JFrame is removed from the class scope
-    // ------------------------
+
 
     private static final Color BACKGROUND_COLOR = new Color(217, 210, 230);
     private static final Color INPUT_FIELD_COLOR = new Color(180, 180, 180);
     private static final Color BUTTON_COLOR = new Color(229, 115, 180);
 
-    // --- CONSTRUCTOR MODIFIED: No longer requires JFrame ---
+
     public GeneratorView(GeneratorViewModel viewModel) {
         this.generatorViewModel = viewModel;
         this.generatorViewModel.addPropertyChangeListener(this);
 
-        // Pass 'this' (the GeneratorView JPanel) to the popup.
-        // The popup finds the parent JFrame using SwingUtilities.
+
         this.loadingPopup = new LoadingPopup(this);
 
         final JLabel title = new JLabel("FlashAI");
@@ -49,7 +47,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         this.setLayout(new GridBagLayout());
         this.setBackground(BACKGROUND_COLOR);
 
-        // ... (Rest of the layout setup remains the same) ...
+
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -99,7 +97,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
         setupListeners();
     }
-    // ----------------------------------------------------
+
 
     private void setupListeners() {
         subjectInputField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
@@ -137,7 +135,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             }
         });
 
-        // Optional: initialize placeholder color
+
         subjectInputField.setForeground(Color.GRAY);
     }
 
@@ -169,7 +167,6 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
                         @Override
                         protected void done() {
-                            // HIDE THE LOADING POPUP after the delay, regardless of controller result.
                             if (loadingPopup.isVisible()) {
                                 loadingPopup.hideLoading();
                             }
@@ -178,7 +175,6 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
                 });
 
             } else {
-                // Set an error if the input is not valid
                 errorMessageLabel.setText("Please enter a subject to generate flashcards.");
             }
         }
