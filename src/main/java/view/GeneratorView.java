@@ -10,41 +10,83 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.Objects;
 
 public class GeneratorView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private final String viewName = "generator";
+    private final String placeholder = "What do you want to review today?";
 
     private final GeneratorViewModel generatorViewModel;
 
     private GeneratorController generatorController;
 
-    private final JTextField subjectInputField = new JTextField("What do you want to learn today?",
-            20);
+
+    private final JTextField subjectInputField = new JTextField(30);
+
+
     private final JLabel errorMessageLabel = new JLabel();
 
     private final JButton generateButton;
+
+
+    private static final Color BACKGROUND_COLOR = new Color(217, 210, 230);
+    private static final Color INPUT_FIELD_COLOR = new Color(180, 180, 180);
+    private static final Color BUTTON_COLOR = new Color(229, 115, 180);
 
     public GeneratorView(GeneratorViewModel viewModel) {
         this.generatorViewModel = viewModel;
         this.generatorViewModel.addPropertyChangeListener(this);
 
-        final JLabel title = new JLabel("FlashAI");
-        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        final JPanel inputPanel = new JPanel();
-//        inputPanel.add(new JLabel("Subject: "));
-        subjectInputField.setBackground(new Color(255, 255, 255, 210));
-        inputPanel.add(subjectInputField);
-        inputPanel.setBackground(new Color(201, 105, 248));
+        this.setLayout(new GridBagLayout());
+        this.setBackground(BACKGROUND_COLOR);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 0, 10, 0);
+
+        subjectInputField.setText(placeholder);
+        subjectInputField.setForeground(Color.LIGHT_GRAY);
+        subjectInputField.setBackground(INPUT_FIELD_COLOR);
+        subjectInputField.setPreferredSize(new Dimension(300, 40));
+        subjectInputField.setHorizontalAlignment(JTextField.CENTER);
+        subjectInputField.setBorder(BorderFactory.createEmptyBorder(
+                5, 10, 5, 10));
+
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
+        this.add(subjectInputField, gbc);
+
+
+        errorMessageLabel.setForeground(Color.RED);
+
+
+        gbc.gridy = 1;
+        this.add(errorMessageLabel, gbc);
+
+
         generateButton = new JButton("Generate!");
         generateButton.addActionListener(this);
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-        this.setBackground(new Color(201, 105, 248));
-        this.add(inputPanel);
-        this.add(errorMessageLabel);
-        this.add(generateButton);
+
+        generateButton.setBackground(BUTTON_COLOR);
+        generateButton.setForeground(Color.BLACK);
+        generateButton.setFont(generateButton.getFont().deriveFont(Font.BOLD, 14f));
+        generateButton.setFocusPainted(false);
+        generateButton.setBorderPainted(false);
+        generateButton.setOpaque(true);
+        generateButton.setPreferredSize(new Dimension(120, 35));
+
+        gbc.gridy = 2;
+        this.add(generateButton, gbc);
+
+
+        this.setPreferredSize(new Dimension(1000, 560));
+        this.setFocusable(true);
+        this.requestFocusInWindow();
 
         setupListeners();
     }
@@ -55,6 +97,9 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             private void update() {
                 GeneratorState currentState = generatorViewModel.getState();
                 currentState.setSubject(subjectInputField.getText());
+                if (Objects.equals(subjectInputField.getText(), placeholder)) {
+                    currentState.setSubject("");
+                }
                 generatorViewModel.setState(currentState);
             }
 
@@ -62,6 +107,28 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             @Override public void removeUpdate(javax.swing.event.DocumentEvent e) { update(); }
             @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { update(); }
         });
+
+        // Focus listener for placeholder behavior
+        subjectInputField.addFocusListener(new java.awt.event.FocusListener() {
+            @Override
+            public void focusGained(java.awt.event.FocusEvent e) {
+                if (subjectInputField.getText().equals(placeholder)) {
+                    subjectInputField.setText("");
+                    subjectInputField.setForeground(Color.BLACK); // optional: set text color to normal
+                }
+            }
+
+            @Override
+            public void focusLost(java.awt.event.FocusEvent e) {
+                if (subjectInputField.getText().isEmpty()) {
+                    subjectInputField.setText(placeholder);
+                    subjectInputField.setForeground(Color.GRAY); // optional: placeholder in gray
+                }
+            }
+        });
+
+        // Optional: initialize placeholder color
+        subjectInputField.setForeground(Color.GRAY);
     }
 
     @Override
@@ -82,8 +149,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         return viewName;
     }
 
-    public void setGeneratorController(GeneratorController controller)
-    {
+    public void setGeneratorController(GeneratorController controller) {
         this.generatorController = controller;
     }
 }
