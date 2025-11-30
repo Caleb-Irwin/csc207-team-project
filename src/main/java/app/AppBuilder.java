@@ -1,13 +1,13 @@
 package app;
 
-
 import data_access.JsonDataAccessObject;
 
 import interface_adapter.ViewManagerModel;
-import interface_adapter.generate_flashcard.*;
 
+import interface_adapter.generate_flashcard.*;
 import interface_adapter.navigation.NavigationController;
 import interface_adapter.navigation.NavigationPresenter;
+
 import interface_adapter.review_flashcards.ReviewFlashCardsController;
 import interface_adapter.review_flashcards.ReviewFlashCardsPresenter;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
@@ -19,23 +19,27 @@ import use_case.generate_flashcard.GeneratorOutputBoundary;
 import use_case.navigation.NavigationInputBoundary;
 import use_case.navigation.NavigationInteractor;
 import use_case.navigation.NavigationOutputBoundary;
+
 import use_case.review_flashcards.ReviewFlashCardsInteractor;
 
-import view.*;
+import view.GeneratorView;
+import view.ReviewFlashCardsView;
+import view.SidebarView;
+import view.ViewManager;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AppBuilder {
+
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
 
-    final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
-    final JsonDataAccessObject flashcardDataAccessObject = new JsonDataAccessObject("data/");
+    private final ViewManagerModel viewManagerModel = new ViewManagerModel();
+    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
 
+    private final JsonDataAccessObject DAO = new JsonDataAccessObject("data/");
 
     private SidebarView sidebarView;
 
@@ -50,18 +54,16 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
+
     public AppBuilder addSidebar() {
-        // Create Presenter
         NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel);
-
-        // Create Interactor
         NavigationInputBoundary interactor = new NavigationInteractor(presenter);
-
-        // Create Controller
         NavigationController navigationController = new NavigationController(interactor);
+
         this.sidebarView = new SidebarView(navigationController);
         return this;
     }
+
 
     public AppBuilder addGeneratorView() {
         generatorViewModel = new GeneratorViewModel();
@@ -70,69 +72,50 @@ public class AppBuilder {
         return this;
     }
 
+
     public AppBuilder addGeneratorUseCase() {
+        GeneratorOutputBoundary presenter = new GeneratorPresenter(generatorViewModel, viewManagerModel);
+        GeneratorApiCaller apiCaller = new GeneratorApiCaller();
+        GeneratorJsonParser parser = new GeneratorJsonParser();
+        GeneratorSetSaver saver = new GeneratorSetSaver();
 
-        final GeneratorOutputBoundary presenter = new GeneratorPresenter(
-                generatorViewModel, viewManagerModel);
-        final GeneratorApiCaller apiCaller = new GeneratorApiCaller();
-        final GeneratorJsonParser parser = new GeneratorJsonParser();
-        final GeneratorSetSaver saver = new GeneratorSetSaver();
+        GeneratorInputBoundary interactor =
+                new GeneratorInteractor(presenter, apiCaller, parser, saver);
+        GeneratorController controller = new GeneratorController(interactor);
 
-        final GeneratorInputBoundary generatorInteractor = new GeneratorInteractor(presenter, apiCaller, parser, saver);
-
-        final GeneratorController generatorController = new GeneratorController(generatorInteractor);
-        generatorView.setGeneratorController(generatorController);
+        generatorView.setGeneratorController(controller);
         return this;
-
     }
 
 
     public AppBuilder addReviewFlashCardsView() {
         reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
 
-        ReviewFlashCardsPresenter reviewFlashCardsPresenter = new ReviewFlashCardsPresenter(
-                reviewFlashCardsViewModel);
-        ReviewFlashCardsInteractor reviewFlashCardsInteractor = new ReviewFlashCardsInteractor(
-                reviewFlashCardsPresenter, DAO, viewManagerModel);
-        reviewFlashCardsController = new ReviewFlashCardsController(reviewFlashCardsInteractor);
-        reviewFlashCardsView = new ReviewFlashCardsView(reviewFlashCardsViewModel, reviewFlashCardsController,
+        ReviewFlashCardsPresenter presenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel);
+        ReviewFlashCardsInteractor interactor =
+                new ReviewFlashCardsInteractor(presenter, DAO, viewManagerModel);
+
+        reviewFlashCardsController = new ReviewFlashCardsController(interactor);
+
+        reviewFlashCardsView = new ReviewFlashCardsView(
+                reviewFlashCardsViewModel,
+                reviewFlashCardsController,
                 DAO,
-                viewManagerModel);
+                viewManagerModel
+        );
+
         cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
         return this;
     }
 
-    public JFrame buildCreateFlashcardUI() {
-
-        CreateFlashcardDataAccessInterface dataAccess = new JsonFlashcardSetDataAccessObject();
-
-        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter();
-
-        CreateFlashcardInputBoundary interactor = new CreateFlashcardInteractor(dataAccess);
-
-        CreateFlashcardController controller = new CreateFlashcardController(interactor);
-
-        CreateFlashcardView view = new CreateFlashcardView(controller);
-
-        JFrame frame = new JFrame("Create Flashcard");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 600);
-        frame.add(view);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
-        return frame;
-    }
-
 
     public JFrame build() {
-        final JFrame application = new JFrame("Flash AI");
+        JFrame application = new JFrame("Flash AI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setSize(1000, 700);
         application.setLocationRelativeTo(null);
 
         JPanel cardContainer = new JPanel(new BorderLayout());
-
         cardContainer.add(sidebarView, BorderLayout.WEST);
         cardContainer.add(cardPanel, BorderLayout.CENTER);
 
@@ -142,8 +125,6 @@ public class AppBuilder {
         viewManagerModel.firePropertyChange();
 
         application.setVisible(true);
-
         return application;
     }
-
 }
