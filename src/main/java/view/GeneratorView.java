@@ -37,7 +37,8 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     public GeneratorView(GeneratorViewModel viewModel) {
         this.generatorViewModel = viewModel;
         this.generatorViewModel.addPropertyChangeListener(this);
-
+        final JLabel title = new JLabel("FlashAI");
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         this.setLayout(new GridBagLayout());
         this.setBackground(BACKGROUND_COLOR);

@@ -80,7 +80,6 @@ public class AppBuilder {
     private LoggedInView loggedInView;
     private LoginView loginView;
     private SidebarView sidebarView;
-    private HomePage homePage;
 
     private GeneratorView generatorView;
     private GeneratorViewModel generatorViewModel;
@@ -224,12 +223,6 @@ public class AppBuilder {
         return this;
     }
 
-    // public AppBuilder addHomePageView(NavigationController controller) {
-    // homePage = new HomePage(controller);
-    // cardPanel.add(homePage, homePage.getViewName());
-    // return this;
-    // }
-
     /**
      * Adds the Logout Use Case to the application.
      * 
@@ -248,7 +241,7 @@ public class AppBuilder {
     }
 
     public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
+        final JFrame application = new JFrame("Flash AI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         application.setSize(1000, 700);
         application.setLocationRelativeTo(null);
@@ -257,8 +250,6 @@ public class AppBuilder {
 
         cardContainer.add(sidebarView, BorderLayout.WEST);
         cardContainer.add(cardPanel, BorderLayout.CENTER);
-        // this.cardPanel.setLayout(new BorderLayout());
-        // this.cardPanel.add(cardContainer);
 
         application.add(cardContainer);
 
