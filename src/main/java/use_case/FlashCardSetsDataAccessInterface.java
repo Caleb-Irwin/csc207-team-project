@@ -14,4 +14,8 @@ public interface FlashCardSetsDataAccessInterface {
     void updateFlashCardSet(Integer id, FlashCardSet flashCardSet);
 
     void deleteFlashCardSet(Integer id);
+
+    void registerCallBackOnUpdate(Runnable callback);
+
+    int getNextAvailableId();
 }
