@@ -104,8 +104,7 @@ public class AppBuilder {
 
     public AppBuilder addGeneratorView() {
         generatorViewModel = new GeneratorViewModel();
-        // New parameter in generatorView to update sidebarView
-        generatorView = new GeneratorView(generatorViewModel, sidebarView);
+        generatorView = new GeneratorView(generatorViewModel);
         cardPanel.add(generatorView, generatorView.getViewName());
         return this;
     }

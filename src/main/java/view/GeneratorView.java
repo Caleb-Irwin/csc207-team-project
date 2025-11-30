@@ -26,13 +26,9 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
     private final JButton generateButton;
 
-    private final SidebarView sidebarView;
-
-    public GeneratorView(GeneratorViewModel viewModel, SidebarView sidebarView) {
+    public GeneratorView(GeneratorViewModel viewModel) {
         this.generatorViewModel = viewModel;
         this.generatorViewModel.addPropertyChangeListener(this);
-        this.sidebarView = sidebarView;
-
         final JLabel title = new JLabel("FlashAI");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -72,9 +68,6 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == generateButton) {
             GeneratorState state = generatorViewModel.getState();
-            generatorController.execute(state.getSubject());
-
-            sidebarView.addSetButton("new set");
         }
     }
 
