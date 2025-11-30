@@ -17,16 +17,19 @@ public class CreateFlashcardController {
         this.interactor = interactor;
     }
 
-    public void createFlashcard(String question, String answer, String setName) {
-        CreateFlashcardInputData data = new CreateFlashcardInputData(question, answer, setName);
-        interactor.execute(data);
-    }
+//    public void createFlashcard(String question, String answer, String setName) {
+//        CreateFlashcardInputData data = new CreateFlashcardInputData(question, answer, setName);
+//        interactor.execute(data);
+//    }
 
     public void saveFlashcards(String setName, List<String> questions, List<String> answers) {
-        interactor.saveFlashcards(setName, questions, answers);
+        CreateFlashcardInputData inputData =
+                new CreateFlashcardInputData(setName, questions, answers);
+
+        interactor.save(inputData);
     }
 
     public void deleteSet(String setName) {
-        interactor.deleteSet(setName);
+        interactor.delete(setName);
     }
 }

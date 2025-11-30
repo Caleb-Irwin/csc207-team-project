@@ -1,28 +1,34 @@
 package use_case.create_flashcard;
 
+import java.util.List;
+
 /**
- * Input data for creating a new flashcard
+ * Input data for saving an entire flashcard set.
+ * Triggered when the user clicks "Save".
  */
 public class CreateFlashcardInputData {
-    private final String questions;
-    private final String answers;
-    private final String setName;
 
-    public CreateFlashcardInputData(String questions, String answers, String setName) {
+    private final String setName;
+    private final List<String> questions;
+    private final List<String> answers;
+
+    public CreateFlashcardInputData(String setName,
+                                    List<String> questions,
+                                    List<String> answers) {
+        this.setName = setName;
         this.questions = questions;
         this.answers = answers;
-        this.setName = setName;
-    }
-
-    public String getQuestions() {
-        return questions;
-    }
-
-    public String getAnswers() {
-        return answers;
     }
 
     public String getSetName() {
         return setName;
+    }
+
+    public List<String> getQuestions() {
+        return questions;
+    }
+
+    public List<String> getAnswers() {
+        return answers;
     }
 }

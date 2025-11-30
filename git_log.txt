@@ -1,0 +1,56 @@
+commit cf7039112b0918a0994dd5b69a178a38d04bdbf2
+Merge: 1ed8d81 ae790e9
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Mon Nov 24 21:32:24 2025 -0500
+
+    Resolve merge conflicts and complete merge
+    d
+
+commit 1ed8d814993822b9352486385233a0ad81c7bb4d
+Author: Qishan Wei <crystalwei06@163.com>
+Date:   Mon Nov 24 21:13:08 2025 -0500
+
+    mock for crerateflashcard view, with +New, delete, save functions
+
+commit 6734b62490d4d2132f3447290edd51c3fc9080fd
+Merge: 69b750f bdb4e83
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Tue Nov 18 12:49:42 2025 -0500
+
+    Merge pull request #8 from Caleb-Irwin/create-flashcard-2
+    
+    Create-flashcard-2
+
+commit ae790e90c6f9814ea2de578633a3f43e3486f219
+Author: Qishan Wei <crystalwei06@163.com>
+Date:   Tue Nov 18 12:00:16 2025 -0500
+
+    Implement create flashcard use case (draft)
+
+commit f115a061cc56ec09daed04e2a75895e77eaa6c5d
+Merge: eb03837 882a021
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Tue Nov 11 13:00:02 2025 -0500
+
+    Merge pull request #3 from Caleb-Irwin/entities
+    
+    Added entities classes (Flashcard, FlashCardSet, AIConfig)
+
+commit 882a021a8b42977aa3ac5cebf32d3ac249d02278
+Merge: b0e3ac0 eb03837
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Tue Nov 11 12:59:10 2025 -0500
+
+    Merge branch 'main' into entities
+
+commit b0e3ac069a770786e88833df79604e37890f2dba
+Author: Qishan Wei <crystalwei06@163.com>
+Date:   Tue Nov 11 12:46:12 2025 -0500
+
+    Added entities classes (Flashcard, FlashCardSet, AIConfig)
+
+commit 27abe2d40b48d559ac4b70cc0137adef3c784079
+Author: Qishan Wei <crystalwei06@163.com>
+Date:   Thu Oct 16 14:13:50 2025 -0400
+
+    signature added
