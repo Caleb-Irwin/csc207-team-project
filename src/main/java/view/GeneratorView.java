@@ -3,7 +3,6 @@ package view;
 import interface_adapter.generate_flashcard.GeneratorController;
 import interface_adapter.generate_flashcard.GeneratorState;
 import interface_adapter.generate_flashcard.GeneratorViewModel;
-import view.SidebarView;
 
 import javax.swing.*;
 import java.awt.*;
