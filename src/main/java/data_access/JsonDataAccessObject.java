@@ -13,6 +13,7 @@ public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCar
     private final String FILE_NAME = "/data.json";
     private final String FILE_PATH;
     private ObjectMapper mapper = new ObjectMapper();
+    private ArrayList<Runnable> callbacks = new ArrayList<>();
 
     private ArrayList<FlashCardSet> flashCardSets = new ArrayList<>();
     private String apiKey = "";
@@ -80,10 +81,29 @@ public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCar
         }
     }
 
+    @Override
+    public int getNextAvailableId() {
+        int maxId = 0;
+        for (FlashCardSet set : flashCardSets) {
+            if (set.getId() > maxId) {
+                maxId = set.getId();
+            }
+        }
+        return maxId + 1;
+    }
+
+    @Override
+    public void registerCallBackOnUpdate(Runnable callback) {
+        callbacks.add(callback);
+    }
+
     private void updateFile() {
         try {
             mapper.writerWithDefaultPrettyPrinter()
                     .writeValue(new File(FILE_PATH), new HelperJsonAccessObject(apiKey, flashCardSets));
+            for (Runnable callback : callbacks) {
+                callback.run();
+            }
         } catch (IOException e) {
             throw new RuntimeException("Could not save set.", e);
         }
