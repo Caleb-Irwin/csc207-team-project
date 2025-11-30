@@ -40,3 +40,5 @@ build/
 .env
 
 .idea
+
+data/

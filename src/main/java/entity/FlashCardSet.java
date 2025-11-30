@@ -11,10 +11,16 @@ import java.util.List;
 public class FlashCardSet {
     private String setName;
     private List<FlashCard> flashcards;
+    private final Integer id;
 
-    public FlashCardSet(String setName, List<FlashCard> flashcards) {
+    public FlashCardSet(String setName, List<FlashCard> flashcards, Integer id) {
         this.setName = setName;
         this.flashcards = new ArrayList<>();
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
     }
 
     public String getSetName() {
