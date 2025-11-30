@@ -11,11 +11,8 @@ public class Main {
          HomePage.homepageMock();
 
          AppBuilder app = new AppBuilder();
-         app.buildCreateFlashcardUI();
-
-        JFrame frame = new JFrame("Create Flashcard");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400, 300);
+        app.addCreateFlashcardView();
+        JFrame frame = app.build();
 
         frame.setVisible(true);
     }

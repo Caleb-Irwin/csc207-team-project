@@ -14,7 +14,7 @@ public class FlashCardSet {
 
     public FlashCardSet(String setName, List<FlashCard> flashcards) {
         this.setName = setName;
-        this.flashcards = new ArrayList<>();
+        this.flashcards = flashcards != null ? flashcards : new ArrayList<>();
     }
 
     public String getSetName() {

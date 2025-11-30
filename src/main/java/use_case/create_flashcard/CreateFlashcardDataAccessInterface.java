@@ -9,6 +9,5 @@ public interface CreateFlashcardDataAccessInterface {
     FlashCardSet load(String setName);
     void saveSet(FlashCardSet set);
     void deleteSet(String setName);
-
     boolean existsByName(String setName);
 }
