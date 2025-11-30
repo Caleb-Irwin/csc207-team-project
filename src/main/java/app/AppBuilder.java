@@ -45,15 +45,6 @@ import view.*;
 import javax.swing.*;
 import java.awt.*;
 
-// Create Flashcard imports
-import data_access.JsonFlashcardSetDataAccessObject;
-import interface_adapter.create_flashcard.CreateFlashcardController;
-import interface_adapter.create_flashcard.CreateFlashcardPresenter;
-import interface_adapter.create_flashcard.CreateFlashcardView;
-import use_case.create_flashcard.CreateFlashcardDataAccessInterface;
-import use_case.create_flashcard.CreateFlashcardInputBoundary;
-import use_case.create_flashcard.CreateFlashcardInteractor;
-
 public class AppBuilder {
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
@@ -148,28 +139,6 @@ public class AppBuilder {
                 viewManagerModel);
         cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
         return this;
-    }
-
-    public JFrame buildCreateFlashcardUI() {
-
-        CreateFlashcardDataAccessInterface dataAccess = new JsonFlashcardSetDataAccessObject();
-
-        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter();
-
-        CreateFlashcardInputBoundary interactor = new CreateFlashcardInteractor(dataAccess);
-
-        CreateFlashcardController controller = new CreateFlashcardController(interactor);
-
-        CreateFlashcardView view = new CreateFlashcardView(controller);
-
-        JFrame frame = new JFrame("Create Flashcard");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(500, 600);
-        frame.add(view);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
-
-        return frame;
     }
 
     public AppBuilder addLoginView() {

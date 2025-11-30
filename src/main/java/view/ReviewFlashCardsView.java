@@ -35,6 +35,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
             ViewManagerModel viewManagerModel) {
         this.viewModel = reviewFlashCardsViewModel;
         this.flashCardSetsDAO = flashCardSetsDAO;
+        this.viewManagerModel = viewManagerModel;
         this.viewModel.addPropertyChangeListener(this);
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
