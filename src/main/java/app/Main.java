@@ -10,16 +10,11 @@ public class Main {
                 .addGeneratorView()
                 .addGeneratorUseCase()
                 .build();
-                .addCreateFlashcardView();
+
         // appBuilder.buildCreateFlashcardUI();
+
         application.pack();
         application.setLocationRelativeTo(null);
         application.setVisible(true);
-//        // Build application with your Create Flashcard view
-//        AppBuilder app = new AppBuilder();
-//        app.addCreateFlashcardView();  // add your use case view
-//        JFrame frame = app.build();
-//
-//        frame.setVisible(true);
     }
 }
