@@ -25,6 +25,8 @@ public class GeneratorPresenter implements GeneratorOutputBoundary {
 //
 //            viewManagerModel.setState("SET_CREATED:" + "setName" + ":" + "setId");
 //            viewManagerModel.firePropertyChange();
+//            viewManagerModel.setState("review flashcard");
+//            viewManagerModel.firePropertyChange();
 
     }
 

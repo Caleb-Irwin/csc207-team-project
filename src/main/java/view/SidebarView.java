@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
 /**
  * Implements the sidebar function of the application
@@ -19,6 +20,8 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
     private final JPanel bottomPanel;
     private final ViewManagerModel viewManagerModel;
     private final JButton generateSetButton;
+    private final ArrayList<Integer> existingSetIds = new ArrayList<>();
+
 
     public SidebarView(NavigationController controller, ViewManagerModel viewManagerModel) {
         this.controller = controller;
@@ -102,6 +105,11 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
 
     // add set button called by generating or saving a new set
     public void addSetButton(String setName, int setId) {
+        // Check if ID already exists
+        if (existingSetIds.contains(setId)) {
+            return;
+        }
+
         JButton setButton = new JButton(setName);
         setButton.setAlignmentX(setButton.CENTER_ALIGNMENT);
         setButton.setFont(setButton.getFont().deriveFont(Font.BOLD, 14f));
@@ -113,6 +121,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         setButton.setPreferredSize(new Dimension(95, 25));
         setButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
         setButton.putClientProperty("setId", setId);
+        existingSetIds.add(setId);
 
         setButton.addActionListener(e -> controller.loadSet(setId));
 

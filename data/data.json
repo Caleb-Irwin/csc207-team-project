@@ -1,4 +1,11 @@
 {
   "apiKey" : "",
-  "flashCardSets" : [ ]
+  "flashCardSets" : [ {
+    "setName" : "apple",
+    "flashcards" : [ {
+      "question" : "yes",
+      "answer" : "no"
+    } ],
+    "id" : 1
+  } ]
 }
