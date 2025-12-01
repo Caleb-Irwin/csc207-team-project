@@ -8,6 +8,7 @@ public class GeneratorState {
 
     private String subject = "";
     private String generatorError;
+    private boolean loading = false;
 
     public String getSubject() {
         return subject;
@@ -25,4 +26,11 @@ public class GeneratorState {
         this.generatorError = generatorError;
     }
 
+    public boolean isLoading() {
+        return loading;
+    }
+
+    public void setLoading(boolean loading) {
+        this.loading = loading;
+    }
 }

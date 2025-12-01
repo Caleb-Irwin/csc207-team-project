@@ -10,8 +10,8 @@ public interface GeneratorOutputBoundary {
      * Prepares the success view for the generate_flashcard Use Case.
      *
      */
-    void prepareSuccessView();
-    //TODO: IDK what the successView will be? maybe calling Another view?
+    void prepareSuccessView(int setID);
+
 
     /**
      * Prepares the failure view for the generate_flashcard Use Case.

@@ -25,6 +25,9 @@ public class GeneratorApiCaller{
     public String generateFromSubject(String subject){
 
         key = jsonDataAccessObject.getApiKey();
+        if("".equals(key)){
+            return "noAPI";
+        }
         Client client = Client.builder().apiKey(key).build();
 
         StringBuilder sb = new StringBuilder();
