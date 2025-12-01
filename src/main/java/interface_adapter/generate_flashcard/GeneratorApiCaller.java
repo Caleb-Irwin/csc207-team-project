@@ -12,8 +12,6 @@ import java.nio.file.Paths;
 
 public class GeneratorApiCaller implements GeneratorApiCallerInterface {
 
-    StringBuilder sb = new StringBuilder();
-
     private String key = "";
 
     private final JsonDataAccessObject jsonDataAccessObject;
