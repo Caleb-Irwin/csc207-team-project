@@ -65,8 +65,8 @@ public class AppBuilder {
 
 
     public AppBuilder addSidebar() {
-        NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel);
-        NavigationInputBoundary interactor = new NavigationInteractor(presenter);
+        NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel, sidebarView);
+        NavigationInputBoundary interactor = new NavigationInteractor(presenter, DAO);
         NavigationController navigationController = new NavigationController(interactor);
 
         this.sidebarView = new SidebarView(navigationController, viewManagerModel);
