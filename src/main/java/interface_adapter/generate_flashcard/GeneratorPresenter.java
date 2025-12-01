@@ -19,7 +19,8 @@ public class GeneratorPresenter implements GeneratorOutputBoundary {
     }
 
     @Override
-    public void prepareSuccessView(int setID){
+    public void prepareSuccessView(int setID, String subject){
+        //TODO: subject : for the sidebar
         final GeneratorState generatorState = generatorViewModel.getState();
         generatorState.setGeneratorError("");
         viewManagerModel.setCurrentFlashCardSetId(setID);

@@ -4,12 +4,13 @@ import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
 import data_access.JsonDataAccessObject;
 import use_case.ApiKeyDataAccessInterface;
+import use_case.generate_flashcard.GeneratorApiCallerInterface;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class GeneratorApiCaller{
+public class GeneratorApiCaller implements GeneratorApiCallerInterface {
 
     StringBuilder sb = new StringBuilder();
 
@@ -21,7 +22,7 @@ public class GeneratorApiCaller{
         this.jsonDataAccessObject = jsonDataAccessObject;
     }
 
-
+    @Override
     public String generateFromSubject(String subject){
 
         key = jsonDataAccessObject.getApiKey();
