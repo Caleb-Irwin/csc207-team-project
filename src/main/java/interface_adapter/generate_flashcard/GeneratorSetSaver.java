@@ -1,29 +1,52 @@
 package interface_adapter.generate_flashcard;
 
+import data_access.JsonDataAccessObject;
+import entity.FlashCard;
+import entity.FlashCardSet;
+import org.json.JSONArray;
 import org.json.JSONObject;
+import use_case.generate_flashcard.GeneratorSetSaverInterface;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GeneratorSetSaver {
+public class GeneratorSetSaver implements GeneratorSetSaverInterface {
 
-    public boolean save(JSONObject data, String subject) {
-        if (data.isEmpty()){
-            return false;
-        }
-        else{
-            String savePath = String.format("./data/%s.json", subject);
-            try {
-                Files.writeString(
-                        Path.of(savePath),
-                        data.toString(4)
-                );
-                return true;
-            } catch (IOException e) {
-                return false;
-            }
-        }
+    private JsonDataAccessObject jsonDataAccessObject;
+    private int id;
+
+    public GeneratorSetSaver(JsonDataAccessObject jsonDataAccessObject){
+        this.jsonDataAccessObject = jsonDataAccessObject;
+        this.id = jsonDataAccessObject.getNextAvailableId();
     }
 
+    @Override
+    public int save(String jsonString) {
+
+
+        JSONObject obj = new JSONObject(jsonString);
+
+
+        String setName = obj.getString("setName");
+
+
+        JSONArray arr = obj.getJSONArray("questions");
+
+        List<FlashCard> flashcards = new ArrayList<>();
+
+        for (int i = 0; i < arr.length(); i++) {
+            JSONObject qObj = arr.getJSONObject(i);
+
+            String question = qObj.getString("question");
+            String answer = qObj.getString("answer");
+
+            flashcards.add(new FlashCard(question, answer));
+        }
+
+
+        FlashCardSet flashCardSet = new FlashCardSet(setName, flashcards, id);
+        flashCardSet.setFlashcards(flashcards);
+        jsonDataAccessObject.createFlashCardSet(flashCardSet);
+        return id;
+    }
 }

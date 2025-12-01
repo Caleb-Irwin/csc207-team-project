@@ -2,17 +2,34 @@ package interface_adapter.generate_flashcard;
 
 import com.google.genai.Client;
 import com.google.genai.types.GenerateContentResponse;
+import data_access.JsonDataAccessObject;
+import use_case.ApiKeyDataAccessInterface;
+import use_case.generate_flashcard.GeneratorApiCallerInterface;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-public class GeneratorApiCaller {
+public class GeneratorApiCaller implements GeneratorApiCallerInterface {
 
     StringBuilder sb = new StringBuilder();
 
+    private String key = "";
+
+    private final JsonDataAccessObject jsonDataAccessObject;
+
+    public GeneratorApiCaller(JsonDataAccessObject jsonDataAccessObject){
+        this.jsonDataAccessObject = jsonDataAccessObject;
+    }
+
+    @Override
     public String generateFromSubject(String subject){
-        Client client = Client.builder().apiKey("AIzaSyAAntyeGewVrpiyKjqXMFr084wVUtYDB90").build();
+
+        key = jsonDataAccessObject.getApiKey();
+        if("".equals(key)){
+            return "noAPI";
+        }
+        Client client = Client.builder().apiKey(key).build();
 
         StringBuilder sb = new StringBuilder();
 
@@ -31,10 +48,6 @@ public class GeneratorApiCaller {
 
         sb.append("        \"questionAnswerBalance\": \"Questions should test understanding or recall, "
                 + "and answers must be brief, clear, and directly address the question.\",\n");
-
-        sb.append("        \"reviewField\": \"Every flashcard must include a 'review' field initialized "
-                + "to 0.\",\n");
-
         sb.append("        \"format\": {{\n");
 
         sb.append("            \"jsonSchema\": {{\n");
@@ -42,8 +55,7 @@ public class GeneratorApiCaller {
         sb.append("                \"questions\": [\n");
         sb.append("                    {{\n");
         sb.append("                        \"question\": \"string (the flashcard question)\",\n");
-        sb.append("                        \"answer\": \"string (the corresponding answer)\",\n");
-        sb.append("                        \"review\": 0\n");
+        sb.append("                        \"answer\": \"string (the corresponding answer)\"\n");
         sb.append("                    }}\n");
         sb.append("                ]\n");
         sb.append("            }},\n");
@@ -78,11 +90,16 @@ public class GeneratorApiCaller {
         String promptText = sb.toString();
 
         String prompt = String.format(promptText, subject);
-        GenerateContentResponse response = client.models.generateContent(
-                "gemini-2.5-flash",
-                prompt,
-                null);
+        try{
+            GenerateContentResponse response = client.models.generateContent(
+                    "gemini-2.5-flash",
+                    prompt,
+                    null);
+            return response.text();
+        }catch (Exception e){
+            return "invalidAPI";
+        }
 
-        return response.text();
+
     }
 }

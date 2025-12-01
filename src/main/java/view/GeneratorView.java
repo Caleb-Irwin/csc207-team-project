@@ -18,30 +18,36 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     private final String placeholder = "What do you want to review today?";
 
     private final GeneratorViewModel generatorViewModel;
-
     private GeneratorController generatorController;
-
 
     private final JTextField subjectInputField = new JTextField(30);
 
-
     private final JLabel errorMessageLabel = new JLabel();
-
     private final JButton generateButton;
+
+
+    // private final LoadingPopup loadingPopup; // REMOVED
 
 
     private static final Color BACKGROUND_COLOR = new Color(217, 210, 230);
     private static final Color INPUT_FIELD_COLOR = new Color(180, 180, 180);
     private static final Color BUTTON_COLOR = new Color(229, 115, 180);
 
+
     public GeneratorView(GeneratorViewModel viewModel) {
         this.generatorViewModel = viewModel;
         this.generatorViewModel.addPropertyChangeListener(this);
+
+
+        // this.loadingPopup = new LoadingPopup(this); // REMOVED
+
         final JLabel title = new JLabel("FlashAI");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         this.setLayout(new GridBagLayout());
         this.setBackground(BACKGROUND_COLOR);
+
+
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -92,6 +98,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         setupListeners();
     }
 
+
     private void setupListeners() {
         subjectInputField.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
 
@@ -109,13 +116,13 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             @Override public void changedUpdate(javax.swing.event.DocumentEvent e) { update(); }
         });
 
-        // Focus listener for placeholder behavior
+
         subjectInputField.addFocusListener(new java.awt.event.FocusListener() {
             @Override
             public void focusGained(java.awt.event.FocusEvent e) {
                 if (subjectInputField.getText().equals(placeholder)) {
                     subjectInputField.setText("");
-                    subjectInputField.setForeground(Color.BLACK); // optional: set text color to normal
+                    subjectInputField.setForeground(Color.BLACK);
                 }
             }
 
@@ -123,12 +130,12 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             public void focusLost(java.awt.event.FocusEvent e) {
                 if (subjectInputField.getText().isEmpty()) {
                     subjectInputField.setText(placeholder);
-                    subjectInputField.setForeground(Color.GRAY); // optional: placeholder in gray
+                    subjectInputField.setForeground(Color.GRAY);
                 }
             }
         });
 
-        // Optional: initialize placeholder color
+
         subjectInputField.setForeground(Color.GRAY);
     }
 
@@ -136,14 +143,38 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == generateButton) {
             GeneratorState state = generatorViewModel.getState();
-            generatorController.execute(state.getSubject());
+            String subject = state.getSubject();
+
+            if (subject == null || subject.trim().isEmpty() || subject.equals(placeholder)) {
+                errorMessageLabel.setText("Please enter a subject to generate flashcards.");
+                return;
+            }
+
+            // Clear any previous error message
+            errorMessageLabel.setText("");
+
+            // Set loading state and fire property change to update loadingLabel
+
+            generatorViewModel.setState(state);
+            generatorViewModel.firePropertyChange();
+
+            // Execute the controller
+            generatorController.execute(subject);
         }
     }
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         GeneratorState state = (GeneratorState) evt.getNewValue();
+
+        // Update the error message label
         errorMessageLabel.setText(state.getGeneratorError());
+
+        // Clear the input field if no error was reported (implies success)
+        if (state.getGeneratorError() == null || state.getGeneratorError().isEmpty()) {
+            // Note: This only clears the text field, not the state's subject property
+            subjectInputField.setText("");
+        }
     }
 
     public String getViewName() {
