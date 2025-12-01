@@ -1,9 +1,5 @@
 package use_case.generate_flashcard;
 
-import interface_adapter.generate_flashcard.GeneratorApiCaller;
-import interface_adapter.generate_flashcard.GeneratorStringParser;
-import interface_adapter.generate_flashcard.GeneratorSetSaver;
-
 public class GeneratorInteractor implements GeneratorInputBoundary{
 
     private final GeneratorOutputBoundary generatorPresenter;
@@ -29,6 +25,7 @@ public class GeneratorInteractor implements GeneratorInputBoundary{
         final String subject = generatorInputData.getSubject();
         if (subject.isEmpty()) {
             generatorPresenter.prepareFailView("Please enter subject!");
+            return;
         }
         else{
             String response = generatorApiCaller.generateFromSubject(subject);
@@ -51,12 +48,14 @@ public class GeneratorInteractor implements GeneratorInputBoundary{
             if (setData.isEmpty()) {
                 generatorPresenter.prepareFailView("Something went wrong during parsing! " +
                         "Please try again!");
+                return;
             }
             int setID = generatorSetSaver.save(setData);
 
             if (setID<0){
                 generatorPresenter.prepareFailView("Something went wrong during saving! " +
                         "Please try again!");
+                return;
             }
             else{
                 generatorPresenter.prepareSuccessView(setID, subject);
