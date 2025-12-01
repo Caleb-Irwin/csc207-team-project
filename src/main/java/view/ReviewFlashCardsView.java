@@ -108,7 +108,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        ReviewFlashCardsState state = (ReviewFlashCardsState) evt.getNewValue();
+            ReviewFlashCardsState state = (ReviewFlashCardsState) evt.getNewValue();
         update(state);
     }
 
