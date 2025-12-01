@@ -51,6 +51,7 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
         }
 
         presenter.present(new CreateFlashcardOutputData(
+                id,
                 setName,
                 true,
                 "Set saved!"
@@ -67,6 +68,7 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
         }
 
         presenter.present(new CreateFlashcardOutputData(
+                setId,
                 null,
                 true,
                 existed ? "Set deleted!" : "Set does not exist."

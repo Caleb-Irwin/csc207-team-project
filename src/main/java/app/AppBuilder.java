@@ -139,7 +139,7 @@ public class AppBuilder {
     public AppBuilder addCreateFlashcardView() {
 
         CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
-        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel);
+        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel, viewManagerModel);
         CreateFlashcardInputBoundary interactor =
                 new CreateFlashcardInteractor(DAO, presenter);
         CreateFlashcardController controller =

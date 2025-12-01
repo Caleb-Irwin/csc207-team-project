@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface CreateFlashcardInputBoundary {
 
-    void saveFlashcards(CreateFlashcardInputData dat);
-    void deleteSet(Integer id);
+    void saveFlashcards(CreateFlashcardInputData data);
+    void deleteSet(Integer setId);
 }
 
