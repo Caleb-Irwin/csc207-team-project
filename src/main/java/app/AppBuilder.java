@@ -128,25 +128,28 @@ public class AppBuilder {
         application.add(cardContainer);
 
         viewManagerModel.setState(generatorView.getViewName());
+//        viewManagerModel.setState("create flashcard");
         viewManagerModel.firePropertyChange();
 
         application.setVisible(true);
         return application;
     }
-//    public AppBuilder addCreateFlashcardView() {
-//
-//        FlashCardSetsDataAccessInterface dataAccess = DAO;
-//        CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
-//        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel);
-//        CreateFlashcardInputBoundary interactor =
-//                new CreateFlashcardInteractor(dataAccess, presenter);
-//        CreateFlashcardController controller =
-//                new CreateFlashcardController(interactor);
-//        CreateFlashcardView view =
-//                new CreateFlashcardView(viewModel, controller);
-//        cardPanel.add(view, view.getViewName());
-//
-//        return this;
-//    }
+    public AppBuilder addCreateFlashcardView() {
+
+        CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
+        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel, viewManagerModel);
+        CreateFlashcardInputBoundary interactor =
+                new CreateFlashcardInteractor(DAO, presenter);
+        CreateFlashcardController controller =
+                new CreateFlashcardController(interactor);
+
+        CreateFlashcardView view =
+                new CreateFlashcardView(viewModel, controller, viewManagerModel, reviewFlashCardsController,
+                        reviewFlashCardsViewModel);
+
+        cardPanel.add(view, view.getViewName());
+
+        return this;
+    }
 
 }
