@@ -45,7 +45,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         // make white
         generateSetButton = new JButton("Generate Set");
         generateSetButton.setFont(generateSetButton.getFont().deriveFont(Font.BOLD, 14f));
-        generateSetButton.setBackground(new Color(180, 180, 180));
+        generateSetButton.setBackground(new Color(250, 250, 250));
         generateSetButton.setFocusPainted(false);
         generateSetButton.setBorderPainted(false);
         generateSetButton.setOpaque(true);
@@ -55,7 +55,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         //  make white
         newSetButton = new JButton("+ New Set");
         newSetButton.setFont(newSetButton.getFont().deriveFont(Font.BOLD, 14f));
-        newSetButton.setBackground(new Color(180, 180, 180));
+        newSetButton.setBackground(new Color(250, 250, 250));
         newSetButton.setFocusPainted(false);
         newSetButton.setBorderPainted(false);
         newSetButton.setOpaque(true);
@@ -106,7 +106,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         setButton.setAlignmentX(setButton.CENTER_ALIGNMENT);
         setButton.setFont(setButton.getFont().deriveFont(Font.BOLD, 14f));
         // make white
-        setButton.setBackground(new Color(180, 180, 180));
+        setButton.setBackground(new Color(250, 250, 250));
         setButton.setFocusPainted(false);
         setButton.setBorderPainted(false);
         setButton.setOpaque(true);
