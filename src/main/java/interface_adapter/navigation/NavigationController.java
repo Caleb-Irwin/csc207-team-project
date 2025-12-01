@@ -28,4 +28,8 @@ public class NavigationController {
     public void goToCreateSetPage() {
         interactor.goToCreateSetPage();
     }
+
+    public void loadExistingSets() {
+        interactor.loadExistingSets();
+    }
 }

@@ -8,4 +8,5 @@ public interface NavigationInputBoundary {
     void goToSettingsPage();
     void goToSet(int setId);
     void goToCreateSetPage();
+    void loadExistingSets();
 }

@@ -8,6 +8,8 @@ import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Implements the sidebar function of the application
@@ -26,6 +28,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
     public SidebarView(NavigationController controller, ViewManagerModel viewManagerModel) {
         this.controller = controller;
         this.viewManagerModel = viewManagerModel;
+        controller.loadExistingSets();
         viewManagerModel.addPropertyChangeListener(this);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -130,22 +133,30 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         repaint();
     }
 
+
+    public void updateSidebarButtons(List<Map.Entry<String, Integer>> setInfos) {
+        // Clear existing
+        scrollContent.removeAll();
+        existingSetIds.clear();
+
+        // Add all sets
+        for (Map.Entry<String, Integer> info : setInfos) {
+            String setName = info.getKey();
+            int setId = info.getValue();
+            addSetButton(setName, setId);
+        }
+
+        revalidate();
+        repaint();
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
             String newState = (String) evt.getNewValue();
 
-            if (newState != null && newState.startsWith("SET_CREATED")) {
-                String[] parts = newState.split(":");
-                final String setName = parts[1];
-                final int setId = Integer.parseInt(parts[2]);
-
-                // Update UI on EDT
-                SwingUtilities.invokeLater(() -> {
-                    addSetButton(setName, setId);
-                    // Clear the state to prevent reprocessing
-                    viewManagerModel.setState("");
-                });
+            if (newState != null && newState.startsWith("review flashcards")) {
+                controller.loadExistingSets();
             }
         }
     }
