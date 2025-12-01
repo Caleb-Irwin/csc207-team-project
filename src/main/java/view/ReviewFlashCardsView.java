@@ -12,8 +12,6 @@ import interface_adapter.review_flashcards.ReviewFlashCardsController;
 import interface_adapter.review_flashcards.ReviewFlashCardsState;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 import use_case.FlashCardSetsDataAccessInterface;
-import use_case.review_flashcards.ReviewFlashCardsActionName;
-import use_case.review_flashcards.ReviewFlashCardsInputData;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -111,28 +109,19 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         prevButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        reviewFlashCardsController
-                                .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.PREVIOUS_CARD,
-                                        viewModel.getState().getCurrentCardIndex(),
-                                        viewModel.getState().isShowingQuestion()));
+                        reviewFlashCardsController.previousQuestion();
                     }
                 });
         nextButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        reviewFlashCardsController
-                                .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.NEXT_CARD,
-                                        viewModel.getState().getCurrentCardIndex(),
-                                        viewModel.getState().isShowingQuestion()));
+                        reviewFlashCardsController.nextQuestion();
                     }
                 });
         flipButton.addActionListener(
                 new ActionListener() {
                     public void actionPerformed(ActionEvent evt) {
-                        reviewFlashCardsController
-                                .execute(new ReviewFlashCardsInputData(ReviewFlashCardsActionName.FLIP_CARD,
-                                        viewModel.getState().getCurrentCardIndex(),
-                                        viewModel.getState().isShowingQuestion()));
+                        reviewFlashCardsController.flipCard();
                     }
                 });
 

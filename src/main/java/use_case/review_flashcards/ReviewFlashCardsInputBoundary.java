@@ -4,11 +4,11 @@ package use_case.review_flashcards;
  * Input Boundary for actions which are related to reviewing flashcards.
  */
 public interface ReviewFlashCardsInputBoundary {
+    void nextQuestion();
 
-    /**
-     * Executes the review flashcards use case.
-     * 
-     * @param reviewFlashCardsInputData the input data
-     */
-    void execute(ReviewFlashCardsInputData reviewFlashCardsInputData);
+    void previousQuestion();
+
+    void flipCard();
+
+    void editSet();
 }

@@ -1,7 +1,6 @@
 package interface_adapter.review_flashcards;
 
 import use_case.review_flashcards.ReviewFlashCardsInputBoundary;
-import use_case.review_flashcards.ReviewFlashCardsInputData;
 
 public class ReviewFlashCardsController {
     private final ReviewFlashCardsInputBoundary userReviewFlashCardsUseCaseInteractor;
@@ -10,12 +9,19 @@ public class ReviewFlashCardsController {
         this.userReviewFlashCardsUseCaseInteractor = userReviewFlashCardsUseCaseInteractor;
     }
 
-    /**
-     * Executes the Review Flashcards Use Case.
-     * 
-     * @param actionName the action to perform
-     */
-    public void execute(ReviewFlashCardsInputData inputData) {
-        userReviewFlashCardsUseCaseInteractor.execute(inputData);
+    public void nextQuestion() {
+        userReviewFlashCardsUseCaseInteractor.nextQuestion();
+    }
+
+    public void previousQuestion() {
+        userReviewFlashCardsUseCaseInteractor.previousQuestion();
+    }
+
+    public void flipCard() {
+        userReviewFlashCardsUseCaseInteractor.flipCard();
+    }
+
+    public void editSet() {
+        userReviewFlashCardsUseCaseInteractor.editSet();
     }
 }
