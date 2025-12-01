@@ -33,4 +33,10 @@ public class NavigationPresenter implements NavigationOutputBoundary {
         viewManagerModel.setState("review flashcard");
         viewManagerModel.firePropertyChange();
     }
+
+    @Override
+    public void presentCreateSetPage() {
+        viewManagerModel.setState("create flashcard");
+        viewManagerModel.firePropertyChange();
+    }
 }

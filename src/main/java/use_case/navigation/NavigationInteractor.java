@@ -23,4 +23,8 @@ public class NavigationInteractor implements NavigationInputBoundary {
     public void goToSet(int setId) {
         presenter.presentSet(setId);
     }
+    @Override
+    public void goToCreateSetPage() {
+        presenter.presentCreateSetPage();
+    }
 }

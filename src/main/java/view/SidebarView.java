@@ -91,7 +91,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         // action listener to go to prompt page when the user wants to create a new set
-        newSetButton.addActionListener(e -> controller.goToPromptPage());
+        newSetButton.addActionListener(e -> controller.goToCreateSetPage());
 
         // action listener to go to prompt page when the user wants to go to generator page
         generateSetButton.addActionListener(e -> controller.goToPromptPage());

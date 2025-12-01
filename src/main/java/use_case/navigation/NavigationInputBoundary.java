@@ -7,4 +7,5 @@ public interface NavigationInputBoundary {
     void goToPromptPage();
     void goToSettingsPage();
     void goToSet(int setId);
+    void goToCreateSetPage();
 }

@@ -24,4 +24,8 @@ public class NavigationController {
     public void loadSet(int setId) {
         interactor.goToSet(setId);
     }
+
+    public void goToCreateSetPage() {
+        interactor.goToCreateSetPage();
+    }
 }
