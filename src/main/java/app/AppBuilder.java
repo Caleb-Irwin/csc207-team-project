@@ -131,6 +131,7 @@ public class AppBuilder {
         application.add(cardContainer);
 
         viewManagerModel.setState(generatorView.getViewName());
+//        viewManagerModel.setState("create flashcard");
         viewManagerModel.firePropertyChange();
 
         application.setVisible(true);
@@ -146,7 +147,8 @@ public class AppBuilder {
                 new CreateFlashcardController(interactor);
 
         CreateFlashcardView view =
-                new CreateFlashcardView(viewModel, controller);
+                new CreateFlashcardView(viewModel, controller, viewManagerModel, reviewFlashCardsController,
+                        reviewFlashCardsViewModel);
 
         cardPanel.add(view, view.getViewName());
 

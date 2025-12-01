@@ -11,7 +11,11 @@ import java.util.List;
 public class FlashCardSet {
     private String setName;
     private List<FlashCard> flashcards;
-    private final Integer id;
+    private Integer id;
+
+    public FlashCardSet() {
+        this.flashcards = new ArrayList<>();
+    }
 
     public FlashCardSet(String setName, List<FlashCard> flashcards, Integer id) {
         this.setName = setName;
@@ -22,8 +26,11 @@ public class FlashCardSet {
     public Integer getId() {
         return id;
     }
+    public void setId(Integer id) {   // ← Jackson requires setter
+        this.id = id;
+    }
 
-    public String getSetName() {
+        public String getSetName() {
         return setName;
     }
 

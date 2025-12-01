@@ -1,8 +1,12 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.create_flashcard.CreateFlashcardController;
 import interface_adapter.create_flashcard.CreateFlashcardState;
 import interface_adapter.create_flashcard.CreateFlashcardViewModel;
+import interface_adapter.review_flashcards.ReviewFlashCardsController;
+import interface_adapter.review_flashcards.ReviewFlashCardsState;
+import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,17 +28,27 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
     private final JButton newButton = new JButton("+ New");
     private final JButton saveButton = new JButton("Save");
     private final JButton deleteButton = new JButton("Delete");
+    private final JButton startReviewButton = new JButton("Start Review");
 
     private JPanel formPanel;
     private int questionCounter = 1;
 
     private final CreateFlashcardController controller;
     private final CreateFlashcardViewModel viewModel;
+    private final ViewManagerModel viewManagerModel;
+    private final ReviewFlashCardsController reviewController;
+    private final ReviewFlashCardsViewModel reviewViewModel;
 
     public CreateFlashcardView(CreateFlashcardViewModel viewModel,
-                               CreateFlashcardController controller) {
+                               CreateFlashcardController controller,
+                               ViewManagerModel viewManagerModel,
+                               ReviewFlashCardsController reviewController,
+                               ReviewFlashCardsViewModel reviewViewModel) {
         this.viewModel = viewModel;
         this.controller = controller;
+        this.viewManagerModel = viewManagerModel;
+        this.reviewController = reviewController;
+        this.reviewViewModel = reviewViewModel;
         this.viewModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
@@ -51,6 +65,7 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         buttonPanel.add(newButton);
         buttonPanel.add(saveButton);
         buttonPanel.add(deleteButton);
+        buttonPanel.add(startReviewButton);
 
         add(buttonPanel, BorderLayout.SOUTH);
         add(messageLabel, BorderLayout.NORTH);
@@ -59,6 +74,7 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         newButton.addActionListener(e -> addNewFlashcardPair());
         saveButton.addActionListener(e -> saveFlashcard());
         deleteButton.addActionListener(e -> deleteFlashcards());
+        startReviewButton.addActionListener(e -> startReview());
     }
 
     /** ------------------- FORM BUILDING ------------------- **/
@@ -163,8 +179,25 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
             messageLabel.setText("Error: Set ID must be a number");
         }
     }
+    private void startReview() {
+        try {
+            int setId = Integer.parseInt(setIdField.getText().trim());
 
-    /** ------------------- VIEWMODEL UPDATE ------------------- **/
+            // 1. Set the selected set for Review view
+            viewManagerModel.setCurrentFlashCardSetId(setId);
+            // 2. Initialize review state by calling the use case
+            reviewViewModel.setState(new ReviewFlashCardsState());
+            reviewViewModel.firePropertyChange();
+            // 3. Navigate to ReviewFlashCardsView
+            viewManagerModel.setState("review flashcards");
+            viewManagerModel.firePropertyChange();
+
+        } catch (NumberFormatException e) {
+            messageLabel.setText("Error: Set ID must be a number");
+        }
+    }
+
+        /** ------------------- VIEWMODEL UPDATE ------------------- **/
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {

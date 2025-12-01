@@ -20,11 +20,11 @@ public class CreateFlashcardPresenter implements CreateFlashcardOutputBoundary {
         CreateFlashcardState state = new CreateFlashcardState();
         state.setMessage(outputData.getMessage());
         viewModel.setState(state);
-        if (outputData.isSuccess() && outputData.getSetName() != null) {
-            viewManagerModel.setCurrentFlashCardSetId(outputData.getSetId());
-            viewManagerModel.setState("review flashcards");
-            viewManagerModel.firePropertyChange();
-        }
+//        if (outputData.isSuccess() && outputData.getSetName() != null) {
+//            viewManagerModel.setCurrentFlashCardSetId(outputData.getSetId());
+//            viewManagerModel.setState("review flashcards");
+//            viewManagerModel.firePropertyChange();
+//        }
 
     }
 }

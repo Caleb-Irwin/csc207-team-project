@@ -4,6 +4,9 @@ public class FlashCard {
     private String question;
     private String answer;
 
+    public FlashCard() {
+    }
+
     public FlashCard(String question, String answer) {
         this.question = question;
         this.answer = answer;
