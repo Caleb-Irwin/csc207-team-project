@@ -1,3 +1,34 @@
+commit 03809c46ef781faa05f58898b64331c17c188460
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Sun Nov 30 17:49:17 2025 -0500
+
+    Implement CreateFlashcard use case with new DataAccess
+
+commit 6c6737710bece0abdf92d73216c691e8f0175754
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Sun Nov 30 16:20:36 2025 -0500
+
+    add addCreateFlashcardView() in main and appbuilder
+
+commit 795c4bea7b40051884bb2a3fd2a6774cd0a3efb6
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Sun Nov 30 15:15:26 2025 -0500
+
+    fixed main, appbuilder, and flashcardset
+
+commit 956b296a0cf4753851c7a4a465aaadf9fb3056ef
+Merge: 4a4b687 a33673e
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Sat Nov 29 19:53:55 2025 -0500
+
+    Refactor create flashcard use case + clean AppBuilder merge conflicts
+
+commit 4a4b6870e88be5b15b6f68f61270eed9752ec1e1
+Author: Crystal12334 <kelisito06@gmail.com>
+Date:   Sat Nov 29 19:48:09 2025 -0500
+
+    Refactor create flashcard use case to follow Clean Architecture
+
 commit cf7039112b0918a0994dd5b69a178a38d04bdbf2
 Merge: 1ed8d81 ae790e9
 Author: Crystal12334 <kelisito06@gmail.com>
@@ -5,12 +36,6 @@ Date:   Mon Nov 24 21:32:24 2025 -0500
 
     Resolve merge conflicts and complete merge
     d
-
-commit 1ed8d814993822b9352486385233a0ad81c7bb4d
-Author: Qishan Wei <crystalwei06@163.com>
-Date:   Mon Nov 24 21:13:08 2025 -0500
-
-    mock for crerateflashcard view, with +New, delete, save functions
 
 commit 6734b62490d4d2132f3447290edd51c3fc9080fd
 Merge: 69b750f bdb4e83
@@ -20,12 +45,6 @@ Date:   Tue Nov 18 12:49:42 2025 -0500
     Merge pull request #8 from Caleb-Irwin/create-flashcard-2
     
     Create-flashcard-2
-
-commit ae790e90c6f9814ea2de578633a3f43e3486f219
-Author: Qishan Wei <crystalwei06@163.com>
-Date:   Tue Nov 18 12:00:16 2025 -0500
-
-    Implement create flashcard use case (draft)
 
 commit f115a061cc56ec09daed04e2a75895e77eaa6c5d
 Merge: eb03837 882a021
@@ -42,6 +61,24 @@ Author: Crystal12334 <kelisito06@gmail.com>
 Date:   Tue Nov 11 12:59:10 2025 -0500
 
     Merge branch 'main' into entities
+commit eaa9b78a3e1d0770ff89ce7332a85dc48e429483
+Merge: 1ed8d81 ae790e9
+Author: Qishan Wei <crystalwei06@163.com>
+Date:   Mon Nov 24 21:32:24 2025 -0500
+
+    Resolve merge conflicts and complete merge
+
+commit 1ed8d814993822b9352486385233a0ad81c7bb4d
+Author: Qishan Wei <crystalwei06@163.com>
+Date:   Mon Nov 24 21:13:08 2025 -0500
+
+    mock for crerateflashcard view, with +New, delete, save functions
+
+commit ae790e90c6f9814ea2de578633a3f43e3486f219
+Author: Qishan Wei <crystalwei06@163.com>
+Date:   Tue Nov 18 12:00:16 2025 -0500
+
+    Implement create flashcard use case (draft)
 
 commit b0e3ac069a770786e88833df79604e37890f2dba
 Author: Qishan Wei <crystalwei06@163.com>
