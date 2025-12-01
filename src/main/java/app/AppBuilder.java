@@ -4,6 +4,9 @@ import data_access.JsonDataAccessObject;
 
 import interface_adapter.ViewManagerModel;
 
+import interface_adapter.create_flashcard.CreateFlashcardController;
+import interface_adapter.create_flashcard.CreateFlashcardPresenter;
+import interface_adapter.create_flashcard.CreateFlashcardViewModel;
 import interface_adapter.generate_flashcard.*;
 import interface_adapter.navigation.NavigationController;
 import interface_adapter.navigation.NavigationPresenter;
@@ -12,6 +15,9 @@ import interface_adapter.review_flashcards.ReviewFlashCardsController;
 import interface_adapter.review_flashcards.ReviewFlashCardsPresenter;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 
+import use_case.FlashCardSetsDataAccessInterface;
+import use_case.create_flashcard.CreateFlashcardInputBoundary;
+import use_case.create_flashcard.CreateFlashcardInteractor;
 import use_case.generate_flashcard.GeneratorInputBoundary;
 import use_case.generate_flashcard.GeneratorInteractor;
 import use_case.generate_flashcard.GeneratorOutputBoundary;
@@ -22,10 +28,7 @@ import use_case.navigation.NavigationOutputBoundary;
 
 import use_case.review_flashcards.ReviewFlashCardsInteractor;
 
-import view.GeneratorView;
-import view.ReviewFlashCardsView;
-import view.SidebarView;
-import view.ViewManager;
+import view.*;
 
 // Create Flashcard imports
 
@@ -130,20 +133,20 @@ public class AppBuilder {
         application.setVisible(true);
         return application;
     }
-//    public AppBuilder addCreateFlashcardView() {
-//
-//        FlashCardSetsDataAccessInterface dataAccess = DAO;
-//        CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
-//        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel);
-//        CreateFlashcardInputBoundary interactor =
-//                new CreateFlashcardInteractor(dataAccess, presenter);
-//        CreateFlashcardController controller =
-//                new CreateFlashcardController(interactor);
-//        CreateFlashcardView view =
-//                new CreateFlashcardView(viewModel, controller);
-//        cardPanel.add(view, view.getViewName());
-//
-//        return this;
-//    }
+    public AppBuilder addCreateFlashcardView() {
+
+        FlashCardSetsDataAccessInterface dataAccess = DAO;
+        CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
+        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel);
+        CreateFlashcardInputBoundary interactor =
+                new CreateFlashcardInteractor(dataAccess, presenter);
+        CreateFlashcardController controller =
+                new CreateFlashcardController(interactor);
+        CreateFlashcardView view =
+                new CreateFlashcardView(viewModel, controller);
+        cardPanel.add(view, view.getViewName());
+
+        return this;
+    }
 
 }

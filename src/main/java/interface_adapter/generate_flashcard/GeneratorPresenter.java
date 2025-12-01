@@ -21,7 +21,6 @@ public class GeneratorPresenter implements GeneratorOutputBoundary {
     @Override
     public void prepareSuccessView(int setID){
         final GeneratorState generatorState = generatorViewModel.getState();
-        generatorState.setLoading(false);
         generatorState.setGeneratorError("");
         viewManagerModel.setCurrentFlashCardSetId(setID);
         this.reviewFlashCardsViewModel.firePropertyChange();
@@ -36,7 +35,6 @@ public class GeneratorPresenter implements GeneratorOutputBoundary {
     @Override
     public void prepareFailView(String errorMessage){
         final GeneratorState generatorState = generatorViewModel.getState();
-        generatorState.setLoading(false);
         generatorState.setGeneratorError(errorMessage);
         generatorViewModel.firePropertyChange();
 

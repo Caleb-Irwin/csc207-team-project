@@ -158,7 +158,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             errorMessageLabel.setText("");
 
             // Set loading state and fire property change to update loadingLabel
-            state.setLoading(true);
+
             generatorViewModel.setState(state);
             generatorViewModel.firePropertyChange();
 
@@ -175,12 +175,10 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         errorMessageLabel.setText(state.getGeneratorError());
 
         // Use loadingLabel to show/hide loading status
-        if (state.isLoading()) {
-            loadingLabel.setText("Generating flashcards... please wait.");
-            loadingLabel.setForeground(Color.BLUE); // Set color to make it noticeable
-        } else {
-            loadingLabel.setText(""); // Clear the loading message when done
-        }
+
+        loadingLabel.setText("Generating flashcards... please wait.");
+        loadingLabel.setForeground(Color.BLUE); // Set color to make it noticeable
+
 
         // Clear the input field if no error was reported (implies success)
         if (state.getGeneratorError() == null || state.getGeneratorError().isEmpty()) {
