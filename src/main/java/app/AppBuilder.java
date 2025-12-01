@@ -133,20 +133,20 @@ public class AppBuilder {
         application.setVisible(true);
         return application;
     }
-    public AppBuilder addCreateFlashcardView() {
-
-        FlashCardSetsDataAccessInterface dataAccess = DAO;
-        CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
-        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel);
-        CreateFlashcardInputBoundary interactor =
-                new CreateFlashcardInteractor(dataAccess, presenter);
-        CreateFlashcardController controller =
-                new CreateFlashcardController(interactor);
-        CreateFlashcardView view =
-                new CreateFlashcardView(viewModel, controller);
-        cardPanel.add(view, view.getViewName());
-
-        return this;
-    }
+//    public AppBuilder addCreateFlashcardView() {
+//
+//        FlashCardSetsDataAccessInterface dataAccess = DAO;
+//        CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
+//        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel);
+//        CreateFlashcardInputBoundary interactor =
+//                new CreateFlashcardInteractor(dataAccess, presenter);
+//        CreateFlashcardController controller =
+//                new CreateFlashcardController(interactor);
+//        CreateFlashcardView view =
+//                new CreateFlashcardView(viewModel, controller);
+//        cardPanel.add(view, view.getViewName());
+//
+//        return this;
+//    }
 
 }

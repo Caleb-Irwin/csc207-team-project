@@ -5,10 +5,12 @@ import entity.FlashCard;
 import entity.FlashCardSet;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import use_case.generate_flashcard.GeneratorSetSaverInterface;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class GeneratorSetSaver {
+public class GeneratorSetSaver implements GeneratorSetSaverInterface {
 
     private JsonDataAccessObject jsonDataAccessObject;
     private int id;
@@ -18,7 +20,7 @@ public class GeneratorSetSaver {
         this.id = jsonDataAccessObject.getNextAvailableId();
     }
 
-
+    @Override
     public int save(String jsonString) {
 
 

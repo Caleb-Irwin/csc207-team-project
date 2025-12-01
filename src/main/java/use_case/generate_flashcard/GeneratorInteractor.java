@@ -7,16 +7,16 @@ import interface_adapter.generate_flashcard.GeneratorSetSaver;
 public class GeneratorInteractor implements GeneratorInputBoundary{
 
     private final GeneratorOutputBoundary generatorPresenter;
-    private final GeneratorApiCaller generatorApiCaller;
-    private final GeneratorStringParser generatorJsonParser;
-    private final GeneratorSetSaver generatorSetSaver;
+    private final GeneratorApiCallerInterface generatorApiCaller;
+    private final GeneratorStringParserInterface generatorJsonParser;
+    private final GeneratorSetSaverInterface generatorSetSaver;
 
 
 
     public GeneratorInteractor(GeneratorOutputBoundary generatorOutputBoundary,
-                               GeneratorApiCaller generatorApiCaller,
-                               GeneratorStringParser generatorJsonParser,
-                               GeneratorSetSaver generatorSetSaver) {
+                               GeneratorApiCallerInterface generatorApiCaller,
+                               GeneratorStringParserInterface generatorJsonParser,
+                               GeneratorSetSaverInterface generatorSetSaver) {
         this.generatorPresenter = generatorOutputBoundary;
         this.generatorApiCaller = generatorApiCaller;
         this.generatorJsonParser = generatorJsonParser;
@@ -59,7 +59,7 @@ public class GeneratorInteractor implements GeneratorInputBoundary{
                         "Please try again!");
             }
             else{
-                generatorPresenter.prepareSuccessView(setID);
+                generatorPresenter.prepareSuccessView(setID, subject);
 
             }
         }
