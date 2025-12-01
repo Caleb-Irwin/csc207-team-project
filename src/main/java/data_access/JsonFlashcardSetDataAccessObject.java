@@ -3,12 +3,13 @@ package data_access;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import entity.FlashCard;
 import entity.FlashCardSet;
-import use_case.create_flashcard.CreateFlashcardDataAccessInterface;
+import use_case.FlashCardSetsDataAccessInterface;
+import use_case.FlashCardSetsDataAccessInterface;
 
 import java.io.File;
 import java.io.IOException;
 
-public class JsonFlashcardSetDataAccessObject implements CreateFlashcardDataAccessInterface {
+public class JsonFlashcardSetDataAccessObject implements FlashCardSetsDataAccessInterface {
 
     private final String folder = "data/flashcards/";
     private final ObjectMapper mapper = new ObjectMapper();

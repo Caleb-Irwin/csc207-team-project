@@ -10,7 +10,7 @@ public class Main {
                 .addReviewFlashCardsView()
                 .addGeneratorView()
                 .addGeneratorUseCase()
-                // .addCreateFlashcardView()
+                .addCreateFlashcardView()
                 .build();
 
         // appBuilder.buildCreateFlashcardUI();

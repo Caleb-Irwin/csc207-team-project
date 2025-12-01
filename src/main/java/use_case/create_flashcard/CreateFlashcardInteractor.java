@@ -2,65 +2,76 @@ package use_case.create_flashcard;
 
 import entity.FlashCard;
 import entity.FlashCardSet;
+import use_case.FlashCardSetsDataAccessInterface;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
 
-    private final CreateFlashcardDataAccessInterface dataAccess;
+    private final FlashCardSetsDataAccessInterface dataAccess;
     private final CreateFlashcardOutputBoundary presenter;
 
-    public CreateFlashcardInteractor(CreateFlashcardDataAccessInterface dataAccess,
-            CreateFlashcardOutputBoundary presenter) {
-        assert dataAccess != null;
-        assert presenter != null;
-
+    public CreateFlashcardInteractor(FlashCardSetsDataAccessInterface dataAccess,
+                                     CreateFlashcardOutputBoundary presenter) {
         this.dataAccess = dataAccess;
         this.presenter = presenter;
     }
 
-    /**
-     * Save an ENTIRE flashcard set (UI Save button).
-     */
     @Override
-    public void save(CreateFlashcardInputData inputData) {
+    public void saveFlashcards(CreateFlashcardInputData inputData) {
 
+        Integer id = inputData.getSetId();
         String setName = inputData.getSetName();
+
+        FlashCardSet existing = dataAccess.getFlashCardSetById(id);
+
+        FlashCardSet set;
+        if (existing != null) {
+            // update existing
+            set = existing;
+            set.setSetName(setName);
+            set.getFlashcards().clear();
+        } else {
+            // create new
+            set = new FlashCardSet(setName, new ArrayList<>(), id);
+        }
+
         List<String> questions = inputData.getQuestions();
         List<String> answers = inputData.getAnswers();
 
-        FlashCardSet set = new FlashCardSet(setName, new ArrayList<>(), 0);
-
         for (int i = 0; i < questions.size(); i++) {
-            String q = questions.get(i);
-            String a = (i < answers.size()) ? answers.get(i) : "";
-
-            if ((q == null || q.isBlank()) && (a == null || a.isBlank())) {
-                continue;
-            }
-
-            set.addFlashcard(new FlashCard(q, a));
+            set.addFlashcard(new FlashCard(questions.get(i), answers.get(i)));
         }
 
-        dataAccess.saveSet(set);
+        if (existing == null) {
+            dataAccess.createFlashCardSet(set);
+        } else {
+            dataAccess.updateFlashCardSet(id, set);
+        }
 
-        CreateFlashcardOutputData output = new CreateFlashcardOutputData(setName, true, "Set saved!");
-        presenter.present(output);
+        presenter.present(new CreateFlashcardOutputData(
+                id,
+                setName,
+                true,
+                "Set saved!"
+        ));
     }
 
-    /**
-     * Delete an entire flashcard set.
-     */
     @Override
-    public void delete(String setName) {
+    public void deleteSet(Integer setId) {
 
-        boolean existed = dataAccess.existsByName(setName);
-        dataAccess.deleteSet(setName);
+        boolean existed = dataAccess.getFlashCardSetById(setId) != null;
 
-        String msg = existed ? "Set deleted!" : "Set does not exist.";
+        if (existed) {
+            dataAccess.deleteFlashCardSet(setId);
+        }
 
-        CreateFlashcardOutputData output = new CreateFlashcardOutputData(setName, true, msg);
-        presenter.present(output);
+        presenter.present(new CreateFlashcardOutputData(
+                setId,
+                null,
+                true,
+                existed ? "Set deleted!" : "Set does not exist."
+        ));
     }
 }
