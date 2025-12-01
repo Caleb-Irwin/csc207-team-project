@@ -1,30 +1,28 @@
 package view;
 
+import interface_adapter.ViewManagerModel;
 import interface_adapter.navigation.NavigationController;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 /**
  * Implements the sidebar function of the application
  */
-public class SidebarView extends JPanel {
-    // have flash card ai header -done
-    // when + clicked, go to prompt page -done
-    // when generate clicked create a new set jbutton should be -done
-    //when a set jbutton is clicked, go to the flash cards button
-    // have a settings button -done
-    //when settings is clicked (not my job)
-    //when a new flashcard is created with an unrecognixed set name, create a new set
+public class SidebarView extends JPanel implements PropertyChangeListener {
     private final JButton newSetButton;
     private final JButton settingsButton;
     private final NavigationController controller;
     private final JPanel scrollContent;
     private final JPanel bottomPanel;
+    private final ViewManagerModel viewManagerModel;
 
-    public SidebarView(NavigationController controller) {
+    public SidebarView(NavigationController controller, ViewManagerModel viewManagerModel) {
         this.controller = controller;
+        this.viewManagerModel = viewManagerModel;
+        viewManagerModel.addPropertyChangeListener(this);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         setPreferredSize(new Dimension(200, 0));
@@ -66,15 +64,36 @@ public class SidebarView extends JPanel {
         settingsButton.addActionListener(e -> controller.openSettings());
     }
 
-        // add set button called by generating or saving a new set
-        public void addSetButton(String setName) {
-            JButton setButton = new JButton(setName);
+    // add set button called by generating or saving a new set
+    public void addSetButton(String setName, int setId) {
+        JButton setButton = new JButton(setName);
+        setButton.setAlignmentX(setButton.CENTER_ALIGNMENT);
+        setButton.putClientProperty("setId", setId);
 
-            // this will change to LoadSet
-            setButton.addActionListener(e -> controller.goToPromptPage());
+        setButton.addActionListener(e -> controller.loadSet(setId));
 
-            scrollContent.add(setButton);
-            revalidate();
-            repaint();
+        scrollContent.add(setButton);
+        revalidate();
+        repaint();
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        if ("state".equals(evt.getPropertyName())) {
+            String newState = (String) evt.getNewValue();
+
+            if (newState != null && newState.startsWith("SET_CREATED")) {
+                String[] parts = newState.split(":");
+                final String setName = parts[1];
+                final int setId = Integer.parseInt(parts[2]);
+
+                // Update UI on EDT
+                SwingUtilities.invokeLater(() -> {
+                    addSetButton(setName, setId);
+                    // Clear the state to prevent reprocessing
+                    viewManagerModel.setState("");
+                });
+            }
         }
+    }
 }

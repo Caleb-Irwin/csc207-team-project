@@ -17,7 +17,14 @@ public class GeneratorPresenter implements GeneratorOutputBoundary {
 
     @Override
     public void prepareSuccessView(){
-
+        // I need something like this
+//        public void prepareSuccessView(GenerateOutputData outputData) {
+//
+//            String setName = outputData.getSetName();
+//            int setId = outputData.getSetId();
+//
+//            viewManagerModel.setState("SET_CREATED:" + "setName" + ":" + "setId");
+//            viewManagerModel.firePropertyChange();
 
     }
 

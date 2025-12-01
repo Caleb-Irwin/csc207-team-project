@@ -20,7 +20,7 @@ public class NavigationInteractor implements NavigationInputBoundary {
         presenter.presentSettingsPage();
     }
     @Override
-    public void goToSet(String setName) {
-        presenter.presentSet(setName);
+    public void goToSet(int setId) {
+        presenter.presentSet(setId);
     }
 }

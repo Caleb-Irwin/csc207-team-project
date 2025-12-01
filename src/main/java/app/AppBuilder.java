@@ -69,7 +69,7 @@ public class AppBuilder {
         NavigationInputBoundary interactor = new NavigationInteractor(presenter);
         NavigationController navigationController = new NavigationController(interactor);
 
-        this.sidebarView = new SidebarView(navigationController);
+        this.sidebarView = new SidebarView(navigationController, viewManagerModel);
         return this;
     }
 

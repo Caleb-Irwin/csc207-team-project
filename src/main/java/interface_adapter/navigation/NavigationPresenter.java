@@ -28,8 +28,9 @@ public class NavigationPresenter implements NavigationOutputBoundary {
     }
 
     @Override
-    public void presentSet(String setName) {
-        viewManagerModel.setState("SET_PAGE_" + setName);
+    public void presentSet(int setId) {
+        viewManagerModel.setCurrentFlashCardSetId(setId);
+        viewManagerModel.setState("review flashcard");
         viewManagerModel.firePropertyChange();
     }
 }
