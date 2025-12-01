@@ -25,9 +25,9 @@ import use_case.generate_flashcard.GeneratorOutputBoundary;
 import use_case.navigation.NavigationInputBoundary;
 import use_case.navigation.NavigationInteractor;
 import use_case.navigation.NavigationOutputBoundary;
-
+import use_case.review_flashcards.ReviewFlashCardsInputBoundary;
 import use_case.review_flashcards.ReviewFlashCardsInteractor;
-
+import use_case.review_flashcards.ReviewFlashCardsOutputBoundary;
 import view.*;
 
 // Create Flashcard imports
@@ -42,7 +42,6 @@ public class AppBuilder {
 
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
     private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
-
 
     private final JsonDataAccessObject DAO = new JsonDataAccessObject("data/");
 
@@ -59,7 +58,6 @@ public class AppBuilder {
         cardPanel.setLayout(cardLayout);
     }
 
-
     public AppBuilder addSidebar() {
         NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel);
         NavigationInputBoundary interactor = new NavigationInteractor(presenter);
@@ -69,7 +67,6 @@ public class AppBuilder {
         return this;
     }
 
-
     public AppBuilder addGeneratorView() {
         generatorViewModel = new GeneratorViewModel();
         generatorView = new GeneratorView(generatorViewModel);
@@ -77,43 +74,36 @@ public class AppBuilder {
         return this;
     }
 
-
     public AppBuilder addGeneratorUseCase() {
         GeneratorOutputBoundary presenter = new GeneratorPresenter(generatorViewModel, viewManagerModel,
-        reviewFlashCardsViewModel);
+                reviewFlashCardsViewModel);
         GeneratorApiCaller apiCaller = new GeneratorApiCaller(DAO);
         GeneratorStringParser parser = new GeneratorStringParser();
         GeneratorSetSaver saver = new GeneratorSetSaver(DAO);
 
-        GeneratorInputBoundary interactor =
-                new GeneratorInteractor(presenter, apiCaller, parser, saver);
+        GeneratorInputBoundary interactor = new GeneratorInteractor(presenter, apiCaller, parser, saver);
         GeneratorController controller = new GeneratorController(interactor);
 
         generatorView.setGeneratorController(controller);
         return this;
     }
 
-
-    public AppBuilder addReviewFlashCardsView() {
+    public AppBuilder addReviewFlashCardsUseCase() {
         reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
-
-        ReviewFlashCardsPresenter presenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel);
-        ReviewFlashCardsInteractor interactor =
-                new ReviewFlashCardsInteractor(presenter, DAO, viewManagerModel);
-
+        ReviewFlashCardsOutputBoundary presenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel,
+                viewManagerModel);
+        ReviewFlashCardsInputBoundary interactor = new ReviewFlashCardsInteractor(presenter, DAO, viewManagerModel);
         reviewFlashCardsController = new ReviewFlashCardsController(interactor);
-
         reviewFlashCardsView = new ReviewFlashCardsView(
                 reviewFlashCardsViewModel,
-                reviewFlashCardsController,
-                DAO,
-                viewManagerModel
-        );
-
-        cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
+                reviewFlashCardsController);
         return this;
     }
 
+    public AppBuilder addReviewFlashCardsView() {
+        cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
+        return this;
+    }
 
     public JFrame build() {
         JFrame application = new JFrame("Flash AI");
