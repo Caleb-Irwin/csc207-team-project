@@ -23,7 +23,6 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     private final JTextField subjectInputField = new JTextField(30);
 
     private final JLabel errorMessageLabel = new JLabel();
-    private final JLabel loadingLabel = new JLabel(); // This is what we'll use for loading
     private final JButton generateButton;
 
 
@@ -70,12 +69,10 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
 
         errorMessageLabel.setForeground(Color.RED);
-        loadingLabel.setForeground(Color.BLUE); // Set initial color for loading message
 
 
         gbc.gridy = 1;
         this.add(errorMessageLabel, gbc);
-        this.add(loadingLabel, gbc); // loadingLabel will now be updated directly
 
 
         generateButton = new JButton("Generate!");
@@ -150,7 +147,6 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
             if (subject == null || subject.trim().isEmpty() || subject.equals(placeholder)) {
                 errorMessageLabel.setText("Please enter a subject to generate flashcards.");
-                loadingLabel.setText(""); // Ensure loading label is not shown on validation error
                 return;
             }
 
@@ -173,12 +169,6 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
         // Update the error message label
         errorMessageLabel.setText(state.getGeneratorError());
-
-        // Use loadingLabel to show/hide loading status
-
-        loadingLabel.setText("Generating flashcards... please wait.");
-        loadingLabel.setForeground(Color.BLUE); // Set color to make it noticeable
-
 
         // Clear the input field if no error was reported (implies success)
         if (state.getGeneratorError() == null || state.getGeneratorError().isEmpty()) {
