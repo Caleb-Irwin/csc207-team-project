@@ -1,22 +1,21 @@
 package use_case.generate_flashcard;
 
 import interface_adapter.generate_flashcard.GeneratorApiCaller;
-import interface_adapter.generate_flashcard.GeneratorJsonParser;
+import interface_adapter.generate_flashcard.GeneratorStringParser;
 import interface_adapter.generate_flashcard.GeneratorSetSaver;
-import org.json.JSONObject;
 
 public class GeneratorInteractor implements GeneratorInputBoundary{
 
     private final GeneratorOutputBoundary generatorPresenter;
     private final GeneratorApiCaller generatorApiCaller;
-    private final GeneratorJsonParser generatorJsonParser;
+    private final GeneratorStringParser generatorJsonParser;
     private final GeneratorSetSaver generatorSetSaver;
 
 
 
     public GeneratorInteractor(GeneratorOutputBoundary generatorOutputBoundary,
                                GeneratorApiCaller generatorApiCaller,
-                               GeneratorJsonParser generatorJsonParser,
+                               GeneratorStringParser generatorJsonParser,
                                GeneratorSetSaver generatorSetSaver) {
         this.generatorPresenter = generatorOutputBoundary;
         this.generatorApiCaller = generatorApiCaller;
@@ -33,15 +32,35 @@ public class GeneratorInteractor implements GeneratorInputBoundary{
         }
         else{
             String response = generatorApiCaller.generateFromSubject(subject);
-            JSONObject setData = generatorJsonParser.parse(response);
-            boolean success = generatorSetSaver.save(setData, subject);
+            switch (response) {
+                case "invalidAPI" -> {
+                    generatorPresenter.prepareFailView("Invalid API key!");
+                    return;
+                }
+                case "" -> {
+                    generatorPresenter.prepareFailView("Something went wrong during generation! " +
+                            "Please try again!");
+                    return;
+                }
+                case "noAPI" -> {
+                    generatorPresenter.prepareFailView("Please enter a proper API key!");
+                    return;
+                }
+            }
+            String setData = generatorJsonParser.parse(response);
+            if (setData.isEmpty()) {
+                generatorPresenter.prepareFailView("Something went wrong during parsing! " +
+                        "Please try again!");
+            }
+            int setID = generatorSetSaver.save(setData);
 
-            if (!success){
-                generatorPresenter.prepareFailView("Something went wrong! - Please try again!");
+            if (setID<0){
+                generatorPresenter.prepareFailView("Something went wrong during saving! " +
+                        "Please try again!");
             }
             else{
-                generatorPresenter.prepareSuccessView();
-                // TODO: can return subject name so that it redirects to newly created set?
+                generatorPresenter.prepareSuccessView(setID);
+
             }
         }
     }

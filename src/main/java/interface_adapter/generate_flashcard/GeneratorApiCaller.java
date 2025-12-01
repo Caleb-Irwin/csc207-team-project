@@ -25,6 +25,9 @@ public class GeneratorApiCaller{
     public String generateFromSubject(String subject){
 
         key = jsonDataAccessObject.getApiKey();
+        if("".equals(key)){
+            return "noAPI";
+        }
         Client client = Client.builder().apiKey(key).build();
 
         StringBuilder sb = new StringBuilder();
@@ -86,11 +89,16 @@ public class GeneratorApiCaller{
         String promptText = sb.toString();
 
         String prompt = String.format(promptText, subject);
-        GenerateContentResponse response = client.models.generateContent(
-                "gemini-2.5-flash",
-                prompt,
-                null);
+        try{
+            GenerateContentResponse response = client.models.generateContent(
+                    "gemini-2.5-flash",
+                    prompt,
+                    null);
+            return response.text();
+        }catch (Exception e){
+            return "invalidAPI";
+        }
 
-        return response.text();
+
     }
 }

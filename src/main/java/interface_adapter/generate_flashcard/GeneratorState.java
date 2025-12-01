@@ -8,7 +8,6 @@ public class GeneratorState {
 
     private String subject = "";
     private String generatorError;
-
     public String getSubject() {
         return subject;
     }
@@ -24,5 +23,4 @@ public class GeneratorState {
     public void setGeneratorError(String generatorError) {
         this.generatorError = generatorError;
     }
-
 }
