@@ -7,11 +7,9 @@ import javax.swing.text.StyledDocument;
 
 import entity.FlashCard;
 import entity.FlashCardSet;
-import interface_adapter.ViewManagerModel;
 import interface_adapter.review_flashcards.ReviewFlashCardsController;
 import interface_adapter.review_flashcards.ReviewFlashCardsState;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
-import use_case.FlashCardSetsDataAccessInterface;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -20,9 +18,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 public class ReviewFlashCardsView extends JPanel implements ActionListener, PropertyChangeListener {
-    private ReviewFlashCardsViewModel viewModel;
-    private FlashCardSetsDataAccessInterface flashCardSetsDAO;
-    private ViewManagerModel viewManagerModel;
+    private final ReviewFlashCardsViewModel viewModel;
+    private final ReviewFlashCardsController controller;
     private final String viewName = "review flashcards";
 
     private JLabel titleLabel;
@@ -30,6 +27,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     private JButton flipButton;
     private JButton nextButton;
     private JButton prevButton;
+    private JButton editButton;
 
     private static final Color BACKGROUND_COLOR = new Color(217, 210, 230);
     private static final Color CONTENT_FRONT_COLOR = Color.WHITE;
@@ -38,13 +36,10 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     private static final Color NAV_BUTTON_COLOR = new Color(150, 130, 170);
 
     public ReviewFlashCardsView(ReviewFlashCardsViewModel reviewFlashCardsViewModel,
-            ReviewFlashCardsController reviewFlashCardsController,
-            FlashCardSetsDataAccessInterface flashCardSetsDAO,
-            ViewManagerModel viewManagerModel) {
+            ReviewFlashCardsController reviewFlashCardsController) {
         this.viewModel = reviewFlashCardsViewModel;
-        this.flashCardSetsDAO = flashCardSetsDAO;
-        this.viewManagerModel = viewManagerModel;
         this.viewModel.addPropertyChangeListener(this);
+        this.controller = reviewFlashCardsController;
 
         this.setLayout(new GridBagLayout());
         this.setBackground(BACKGROUND_COLOR);
@@ -59,9 +54,18 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         titleLabel.setForeground(Color.DARK_GRAY);
         titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
+        editButton = createStyledButton("Edit Set", BUTTON_COLOR);
+        editButton.addActionListener(
+                new ActionListener() {
+                    public void actionPerformed(ActionEvent evt) {
+                        reviewFlashCardsController.editSet();
+                    }
+                });
+
         JPanel titlePanel = new JPanel();
         titlePanel.setBackground(BACKGROUND_COLOR);
         titlePanel.add(titleLabel);
+        titlePanel.add(editButton);
 
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -143,7 +147,7 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         button.setFocusPainted(false);
         button.setBorderPainted(false);
         button.setOpaque(true);
-        button.setPreferredSize(new Dimension(130, 35));
+        button.setPreferredSize(new Dimension(150, 35));
         return button;
     }
 
@@ -163,8 +167,10 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     }
 
     private void update(ReviewFlashCardsState state) {
-        int currentFlashCardSetId = viewManagerModel.getCurrentFlashCardSetId();
-        FlashCardSet flashCardSet = flashCardSetsDAO.getFlashCardSetById(currentFlashCardSetId);
+        int flashCardSetId = state.getFlashCardSetId();
+        controller.ensureCorrectSet(flashCardSetId);
+        FlashCardSet flashCardSet = state.getFlashCardSet();
+
         int currentCardIndex = state.getCurrentCardIndex();
         boolean showingQuestion = state.isShowingQuestion();
 

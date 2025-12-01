@@ -24,4 +24,8 @@ public class ReviewFlashCardsController {
     public void editSet() {
         userReviewFlashCardsUseCaseInteractor.editSet();
     }
+
+    public void ensureCorrectSet(int flashCardSetId) {
+        userReviewFlashCardsUseCaseInteractor.ensureCorrectSet(flashCardSetId);
+    }
 }

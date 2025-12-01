@@ -90,15 +90,13 @@ public class AppBuilder {
 
     public AppBuilder addReviewFlashCardsUseCase() {
         reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
-        ReviewFlashCardsOutputBoundary presenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel);
-        ReviewFlashCardsInputBoundary interactor = new ReviewFlashCardsInteractor(reviewFlashCardsViewModel, presenter,
-                DAO, viewManagerModel);
+        ReviewFlashCardsOutputBoundary presenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel,
+                viewManagerModel);
+        ReviewFlashCardsInputBoundary interactor = new ReviewFlashCardsInteractor(presenter, DAO, viewManagerModel);
         reviewFlashCardsController = new ReviewFlashCardsController(interactor);
         reviewFlashCardsView = new ReviewFlashCardsView(
                 reviewFlashCardsViewModel,
-                reviewFlashCardsController,
-                DAO,
-                viewManagerModel);
+                reviewFlashCardsController);
         return this;
     }
 

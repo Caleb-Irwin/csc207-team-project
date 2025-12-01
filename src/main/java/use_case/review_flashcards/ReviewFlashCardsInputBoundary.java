@@ -11,4 +11,6 @@ public interface ReviewFlashCardsInputBoundary {
     void flipCard();
 
     void editSet();
+
+    void ensureCorrectSet(int flashCardSetId);
 }

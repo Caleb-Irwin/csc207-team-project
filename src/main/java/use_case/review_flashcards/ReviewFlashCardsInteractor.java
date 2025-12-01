@@ -2,72 +2,53 @@ package use_case.review_flashcards;
 
 import entity.FlashCardSet;
 import interface_adapter.ViewManagerModel;
-import interface_adapter.review_flashcards.ReviewFlashCardsState;
-import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 import use_case.FlashCardSetsDataAccessInterface;
 
 /**
  * The Review Flashcards Interactor.
  */
 public class ReviewFlashCardsInteractor implements ReviewFlashCardsInputBoundary {
-    private final ReviewFlashCardsViewModel viewModel;
-    private final ReviewFlashCardsOutputBoundary reviewFlashCardsPresenter;
+    private final ReviewFlashCardsOutputBoundary presenter;
     private final FlashCardSetsDataAccessInterface flashCardSetsDAO;
     private final ViewManagerModel viewManagerModel;
 
     public ReviewFlashCardsInteractor(
-            ReviewFlashCardsViewModel viewModel, ReviewFlashCardsOutputBoundary reviewFlashCardsOutputBoundary,
+            ReviewFlashCardsOutputBoundary reviewFlashCardsOutputBoundary,
             FlashCardSetsDataAccessInterface flashCardSetsDAO, ViewManagerModel viewManagerModel) {
-        this.viewModel = viewModel;
-        this.reviewFlashCardsPresenter = reviewFlashCardsOutputBoundary;
+        this.presenter = reviewFlashCardsOutputBoundary;
         this.flashCardSetsDAO = flashCardSetsDAO;
         this.viewManagerModel = viewManagerModel;
     }
 
     @Override
     public void nextQuestion() {
-        final FlashCardSet flashCardSet = getCurrentFlashCardSet();
-        int currentCardIndex = getState().getCurrentCardIndex();
-        if (currentCardIndex < flashCardSet.getFlashcards().size() - 1) {
-            currentCardIndex++;
-        } else {
-            currentCardIndex = 0;
-        }
-        reviewFlashCardsPresenter.prepareSuccessView(new ReviewFlashCardsOutputData(
-                currentCardIndex,
-                true));
+        presenter.nextCard();
     }
 
     @Override
     public void previousQuestion() {
-        final FlashCardSet flashCardSet = getCurrentFlashCardSet();
-        int currentCardIndex = getState().getCurrentCardIndex();
-        if (currentCardIndex > 0) {
-            currentCardIndex--;
-        } else {
-            currentCardIndex = flashCardSet.getFlashcards().size() - 1;
-        }
-        reviewFlashCardsPresenter.prepareSuccessView(new ReviewFlashCardsOutputData(
-                currentCardIndex,
-                true));
+        presenter.previousCard();
     }
 
     @Override
     public void flipCard() {
-        boolean showingQuestion = getState().isShowingQuestion();
-        reviewFlashCardsPresenter.prepareSuccessView(new ReviewFlashCardsOutputData(
-                getState()
-                        .getCurrentCardIndex(),
-                !showingQuestion));
+        presenter.flipCard();
     }
 
     @Override
     public void editSet() {
-        // Implementation for editing the flashcard set
+        viewManagerModel.setState("create flashcard");
+        viewManagerModel.firePropertyChange();
     }
 
-    private ReviewFlashCardsState getState() {
-        return viewModel.getState();
+    @Override
+    public void ensureCorrectSet(int flashCardSetId) {
+        FlashCardSet currentSet = getCurrentFlashCardSet();
+        if (currentSet != null && currentSet.getId() == flashCardSetId) {
+            return;
+        } else {
+            presenter.setFlashCardSet(currentSet);
+        }
     }
 
     private FlashCardSet getCurrentFlashCardSet() {
