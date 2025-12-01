@@ -89,11 +89,16 @@ public class GeneratorApiCaller{
         String promptText = sb.toString();
 
         String prompt = String.format(promptText, subject);
-        GenerateContentResponse response = client.models.generateContent(
-                "gemini-2.5-flash",
-                prompt,
-                null);
+        try{
+            GenerateContentResponse response = client.models.generateContent(
+                    "gemini-2.5-flash",
+                    prompt,
+                    null);
+            return response.text();
+        }catch (Exception e){
+            return "invalidAPI";
+        }
 
-        return response.text();
+
     }
 }

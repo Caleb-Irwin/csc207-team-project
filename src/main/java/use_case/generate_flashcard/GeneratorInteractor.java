@@ -32,12 +32,20 @@ public class GeneratorInteractor implements GeneratorInputBoundary{
         }
         else{
             String response = generatorApiCaller.generateFromSubject(subject);
-            if (response.isEmpty()) {
-                generatorPresenter.prepareFailView("Something went wrong during generation! " +
-                        "Please try again!");
-            } else if (response.equals("noAPI")) {
-                generatorPresenter.prepareFailView("Please enter a proper API key!");
-
+            switch (response) {
+                case "invalidAPI" -> {
+                    generatorPresenter.prepareFailView("Invalid API key!");
+                    return;
+                }
+                case "" -> {
+                    generatorPresenter.prepareFailView("Something went wrong during generation! " +
+                            "Please try again!");
+                    return;
+                }
+                case "noAPI" -> {
+                    generatorPresenter.prepareFailView("Please enter a proper API key!");
+                    return;
+                }
             }
             String setData = generatorJsonParser.parse(response);
             if (setData.isEmpty()) {
