@@ -129,15 +129,7 @@ public class AppBuilder {
         cardContainer.add(cardPanel, BorderLayout.CENTER);
 
         application.add(cardContainer);
-        SwingUtilities.invokeLater(() -> {
-            for (FlashCardSet set : jsonDAO.getFlashCardSets()) {
-                // Use the SAME event system presenters use
-                viewManagerModel.setState("SET_CREATED:" + set.getSetName() + ":" + set.getId());
-                viewManagerModel.firePropertyChange();
-                viewManagerModel.setState(""); // Clear
-            }
-        });
-
+        
         viewManagerModel.setState(generatorView.getViewName());
         viewManagerModel.firePropertyChange();
 
