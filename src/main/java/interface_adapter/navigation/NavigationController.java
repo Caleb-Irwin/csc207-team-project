@@ -21,7 +21,15 @@ public class NavigationController {
         interactor.goToSettingsPage();
     }
 
-    public void loadSet(String setName) {
-        interactor.goToSet(setName);
+    public void loadSet(int setId) {
+        interactor.goToSet(setId);
+    }
+
+    public void goToCreateSetPage() {
+        interactor.goToCreateSetPage();
+    }
+
+    public void loadExistingSets() {
+        interactor.loadExistingSets();
     }
 }

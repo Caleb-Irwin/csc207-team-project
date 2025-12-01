@@ -59,11 +59,11 @@ public class AppBuilder {
     }
 
     public AppBuilder addSidebar() {
-        NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel);
-        NavigationInputBoundary interactor = new NavigationInteractor(presenter);
+        NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel, sidebarView);
+        NavigationInputBoundary interactor = new NavigationInteractor(presenter, DAO);
         NavigationController navigationController = new NavigationController(interactor);
 
-        this.sidebarView = new SidebarView(navigationController);
+        this.sidebarView = new SidebarView(navigationController, viewManagerModel);
         return this;
     }
 
@@ -116,7 +116,7 @@ public class AppBuilder {
         cardContainer.add(cardPanel, BorderLayout.CENTER);
 
         application.add(cardContainer);
-
+        
         viewManagerModel.setState(generatorView.getViewName());
 //        viewManagerModel.setState("create flashcard");
         viewManagerModel.firePropertyChange();

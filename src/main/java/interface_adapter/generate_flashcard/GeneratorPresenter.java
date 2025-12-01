@@ -30,7 +30,6 @@ public class GeneratorPresenter implements GeneratorOutputBoundary {
         this.viewManagerModel.firePropertyChange();
 
 
-
     }
 
     @Override

@@ -1,7 +1,13 @@
 package interface_adapter.navigation;
 
+import entity.FlashCardSet;
 import interface_adapter.ViewManagerModel;
 import use_case.navigation.NavigationOutputBoundary;
+import view.SidebarView;
+
+import javax.swing.*;
+import java.util.List;
+import java.util.Map;
 
 /**
  * The Navigation presenter
@@ -10,9 +16,11 @@ import use_case.navigation.NavigationOutputBoundary;
 public class NavigationPresenter implements NavigationOutputBoundary {
 
     private final ViewManagerModel viewManagerModel;
+    private final SidebarView sidebarView;
 
-    public NavigationPresenter(ViewManagerModel viewManagerModel) {
+    public NavigationPresenter(ViewManagerModel viewManagerModel, SidebarView sidebarView) {
         this.viewManagerModel = viewManagerModel;
+        this.sidebarView = sidebarView;
     }
 
     @Override
@@ -28,8 +36,24 @@ public class NavigationPresenter implements NavigationOutputBoundary {
     }
 
     @Override
-    public void presentSet(String setName) {
-        viewManagerModel.setState("SET_PAGE_" + setName);
+    public void presentSet(int setId) {
+        viewManagerModel.setCurrentFlashCardSetId(setId);
+        viewManagerModel.setState("review flashcard");
         viewManagerModel.firePropertyChange();
     }
+
+    @Override
+    public void presentCreateSetPage() {
+        viewManagerModel.setState("create flashcard");
+        viewManagerModel.firePropertyChange();
+    }
+
+    @Override
+    public void presentExistingSets(List<Map.Entry<String, Integer>> setInfos) {
+        SwingUtilities.invokeLater(() -> {
+            if (setInfos == null) {return;}
+            sidebarView.updateSidebarButtons(setInfos);
+        });
+
+        }
 }
