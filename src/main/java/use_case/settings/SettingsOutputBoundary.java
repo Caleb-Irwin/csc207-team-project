@@ -1,4 +1,5 @@
 package use_case.settings;
 
-public class SettingsOutputBoundary {
+public interface SettingsOutputBoundary {
+    void prepareSuccessView(SettingsOutputData data);
 }

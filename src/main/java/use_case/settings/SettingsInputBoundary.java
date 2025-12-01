@@ -1,4 +1,5 @@
 package use_case.settings;
 
-public class SettingsInputBoundary {
+public interface SettingsInputBoundary {
+    void saveSettings(SettingsInputData inputData);
 }

@@ -1,15 +1,18 @@
 package interface_adapter.settings;
 
-public class SettingsController {
-    private final SettingsViewModel viewModel;
+import use_case.settings.SettingsInputBoundary;
+import use_case.settings.SettingsInputData;
 
-    public SettingsController(SettingsViewModel viewModel) {
-        this.viewModel = viewModel;
+public class SettingsController {
+
+    private final SettingsInputBoundary interactor;
+
+    public SettingsController(SettingsInputBoundary interactor) {
+        this.interactor = interactor;
     }
 
     public void saveSettings(String apiKey, String directory) {
-        viewModel.setApiKey(apiKey);
-        viewModel.setDirectory(directory);
-
-        System.out.println("Settings saved: " + apiKey + ", " + directory);
-}}
+        SettingsInputData inputData = new SettingsInputData(apiKey, directory);
+        interactor.saveSettings(inputData);
+    }
+}

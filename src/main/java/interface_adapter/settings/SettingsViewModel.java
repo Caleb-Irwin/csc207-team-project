@@ -1,26 +1,37 @@
 package interface_adapter.settings;
-import java.beans.*;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 
 public class SettingsViewModel {
 
     private final PropertyChangeSupport support = new PropertyChangeSupport(this);
 
-    public String apiKey = "";
-    public String directory = "";
+    private final SettingsState state = new SettingsState();
+
+    public SettingsState getState() {
+        return state;
+    }
+
+    public void firePropertyChanged() {
+        support.firePropertyChange("state", null, state);
+    }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
 
-    public void setApiKey(String newKey) {
-        String old = this.apiKey;
-        this.apiKey = newKey;
-        support.firePropertyChange("apiKey", old, newKey);
-    }
+    public static class SettingsState {
+        private String apiKey = "";
+        private String directory = "";
 
-    public void setDirectory(String newDir) {
-        String old = this.directory;
-        this.directory = newDir;
-        support.firePropertyChange("directory", old, newDir);
+        public String getApiKey() { return apiKey; }
+        public String getDirectory() { return directory; }
+
+        public void setApiKey(String apiKey) { this.apiKey = apiKey; }
+        public void setDirectory(String directory) { this.directory = directory; }
     }
 }
+
+
+

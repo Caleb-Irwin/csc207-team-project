@@ -1,6 +1,7 @@
 package app;
 
 import data_access.FileUserDataAccessObject;
+import data_access.FileSettingsDataAccessObject;
 import entity.UserFactory;
 import interface_adapter.ViewManagerModel;
 import interface_adapter.logged_in.ChangePasswordController;
@@ -26,6 +27,7 @@ import use_case.login.LoginOutputBoundary;
 import use_case.logout.LogoutInputBoundary;
 import use_case.logout.LogoutInteractor;
 import use_case.logout.LogoutOutputBoundary;
+import use_case.settings.SettingsDataAccessInterface;
 import use_case.settings.SettingsInputBoundary;
 import use_case.settings.SettingsInteractor;
 import use_case.settings.SettingsOutputBoundary;
@@ -132,14 +134,25 @@ public class AppBuilder {
     }
 
     public AppBuilder addSettingsView() {
-        settingsViewModel = new SettingsViewModel();
-        settingsController = new SettingsController(settingsViewModel);
-        settingsView = new SettingsView(settingsViewModel, viewManagerModel);
-        settingsView.setSettingsController(settingsController);
+        SettingsViewModel svm = new SettingsViewModel();
+        SettingsPresenter presenter = new SettingsPresenter(svm);
+
+        SettingsDataAccessInterface settingsDataAccess =
+                new FileSettingsDataAccessObject("settings.properties");
+
+        SettingsInputBoundary interactor =
+                new SettingsInteractor(settingsDataAccess, presenter);
+
+        SettingsController controller = new SettingsController(interactor);
+
+        settingsView = new SettingsView(svm, viewManagerModel);
+        settingsView.setSettingsController(controller);
+
         cardPanel.add(settingsView, settingsView.getViewName());
 
         return this;
     }
+
 
     /**
      * Adds the Logout Use Case to the application.
