@@ -68,17 +68,14 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
     @Override
     public void ensureCorrectSet() {
         FlashCardSet currentSet = getCurrentFlashCardSet();
-        if (currentSet == null || currentSet.getId() == null) {
-            return;
-        } else {
-            presenter.present(new CreateFlashcardOutputData(
-                    currentSet.getId(),
-                    null,
-                    false,
-                    "Switching to a different set.",
-                    true,
-                    null));
-        }
+        Integer id = currentSet != null ? currentSet.getId() : null;
+        presenter.present(new CreateFlashcardOutputData(
+                id,
+                currentSet != null ? currentSet.getSetName() : "",
+                false,
+                "",
+                false,
+                currentSet));
     }
 
     private FlashCardSet getCurrentFlashCardSet() {

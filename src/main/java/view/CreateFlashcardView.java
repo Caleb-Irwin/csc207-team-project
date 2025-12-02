@@ -163,17 +163,58 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        // Only handle state changes from our viewModel, not from viewManagerModel
-        if (evt.getSource() != viewModel) {
+        if (evt.getSource() == viewManagerModel) {
+            // View navigation changed, ensure we have the correct set loaded
             controller.ensureCorrectSet();
             return;
         }
+        
         if (!CreateFlashcardViewModel.STATE_PROPERTY.equals(evt.getPropertyName())) {
             return;
         }
 
         CreateFlashcardState state = (CreateFlashcardState) evt.getNewValue();
+        updateForm(state);
+    }
+
+    private void updateForm(CreateFlashcardState state) {
         messageLabel.setText(state.getMessage());
+        setNameField.setText(state.getSetName());
+
+        // Rebuild form with the state's questions/answers
+        formPanel.removeAll();
+        questionFields.clear();
+        answerFields.clear();
+        questionCounter = 1;
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        // Row 0: Set Name
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        formPanel.add(new JLabel("Set Name:"), gbc);
+
+        gbc.gridx = 1;
+        formPanel.add(setNameField, gbc);
+
+        List<String> questions = state.getQuestions();
+        List<String> answers = state.getAnswers();
+
+        if (questions.isEmpty()) {
+            // Add one empty pair for new sets
+            addNewFlashcardPair();
+        } else {
+            // Populate with existing questions/answers
+            for (int i = 0; i < questions.size(); i++) {
+                addNewFlashcardPair();
+                questionFields.get(i).setText(questions.get(i));
+                answerFields.get(i).setText(answers.get(i));
+            }
+        }
+
+        formPanel.revalidate();
+        formPanel.repaint();
     }
 
     public String getViewName() {
