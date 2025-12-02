@@ -18,3 +18,25 @@ and/or use [handled by Stephanie].
 We leverage the Gemini API to create flashcard sets with a single prompt.
 
 ### Features
+
+#### Sidebar: For easy, one-click navigation, present on all pages!
+
+#### Generate Flashcards using AI
+![generator page](https://raw.githubusercontent.com/Caleb-Irwin/csc207-team-project/refs/heads/main/assets/GeneratorView.png)
+Just enter what you want to learn, and watch the magic happen!
+
+#### Review Flashcards
+![question](https://raw.githubusercontent.com/Caleb-Irwin/csc207-team-project/refs/heads/main/assets/Question.png)
+![answer](https://raw.githubusercontent.com/Caleb-Irwin/csc207-team-project/refs/heads/main/assets/Answer.png)
+Level up your learning by reviewing Flashcards!
+
+#### Create, Edit and Save new flashcard sets
+![create](https://raw.githubusercontent.com/Caleb-Irwin/csc207-team-project/refs/heads/main/assets/Create.png)
+Make your own sets or edit existing ones!
+
+
+#### Setup your own API key
+![settings](https://raw.githubusercontent.com/Caleb-Irwin/csc207-team-project/refs/heads/main/assets/Settings.png)
+Use your own gemini api key!
+
+
