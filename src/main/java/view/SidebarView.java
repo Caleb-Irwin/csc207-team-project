@@ -2,6 +2,7 @@ package view;
 
 import interface_adapter.ViewManagerModel;
 import interface_adapter.navigation.NavigationController;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,14 +22,16 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
     private final JPanel scrollContent;
     private final JPanel bottomPanel;
     private final JButton generateSetButton;
+    private final JPanel topPanel;
     private final ArrayList<Integer> existingSetIds = new ArrayList<>();
 
     public SidebarView(NavigationController controller, ViewManagerModel viewManagerModel) {
         this.controller = controller;
         viewManagerModel.addPropertyChangeListener(this);
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout());
         setPreferredSize(new Dimension(200, 0));
+        setBackground(new Color(229, 115, 180));
 
         // create the panel that stores the content in the scroll pane
         scrollContent = new JPanel();
@@ -37,32 +40,49 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
 
         // create the scroll Pane
         JScrollPane scrollPane = new JScrollPane(scrollContent);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(229, 115, 180)));
+
+        // create a top panel
+        topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        topPanel.setBackground(new Color(229, 115, 180));
 
         // create the newSet and settings buttons and the flash AI label
         JLabel flashAILabel = new JLabel("Flash AI");
-        flashAILabel.setFont(flashAILabel.getFont().deriveFont(Font.BOLD, 14f));
+        flashAILabel.setFont(flashAILabel.getFont().deriveFont(Font.BOLD, 20f));
 
         // make white
         generateSetButton = new JButton("Generate Set");
-        generateSetButton.setFont(generateSetButton.getFont().deriveFont(Font.BOLD, 14f));
-        generateSetButton.setBackground(new Color(250, 250, 250));
+        generateSetButton.setFont(generateSetButton.getFont().deriveFont(Font.BOLD, 17f));
+        generateSetButton.setBackground(new Color(170, 150, 200));
         generateSetButton.setFocusPainted(false);
         generateSetButton.setBorderPainted(false);
         generateSetButton.setOpaque(true);
-        generateSetButton.setPreferredSize(new Dimension(92, 16));
+        generateSetButton.setPreferredSize(new Dimension(100, 24));
         generateSetButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
         // make white
         newSetButton = new JButton("+ New Set");
-        newSetButton.setFont(newSetButton.getFont().deriveFont(Font.BOLD, 14f));
-        newSetButton.setBackground(new Color(250, 250, 250));
+        newSetButton.setFont(newSetButton.getFont().deriveFont(Font.BOLD, 17f));
+        newSetButton.setBackground(new Color(170, 150, 200));
         newSetButton.setFocusPainted(false);
         newSetButton.setBorderPainted(false);
         newSetButton.setOpaque(true);
-        newSetButton.setPreferredSize(new Dimension(92, 16));
+        newSetButton.setPreferredSize(new Dimension(100, 24));
         newSetButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+
+        // add labels and buttons to top panel
+        topPanel.add(flashAILabel);
+        topPanel.add(Box.createVerticalStrut(10));
+        topPanel.add(generateSetButton);
+        topPanel.add(Box.createVerticalStrut(10));
+        topPanel.add(newSetButton);
+        topPanel.add(Box.createVerticalStrut(10));
+        flashAILabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+        generateSetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        newSetButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         settingsButton = new JButton("Settings");
         settingsButton.setFont(settingsButton.getFont().deriveFont(Font.BOLD, 14f));
@@ -76,17 +96,12 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         // create the bottom Panel that contains settings button
         bottomPanel = new JPanel();
         bottomPanel.add(settingsButton);
-        settingsButton.setAlignmentX(settingsButton.CENTER_ALIGNMENT);
+        settingsButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         bottomPanel.setBackground(new Color(229, 115, 180));
 
         // add the labels, buttons, and panels to the sidebar View
         this.setBackground(new Color(229, 115, 180));
-        this.add(flashAILabel);
-        flashAILabel.setAlignmentX(flashAILabel.CENTER_ALIGNMENT);
-        this.add(generateSetButton);
-        this.add(newSetButton);
-        generateSetButton.setAlignmentX(generateSetButton.CENTER_ALIGNMENT);
-        newSetButton.setAlignmentX(newSetButton.CENTER_ALIGNMENT);
+        this.add(topPanel, BorderLayout.NORTH);
         this.add(scrollPane, BorderLayout.CENTER);
         this.add(bottomPanel, BorderLayout.SOUTH);
 
@@ -114,36 +129,49 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
             return;
         }
 
-        JButton setButton = new JButton(setName);
-        setButton.setAlignmentX(setButton.CENTER_ALIGNMENT);
-        setButton.setFont(setButton.getFont().deriveFont(Font.BOLD, 14f));
-        // make white
-        setButton.setBackground(new Color(250, 250, 250));
-        setButton.setFocusPainted(false);
-        setButton.setBorderPainted(false);
-        setButton.setOpaque(true);
-        setButton.setPreferredSize(new Dimension(95, 25));
-        setButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+        JButton setButton = getJButton(setName);
         setButton.putClientProperty("setId", setId);
         existingSetIds.add(setId);
 
         setButton.addActionListener(e -> controller.loadSet(setId));
 
         scrollContent.add(setButton);
+        scrollContent.add(Box.createVerticalStrut(10));
         revalidate();
         repaint();
+    }
+
+    @NotNull
+    private static JButton getJButton(String setName) {
+        JButton setButton = new JButton(setName);
+        setButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+        setButton.setFont(setButton.getFont().deriveFont(Font.BOLD, 14f));
+
+        setButton.setBackground(new Color(217, 210, 230));
+        setButton.setFocusPainted(false);
+        setButton.setBorderPainted(false);
+        setButton.setOpaque(true);
+        setButton.setPreferredSize(new Dimension(95, 25));
+        setButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));
+        setButton.setAlignmentX(Component.LEFT_ALIGNMENT);
+        setButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, 40));
+        return setButton;
     }
 
     public void updateSidebarButtons(List<Map.Entry<String, Integer>> setInfos) {
         // Clear existing
         scrollContent.removeAll();
         existingSetIds.clear();
+        List<Map.Entry<String, Integer>> reversed = new ArrayList<>();
 
-        // Add all sets
-        for (Map.Entry<String, Integer> info : setInfos) {
-            String setName = info.getKey();
-            Integer setId = info.getValue();
-            if (setId != null) {
+        // Add in reverse order
+        for (int i = setInfos.size() - 1; i >= 0; i--) {
+            reversed.add(setInfos.get(i));
+
+            // Add all sets
+            for (Map.Entry<String, Integer> info : reversed) {
+                String setName = info.getKey();
+                int setId = info.getValue();
                 addSetButton(setName, setId);
             }
         }
