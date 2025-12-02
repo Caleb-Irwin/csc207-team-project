@@ -1,5 +1,9 @@
 package interface_adapter.create_flashcard;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import entity.FlashCard;
 import entity.FlashCardSet;
 import interface_adapter.ViewManagerModel;
 import use_case.create_flashcard.CreateFlashcardOutputBoundary;
@@ -38,8 +42,14 @@ public class CreateFlashcardPresenter implements CreateFlashcardOutputBoundary {
         CreateFlashcardState state = new CreateFlashcardState();
         if (set != null) {
             state.setSetName(set.getSetName() != null ? set.getSetName() : "");
-            state.setQuestions(set.getFlashcards().stream().map(card -> card.getQuestion()).toList());
-            state.setAnswers(set.getFlashcards().stream().map(card -> card.getAnswer()).toList());
+            List<String> questions = new ArrayList<>();
+            List<String> answers = new ArrayList<>();
+            for (FlashCard card : set.getFlashcards()) {
+                questions.add(card.getQuestion());
+                answers.add(card.getAnswer());
+            }
+            state.setQuestions(questions);
+            state.setAnswers(answers);
         }
         return state;
     }
