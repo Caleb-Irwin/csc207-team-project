@@ -55,22 +55,22 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
 
         // make white
         generateSetButton = new JButton("Generate Set");
-        generateSetButton.setFont(generateSetButton.getFont().deriveFont(Font.BOLD, 14f));
-        generateSetButton.setBackground(new Color(217, 210, 230));
+        generateSetButton.setFont(generateSetButton.getFont().deriveFont(Font.BOLD, 17f));
+        generateSetButton.setBackground(new Color(170, 150, 200));
         generateSetButton.setFocusPainted(false);
         generateSetButton.setBorderPainted(false);
         generateSetButton.setOpaque(true);
-        generateSetButton.setPreferredSize(new Dimension(92, 16));
+        generateSetButton.setPreferredSize(new Dimension(100, 24));
         generateSetButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
         // make white
         newSetButton = new JButton("+ New Set");
-        newSetButton.setFont(newSetButton.getFont().deriveFont(Font.BOLD, 14f));
-        newSetButton.setBackground(new Color(217, 210, 230));
+        newSetButton.setFont(newSetButton.getFont().deriveFont(Font.BOLD, 17f));
+        newSetButton.setBackground(new Color(170, 150, 200));
         newSetButton.setFocusPainted(false);
         newSetButton.setBorderPainted(false);
         newSetButton.setOpaque(true);
-        newSetButton.setPreferredSize(new Dimension(92, 16));
+        newSetButton.setPreferredSize(new Dimension(100, 24));
         newSetButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
         // add labels and buttons to top panel
