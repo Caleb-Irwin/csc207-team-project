@@ -23,10 +23,11 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     private final JTextField subjectInputField = new JTextField(30);
 
     private final JLabel errorMessageLabel = new JLabel();
+    private final JLabel loadingLabel = new JLabel("Generating...");
     private final JButton generateButton;
 
 
-    // private final LoadingPopup loadingPopup; // REMOVED
+
 
 
     private static final Color BACKGROUND_COLOR = new Color(217, 210, 230);
@@ -39,7 +40,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         this.generatorViewModel.addPropertyChangeListener(this);
 
 
-        // this.loadingPopup = new LoadingPopup(this); // REMOVED
+
 
         final JLabel title = new JLabel("FlashAI");
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -69,10 +70,14 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
 
         errorMessageLabel.setForeground(Color.RED);
-
+        loadingLabel.setForeground(Color.BLUE);
+        loadingLabel.setVisible(false);
 
         gbc.gridy = 1;
         this.add(errorMessageLabel, gbc);
+
+        gbc.gridy = 2;
+        this.add(loadingLabel, gbc);
 
 
         generateButton = new JButton("Generate!");
@@ -87,7 +92,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         generateButton.setOpaque(true);
         generateButton.setPreferredSize(new Dimension(120, 35));
 
-        gbc.gridy = 2;
+        gbc.gridy = 3;
         this.add(generateButton, gbc);
 
 
@@ -150,16 +155,25 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
                 return;
             }
 
-            // Clear any previous error message
-            errorMessageLabel.setText("");
-
-            // Set loading state and fire property change to update loadingLabel
+            errorMessageLabel.setText(""); // Clear previous error
+            loadingLabel.setVisible(true); // Show loading immediately
 
             generatorViewModel.setState(state);
             generatorViewModel.firePropertyChange();
 
-            // Execute the controller
-            generatorController.execute(subject);
+            // Execute controller asynchronously
+            new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() {
+                    generatorController.execute(subject);
+                    return null;
+                }
+
+                @Override
+                protected void done() {
+                    loadingLabel.setVisible(false); // hide loading after execution
+                }
+            }.execute();
         }
     }
 
@@ -173,7 +187,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         // Clear the input field if no error was reported (implies success)
         if (state.getGeneratorError() == null || state.getGeneratorError().isEmpty()) {
             // Note: This only clears the text field, not the state's subject property
-            subjectInputField.setText("");
+            subjectInputField.setText(placeholder);
         }
     }
 
