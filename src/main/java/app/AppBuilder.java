@@ -1,6 +1,5 @@
 package app;
 
-import data_access.FileSettingsDataAccessObject;
 import data_access.JsonDataAccessObject;
 
 import interface_adapter.ViewManagerModel;
@@ -19,7 +18,6 @@ import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 import interface_adapter.settings.SettingsController;
 import interface_adapter.settings.SettingsPresenter;
 import interface_adapter.settings.SettingsViewModel;
-import use_case.FlashCardSetsDataAccessInterface;
 import use_case.create_flashcard.CreateFlashcardInputBoundary;
 import use_case.create_flashcard.CreateFlashcardInteractor;
 import use_case.generate_flashcard.GeneratorInputBoundary;
