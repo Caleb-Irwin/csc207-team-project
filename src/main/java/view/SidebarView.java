@@ -15,10 +15,11 @@ import java.util.Map;
 /**
  * Implements the sidebar function of the application
  */
+
 public class SidebarView extends JPanel implements PropertyChangeListener {
     private final JButton newSetButton;
     private final JButton settingsButton;
-    private NavigationController controller;
+    private transient NavigationController controller;
     private final JPanel scrollContent;
     private final JPanel bottomPanel;
     private final JButton generateSetButton;

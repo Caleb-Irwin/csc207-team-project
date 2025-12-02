@@ -10,15 +10,10 @@ public class CreateFlashcardState {
     private List<String> answers = new ArrayList<>();
     private String message = "";
 
-    public CreateFlashcardState() {}
-
-
-    public CreateFlashcardState(CreateFlashcardState other) {
-        this.setName = other.setName;
-        this.questions = new ArrayList<>(other.questions);
-        this.answers = new ArrayList<>(other.answers);
-        this.message = other.message;
+    public CreateFlashcardState() {
+        // 2 Usages
     }
+
 
     public String getSetName() { return setName; }
     public void setSetName(String setName) { this.setName = setName; }

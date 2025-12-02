@@ -11,6 +11,7 @@ import java.util.Map;
 /**
  * The Navigation Interactor
  */
+
 public class NavigationInteractor implements NavigationInputBoundary {
     private final NavigationOutputBoundary presenter;
     private final FlashCardSetsDataAccessInterface dataAccess;

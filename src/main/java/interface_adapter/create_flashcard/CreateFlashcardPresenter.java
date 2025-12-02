@@ -2,6 +2,7 @@ package interface_adapter.create_flashcard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import entity.FlashCard;
 import entity.FlashCardSet;
@@ -28,7 +29,7 @@ public class CreateFlashcardPresenter implements CreateFlashcardOutputBoundary {
         state.setMessage(outputData.getMessage());
         viewModel.setState(state); // This already fires property change
 
-        if (lastState.getSetName() != state.getSetName()) {
+        if (!Objects.equals(lastState.getSetName(), state.getSetName())) {
             viewManagerModel.firePropertyChange();
         }
 
