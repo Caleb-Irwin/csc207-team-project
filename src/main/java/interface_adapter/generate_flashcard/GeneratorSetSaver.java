@@ -10,6 +10,11 @@ import use_case.generate_flashcard.GeneratorSetSaverInterface;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The set saver for generator use case.
+ */
+
+
 public class GeneratorSetSaver implements GeneratorSetSaverInterface {
 
     private final JsonDataAccessObject jsonDataAccessObject;

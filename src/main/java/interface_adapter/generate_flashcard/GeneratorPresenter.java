@@ -4,6 +4,11 @@ import interface_adapter.ViewManagerModel;
 import use_case.generate_flashcard.GeneratorOutputBoundary;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 
+/**
+ * The presenter for the Generator use case
+ */
+
+
 public class GeneratorPresenter implements GeneratorOutputBoundary {
 
     private final GeneratorViewModel generatorViewModel;
