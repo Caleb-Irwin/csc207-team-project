@@ -1,0 +1,163 @@
+602af5a (HEAD -> last-changes, origin/main, origin/HEAD, main) removing an unused import
+b6da498 Merge pull request #39 from Caleb-Irwin/readme_updates
+16b1b70 Enhance README with features and usage details
+2def818 added images for README
+ccf942b Revise README for FlashAI project details
+09039ad (fixing-checkstyle, fixCheckStyle, checkstyle-fixes, checStyleFx) finalize test coverage
+d57edbe Merge pull request #38 from Caleb-Irwin/Navigation-Tests
+db86844 (origin/Navigation-Tests, Navigation-Tests) tests done
+2fd801f Merge pull request #36 from Caleb-Irwin/tests
+53e1482 Merge pull request #37 from Caleb-Irwin/settingsTests
+5728906 Settings Tests
+c9c2695 tests for review and create
+7bf1054 pretty settings
+b13668b Merge pull request #35 from Caleb-Irwin/settings_implementation
+892e793 Settings Implementation Finish
+691d397 Settings Implementation Finish
+2505edd quick compat fix
+4a1d966 Merge pull request #34 from Caleb-Irwin/reactive-editor
+d285452 Merge branch 'main' into reactive-editor
+9a38cba Merge pull request #32 from Caleb-Irwin/generator_loader
+a5087a6 cleaned up code
+cd45b03 Merge pull request #33 from Caleb-Irwin/sidebarStyle
+3e67ce0 (origin/sidebarStyle, sidebarStyle) some fixes
+9bc2d76 make create flashcards pretty
+4f57079 functionality works!
+a1f710e progress 1
+ea6a3f0 style changes completed
+d1d8c65 visual changes
+d37fa0b added loading label for generation
+94114d7 some style changes
+414e3b1 minor fix in GeneratorSetSaver
+fad5cc4 Some quick navigation fixes
+7f08e0e Merge pull request #26 from Caleb-Irwin/SidebarFix
+198cdfa (origin/SidebarFix) Update AppBuilder.java
+73161ba Update AppBuilder.java
+b1537dd Delete .idea/checkstyle-idea.xml
+9a4eb42 Delete data/data.json
+bdfcf7a opening the app should now update all set buttons
+e292efb Merge pull request #29 from Caleb-Irwin/generator_tests
+e371f69 Merge pull request #30 from Caleb-Irwin/pretty-review
+8bce6f9 Merge pull request #31 from Caleb-Irwin/delete_old_data_access
+0ca93b2 (origin/delete_old_data_access) Delete git_log.txt
+c3ec2d2 Delete data/data.json
+38c71a6 (origin/pretty-review) Merge branch 'main' into pretty-review
+bc022dd remove /data from git
+61ebf9e actually CA! (move view model things from interactor to presenter)
+d30b7df deleted old data access /JsonFlashcardSetDataAccessObject.java
+4cf28c3 Merge pull request #25 from Caleb-Irwin/new-create-flashcard
+77a857e (origin/generator_tests) cleaned up
+d926662 (origin/new-create-flashcard) Merge branch 'main' into new-create-flashcard
+9a0cf4d fix one conflict maybe
+c5c64cf able to start review
+d1ba0b2 added unit tests
+eee7cc4 refactor to be more CAey
+f960fdc Merge pull request #28 from Caleb-Irwin/generator_tests
+8c8a1da added interfaces and updated presenter + interactor
+de50cf7 Pretty review flashcards done
+4cf6822 Merge pull request #27 from Caleb-Irwin/generator_saver
+f892329 added list to keep track of existing Ids
+48a317d (origin/generator_saver) added flag for invalid API key
+870241a fixed small bug regarding labels
+d97dfbe resotred App Builder + Main to original Status
+e604ad6 Integrated genrator with JsonDAO + added successView + added labels for errors
+64042a1 restore JsonFlashcardSetDataAccessObject
+43beba2 fix presenter and update interactor for id
+78c6fbc Navigation should now be fully functional once everyone is done implementing their part
+f6c93f2 -
+16d745c Merge branch 'sidebar#3' into SidebarFix
+85d1ac4 made necessary changes to sidebar view
+5d7d5c4 m
+03809c4 (pr-branch) Implement CreateFlashcard use case with new DataAccess
+07f2858 Merge pull request #24 from Caleb-Irwin/generator_popup
+dab26aa (origin/generator_popup) cleaned up the code
+65446b7 Added popup to generator view
+2d5cbf4 (sidebar#3) -
+615883b Merge pull request #21 from Caleb-Irwin/new-create-flashcard
+17873f4 Merge pull request #23 from Caleb-Irwin/modify-doa
+61e7b92 (origin/modify-doa) modify DAO to make it easier to consume
+e1e99f4 Merge pull request #22 from Caleb-Irwin/generator_api
+6355c63 (origin/generator_api) added JsonDataAccessObject to GeneratorApiCaller
+e9ade08 Merge branch 'main' into new-create-flashcard
+6c67377 add addCreateFlashcardView() in main and appbuilder
+568c65e Merge pull request #20 from Caleb-Irwin/remove_redundant_files
+fd1cbb2 (origin/remove_redundant_files) appbuilder works now hopefully
+6fba4e5 Merge branch 'main' into remove_redundant_files
+3065228 appbuilder fix
+a192df9 cleaned up AppBuilder
+b406d93 Removed redundant files
+090e26f quick fix
+40eb984 Merge pull request #19 from Caleb-Irwin/navigation2
+7e3be6b (origin/navigation2) Resolve merge conflict: keep CreateFlashcardInteractor version with proper list handling
+6d955e2 Merge pull request #17 from Caleb-Irwin/create-flashcard
+2b14f38 (origin/create-flashcard) Merge main into create-flashcard
+5e9002f fix again?
+8faabb0 try to fix merge conflicts
+795c4be fixed main, appbuilder, and flashcardset
+a054ee4 store current flashcard set in view manager model for navigation purposes + use that in review
+b52b5a7 Merge pull request #15 from Caleb-Irwin/newsidebar
+3f8d5fa (origin/newsidebar) Merge branch 'main' into newsidebar
+13d889c (newsidebar) fixed
+70c3656 import changes in generator view
+2758aaa reversed previous changes in GeneratorView
+92eb5ee Merge pull request #16 from Caleb-Irwin/data-access
+7891424 Merge pull request #18 from Caleb-Irwin/generator-ui
+2a0fac6 (origin/generator-ui) Updated UI
+956b296 Refactor create flashcard use case + clean AppBuilder merge conflicts
+4a4b687 Refactor create flashcard use case to follow Clean Architecture
+c7aec4c (origin/data-access) data access interfaces and Json Implementation
+90a7de5 changed the size of the side bar
+b43cfaf updated my main
+fa39e14 .
+3bc4488 - Added comments to explain key lines of code for clarity - Updated GeneratorView: clicking 'Generate' now creates a new set button - Improved UI: added background colors for better visual distinction - Made the Sidebar panel scrollable to handle dynamic buttons
+077b798 Small Bug Fix in Main - addGeneratorUseCase was not added
+efe3d7a Merge pull request #14 from Caleb-Irwin/generator_app_builder
+81318d0 (origin/generator_app_builder) tiny bug fix with missing view name + default to generator view
+f17ac1e Added Generator views and use case to app builder
+e0e4851 (sidebar2) Merge pull request #11 from Caleb-Irwin/generate_flashcard
+73d03db Merge pull request #13 from Caleb-Irwin/sidebar
+0920999 (origin/sidebar) make it so sidebar works in app builder pattern
+90bf68b Resolve merge conflicts from main branch
+609d4fc resolve issues with incorrect merge conflict resolution that was my fault
+6127960 (sidebar) made changes to app builder to replicate the worrk of my former main frame
+8dd7a81 Merge pull request #9 from Caleb-Irwin/create-flashcard
+a33673e Merge branch 'main' into create-flashcard
+948e9e4 (origin/generate_flashcard) Added prompt to Api caller using stringbuilder
+ba75be9 side bar is functional, should switch from view to view
+223720e side bar is functional, should switch from view to view
+16daf74 Implemented use_case generate_flashcard + added GeneratorView to view and added interface_adapter components
+e307d3c Merge pull request #10 from Caleb-Irwin/review-flashcards
+a6e2be3 (origin/review-flashcards) review alpha!
+5c09a7a Implemented api caller + json parser + set saver for generating flashcards
+c64fecf I have added some functional buttons
+9b2f787 start of review flash cards in CA
+cf70391 Resolve merge conflicts and complete merge d
+eaa9b78 Resolve merge conflicts and complete merge
+1ed8d81 mock for crerateflashcard view, with +New, delete, save functions
+25f4b65 Added idea directory to .gitignore
+6734b62 Merge pull request #8 from Caleb-Irwin/create-flashcard-2
+bdb4e83 (origin/create-flashcard-2) Modify #5 to prevent a ton of conflicts
+69b750f add back
+a753477 del
+56510fe Merge pull request #7 from Caleb-Irwin:card-flip-mock
+9789372 (origin/card-flip-mock) card flip mock
+14d8b36 added entities package
+ae790e9 Implement create flashcard use case (draft)
+41e000d Merge pull request #5 from Caleb-Irwin/views-mock
+40d63f2 (origin/views-mock) Move generation logic from PR#4
+bd98359 scaffold project using clean architecture lab
+f115a06 Merge pull request #3 from Caleb-Irwin/entities
+882a021 (origin/entities) Merge branch 'main' into entities
+eb03837 Merge pull request #2 from Caleb-Irwin/stephUI
+a4f7c43 (origin/stephUI) Merge branch 'main' into stephUI
+b0e3ac0 Added entities classes (Flashcard, FlashCardSet, AIConfig)
+81667b9 (stephUI) just some rough work
+d244e94 Sign contract on behalf of Thomas
+4394b47 updated contract
+b4c1286 (steph) signed
+27abe2d signature added
+3eda5e0 Merge pull request #1 from Caleb-Irwin/team-contract
+e8d662f (origin/team-contract) team contract draft
+1758174 added .gitkeep dummy files for project structure
+78bccaa adding team contract template and maven config
+a59cc05 first commit

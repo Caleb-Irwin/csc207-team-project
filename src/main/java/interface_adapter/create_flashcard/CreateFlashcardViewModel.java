@@ -23,8 +23,4 @@ public class CreateFlashcardViewModel {
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         support.addPropertyChangeListener(listener);
     }
-
-    public void removePropertyChangeListener(PropertyChangeListener listener) {
-        support.removePropertyChangeListener(listener);
-    }
 }
