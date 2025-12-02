@@ -8,8 +8,9 @@ import entity.FlashCardSet;
 import use_case.ApiKeyDataAccessInterface;
 import use_case.FlashCardSetsDataAccessInterface;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import use_case.settings.SettingsDataAccessInterface;
 
-public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCardSetsDataAccessInterface {
+public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCardSetsDataAccessInterface, SettingsDataAccessInterface {
     private final String FILE_NAME = "/data.json";
     private final String FILE_PATH;
     private ObjectMapper mapper = new ObjectMapper();
@@ -131,5 +132,15 @@ public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCar
         } catch (IOException e) {
             throw new RuntimeException("Could not load set.", e);
         }
+    }
+    @Override
+    public void saveSettings(String apiKey) {
+        // Reuse existing apiKey field and save logic
+        saveApiKey(apiKey); // this already writes to JSON
+    }
+
+    @Override
+    public String loadApiKey() {
+        return getApiKey(); // reuse existing getter
     }
 }

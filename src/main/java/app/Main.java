@@ -11,6 +11,7 @@ public class Main {
                 .addGeneratorView()
                 .addGeneratorUseCase()
                 .addCreateFlashcardView()
+                .addSettingsUseCase()
                 .build();
 
         application.pack();
