@@ -17,7 +17,6 @@ public class GeneratorSetSaver implements GeneratorSetSaverInterface {
 
     public GeneratorSetSaver(JsonDataAccessObject jsonDataAccessObject){
         this.jsonDataAccessObject = jsonDataAccessObject;
-        this.id = jsonDataAccessObject.getNextAvailableId();
     }
 
     @Override
@@ -42,6 +41,8 @@ public class GeneratorSetSaver implements GeneratorSetSaverInterface {
 
             flashcards.add(new FlashCard(question, answer));
         }
+
+        id = jsonDataAccessObject.getNextAvailableId();
 
 
         FlashCardSet flashCardSet = new FlashCardSet(setName, flashcards, id);
