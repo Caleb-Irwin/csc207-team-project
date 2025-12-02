@@ -1,5 +1,6 @@
 package app;
 
+import data_access.FileSettingsDataAccessObject;
 import data_access.JsonDataAccessObject;
 
 import interface_adapter.ViewManagerModel;
@@ -15,6 +16,9 @@ import interface_adapter.review_flashcards.ReviewFlashCardsController;
 import interface_adapter.review_flashcards.ReviewFlashCardsPresenter;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 
+import interface_adapter.settings.SettingsController;
+import interface_adapter.settings.SettingsPresenter;
+import interface_adapter.settings.SettingsViewModel;
 import use_case.FlashCardSetsDataAccessInterface;
 import use_case.create_flashcard.CreateFlashcardInputBoundary;
 import use_case.create_flashcard.CreateFlashcardInteractor;
@@ -28,6 +32,9 @@ import use_case.navigation.NavigationOutputBoundary;
 import use_case.review_flashcards.ReviewFlashCardsInputBoundary;
 import use_case.review_flashcards.ReviewFlashCardsInteractor;
 import use_case.review_flashcards.ReviewFlashCardsOutputBoundary;
+import use_case.settings.SettingsDataAccessInterface;
+import use_case.settings.SettingsInputBoundary;
+import use_case.settings.SettingsInteractor;
 import view.*;
 
 // Create Flashcard imports
@@ -143,5 +150,26 @@ public class AppBuilder {
 
         return this;
     }
+
+    public AppBuilder addSettingsUseCase() {
+        SettingsViewModel svm = new SettingsViewModel();
+
+        SettingsPresenter presenter = new SettingsPresenter(svm);
+
+        SettingsDataAccessInterface settingsDataAccess = DAO;
+
+        SettingsInputBoundary interactor =
+                new SettingsInteractor(settingsDataAccess, presenter);
+
+        SettingsController controller = new SettingsController(interactor);
+
+        SettingsView settingsView = new SettingsView(svm, viewManagerModel);
+        settingsView.setSettingsController(controller);
+
+        cardPanel.add(settingsView, "settings");
+
+        return this;
+    }
+
 
 }
