@@ -21,14 +21,16 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
     private final JPanel scrollContent;
     private final JPanel bottomPanel;
     private final JButton generateSetButton;
+    private final JPanel topPanel;
     private final ArrayList<Integer> existingSetIds = new ArrayList<>();
 
     public SidebarView(NavigationController controller, ViewManagerModel viewManagerModel) {
         this.controller = controller;
         viewManagerModel.addPropertyChangeListener(this);
 
-        setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        setLayout(new BorderLayout());
         setPreferredSize(new Dimension(200, 0));
+        setBackground(new Color(229, 115, 180));
 
         // create the panel that stores the content in the scroll pane
         scrollContent = new JPanel();
@@ -40,6 +42,11 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setBorder(BorderFactory.createLineBorder(new Color(229, 115, 180)));
 
+        // create a top panel
+        topPanel = new JPanel();
+        topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.Y_AXIS));
+        topPanel.setBackground(new Color(229, 115, 180));
+
         // create the newSet and settings buttons and the flash AI label
         JLabel flashAILabel = new JLabel("Flash AI");
         flashAILabel.setFont(flashAILabel.getFont().deriveFont(Font.BOLD, 14f));
@@ -47,7 +54,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         // make white
         generateSetButton = new JButton("Generate Set");
         generateSetButton.setFont(generateSetButton.getFont().deriveFont(Font.BOLD, 14f));
-        generateSetButton.setBackground(new Color(250, 250, 250));
+        generateSetButton.setBackground(new Color(217, 210, 230));
         generateSetButton.setFocusPainted(false);
         generateSetButton.setBorderPainted(false);
         generateSetButton.setOpaque(true);
@@ -57,12 +64,20 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         // make white
         newSetButton = new JButton("+ New Set");
         newSetButton.setFont(newSetButton.getFont().deriveFont(Font.BOLD, 14f));
-        newSetButton.setBackground(new Color(250, 250, 250));
+        newSetButton.setBackground(new Color(217, 210, 230));
         newSetButton.setFocusPainted(false);
         newSetButton.setBorderPainted(false);
         newSetButton.setOpaque(true);
         newSetButton.setPreferredSize(new Dimension(92, 16));
         newSetButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+
+        // add labels and buttons to top panel
+        topPanel.add(flashAILabel);
+        topPanel.add(Box.createVerticalStrut(10));
+        topPanel.add(generateSetButton);
+        topPanel.add(Box.createVerticalStrut(10));
+        topPanel.add(newSetButton);
+        topPanel.add(Box.createVerticalStrut(10));
 
         settingsButton = new JButton("Settings");
         settingsButton.setFont(settingsButton.getFont().deriveFont(Font.BOLD, 14f));
@@ -81,10 +96,8 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
 
         // add the labels, buttons, and panels to the sidebar View
         this.setBackground(new Color(229, 115, 180));
-        this.add(flashAILabel);
+        this.add(topPanel, BorderLayout.NORTH);
         flashAILabel.setAlignmentX(flashAILabel.CENTER_ALIGNMENT);
-        this.add(generateSetButton);
-        this.add(newSetButton);
         generateSetButton.setAlignmentX(generateSetButton.CENTER_ALIGNMENT);
         newSetButton.setAlignmentX(newSetButton.CENTER_ALIGNMENT);
         this.add(scrollPane, BorderLayout.CENTER);
@@ -118,7 +131,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         setButton.setAlignmentX(setButton.CENTER_ALIGNMENT);
         setButton.setFont(setButton.getFont().deriveFont(Font.BOLD, 14f));
         // make white
-        setButton.setBackground(new Color(250, 250, 250));
+        setButton.setBackground(new Color(217, 210, 230));
         setButton.setFocusPainted(false);
         setButton.setBorderPainted(false);
         setButton.setOpaque(true);
@@ -130,6 +143,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         setButton.addActionListener(e -> controller.loadSet(setId));
 
         scrollContent.add(setButton);
+        scrollContent.add(Box.createVerticalStrut(10));
         revalidate();
         repaint();
     }
