@@ -5,6 +5,10 @@ import com.google.genai.types.GenerateContentResponse;
 import data_access.JsonDataAccessObject;
 import use_case.generate_flashcard.GeneratorApiCallerInterface;
 
+/**
+ * The API caller for the generator use_case
+ */
+
 
 public class GeneratorApiCaller implements GeneratorApiCallerInterface {
 

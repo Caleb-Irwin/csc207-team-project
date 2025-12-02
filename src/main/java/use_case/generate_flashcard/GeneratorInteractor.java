@@ -1,5 +1,11 @@
 package use_case.generate_flashcard;
 
+
+
+/**
+ * The interactor for the Generator use case.
+ */
+
 public class GeneratorInteractor implements GeneratorInputBoundary{
 
     private final GeneratorOutputBoundary generatorPresenter;
