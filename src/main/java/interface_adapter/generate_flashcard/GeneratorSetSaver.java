@@ -12,8 +12,8 @@ import java.util.List;
 
 public class GeneratorSetSaver implements GeneratorSetSaverInterface {
 
-    private JsonDataAccessObject jsonDataAccessObject;
-    private int id;
+    private final JsonDataAccessObject jsonDataAccessObject;
+
 
     public GeneratorSetSaver(JsonDataAccessObject jsonDataAccessObject){
         this.jsonDataAccessObject = jsonDataAccessObject;
@@ -21,6 +21,7 @@ public class GeneratorSetSaver implements GeneratorSetSaverInterface {
 
     @Override
     public int save(String jsonString) {
+        int id;
 
 
         JSONObject obj = new JSONObject(jsonString);

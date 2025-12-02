@@ -14,11 +14,10 @@ import java.util.Objects;
 
 public class GeneratorView extends JPanel implements ActionListener, PropertyChangeListener {
 
-    private final String viewName = "generator";
-    private final String placeholder = "What do you want to review today?";
+    private static final String PLACEHOLDER = "What do you want to review today?";
 
-    private final GeneratorViewModel generatorViewModel;
-    private GeneratorController generatorController;
+    private final transient GeneratorViewModel generatorViewModel;
+    private transient GeneratorController generatorController;
 
     private final JTextField subjectInputField = new JTextField(30);
 
@@ -54,11 +53,11 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(10, 0, 10, 0);
 
-        subjectInputField.setText(placeholder);
+        subjectInputField.setText(PLACEHOLDER);
         subjectInputField.setForeground(Color.LIGHT_GRAY);
         subjectInputField.setBackground(INPUT_FIELD_COLOR);
         subjectInputField.setPreferredSize(new Dimension(300, 40));
-        subjectInputField.setHorizontalAlignment(JTextField.CENTER);
+        subjectInputField.setHorizontalAlignment(SwingConstants.CENTER);
         subjectInputField.setBorder(BorderFactory.createEmptyBorder(
                 5, 10, 5, 10));
 
@@ -111,7 +110,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             private void update() {
                 GeneratorState currentState = generatorViewModel.getState();
                 currentState.setSubject(subjectInputField.getText());
-                if (Objects.equals(subjectInputField.getText(), placeholder)) {
+                if (Objects.equals(subjectInputField.getText(), PLACEHOLDER)) {
                     currentState.setSubject("");
                 }
                 generatorViewModel.setState(currentState);
@@ -126,7 +125,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         subjectInputField.addFocusListener(new java.awt.event.FocusListener() {
             @Override
             public void focusGained(java.awt.event.FocusEvent e) {
-                if (subjectInputField.getText().equals(placeholder)) {
+                if (subjectInputField.getText().equals(PLACEHOLDER)) {
                     subjectInputField.setText("");
                     subjectInputField.setForeground(Color.BLACK);
                 }
@@ -135,7 +134,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             @Override
             public void focusLost(java.awt.event.FocusEvent e) {
                 if (subjectInputField.getText().isEmpty()) {
-                    subjectInputField.setText(placeholder);
+                    subjectInputField.setText(PLACEHOLDER);
                     subjectInputField.setForeground(Color.GRAY);
                 }
             }
@@ -151,7 +150,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
             GeneratorState state = generatorViewModel.getState();
             String subject = state.getSubject();
 
-            if (subject == null || subject.trim().isEmpty() || subject.equals(placeholder)) {
+            if (subject == null || subject.trim().isEmpty() || subject.equals(PLACEHOLDER)) {
                 errorMessageLabel.setText("Please enter a subject to generate flashcards.");
                 return;
             }
@@ -187,13 +186,13 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
 
         if (state.getGeneratorError() == null || state.getGeneratorError().isEmpty()) {
-            subjectInputField.setText(placeholder);
+            subjectInputField.setText(PLACEHOLDER);
             subjectInputField.setForeground(Color.GRAY);
         }
     }
 
     public String getViewName() {
-        return viewName;
+        return "generator";
     }
 
     public void setGeneratorController(GeneratorController controller) {

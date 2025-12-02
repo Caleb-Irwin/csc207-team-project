@@ -129,7 +129,7 @@ class GeneratorInteractorTest {
 
             @Override
             public void prepareFailView(String error) {
-                assertEquals("Something went wrong during generation! Please try again!", error);
+                assertEquals("Something went wrong during generation!", error);
             }
         };
 
