@@ -4,9 +4,6 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.create_flashcard.CreateFlashcardController;
 import interface_adapter.create_flashcard.CreateFlashcardState;
 import interface_adapter.create_flashcard.CreateFlashcardViewModel;
-import interface_adapter.review_flashcards.ReviewFlashCardsController;
-import interface_adapter.review_flashcards.ReviewFlashCardsState;
-import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +14,6 @@ import java.util.List;
 
 public class CreateFlashcardView extends JPanel implements PropertyChangeListener {
 
-    private final JTextField setIdField = new JTextField(10);
     private final JTextField setNameField = new JTextField(20);
 
     private final List<JTextField> questionFields = new ArrayList<>();
@@ -36,20 +32,15 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
     private final CreateFlashcardController controller;
     private final CreateFlashcardViewModel viewModel;
     private final ViewManagerModel viewManagerModel;
-    private final ReviewFlashCardsController reviewController;
-    private final ReviewFlashCardsViewModel reviewViewModel;
 
     public CreateFlashcardView(CreateFlashcardViewModel viewModel,
-                               CreateFlashcardController controller,
-                               ViewManagerModel viewManagerModel,
-                               ReviewFlashCardsController reviewController,
-                               ReviewFlashCardsViewModel reviewViewModel) {
+            CreateFlashcardController controller,
+            ViewManagerModel viewManagerModel) {
         this.viewModel = viewModel;
         this.controller = controller;
         this.viewManagerModel = viewManagerModel;
-        this.reviewController = reviewController;
-        this.reviewViewModel = reviewViewModel;
         this.viewModel.addPropertyChangeListener(this);
+        this.viewManagerModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
 
@@ -88,17 +79,9 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
 
-        // Row 0: Set ID
+        // Row 0: Set Name
         gbc.gridx = 0;
         gbc.gridy = 0;
-        formPanel.add(new JLabel("Set ID:"), gbc);
-
-        gbc.gridx = 1;
-        formPanel.add(setIdField, gbc);
-
-        // Row 1: Set Name
-        gbc.gridx = 0;
-        gbc.gridy = 1;
         formPanel.add(new JLabel("Set Name:"), gbc);
 
         gbc.gridx = 1;
@@ -114,7 +97,7 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.WEST;
 
-        int baseRow = 2 + (questionFields.size() * 2);
+        int baseRow = 1 + (questionFields.size() * 2);
 
         JTextField questionField = new JTextField(20);
         JTextField answerField = new JTextField(20);
@@ -149,59 +132,45 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
     /** ------------------- SAVE LOGIC ------------------- **/
 
     private void saveFlashcard() {
-        try {
-            Integer setId = Integer.parseInt(setIdField.getText().trim());
-            String setName = setNameField.getText().trim();
+        String setName = setNameField.getText().trim();
 
-            List<String> questions = new ArrayList<>();
-            List<String> answers = new ArrayList<>();
+        List<String> questions = new ArrayList<>();
+        List<String> answers = new ArrayList<>();
 
-            for (int i = 0; i < questionFields.size(); i++) {
-                questions.add(questionFields.get(i).getText());
-                answers.add(answerFields.get(i).getText());
-            }
-
-            controller.saveFlashcards(setId, setName, questions, answers);
-
-        } catch (NumberFormatException e) {
-            messageLabel.setText("Error: Set ID must be a number");
+        for (int i = 0; i < questionFields.size(); i++) {
+            questions.add(questionFields.get(i).getText());
+            answers.add(answerFields.get(i).getText());
         }
+
+        controller.saveFlashcards(setName, questions, answers);
     }
 
     /** ------------------- DELETE LOGIC ------------------- **/
 
     private void deleteFlashcards() {
-        try {
-            Integer setId = Integer.parseInt(setIdField.getText().trim());
-            controller.deleteSet(setId);
-            buildInitialForm();
-        } catch (NumberFormatException e) {
-            messageLabel.setText("Error: Set ID must be a number");
-        }
+        controller.deleteSet();
+        buildInitialForm();
     }
+
     private void startReview() {
-        try {
-            int setId = Integer.parseInt(setIdField.getText().trim());
-
-            // 1. Set the selected set for Review view
-            viewManagerModel.setCurrentFlashCardSetId(setId);
-            // 2. Initialize review state by calling the use case
-            reviewViewModel.setState(new ReviewFlashCardsState());
-            reviewViewModel.firePropertyChange();
-            // 3. Navigate to ReviewFlashCardsView
-            viewManagerModel.setState("review flashcards");
-            viewManagerModel.firePropertyChange();
-
-        } catch (NumberFormatException e) {
-            messageLabel.setText("Error: Set ID must be a number");
-        }
+        saveFlashcard(); // Ensure latest changes are saved
+        // Navigate to ReviewFlashCardsView
+        viewManagerModel.setState("review flashcards");
+        viewManagerModel.firePropertyChange();
     }
 
-        /** ------------------- VIEWMODEL UPDATE ------------------- **/
+    /** ------------------- VIEWMODEL UPDATE ------------------- **/
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
-        if (!CreateFlashcardViewModel.STATE_PROPERTY.equals(evt.getPropertyName())) return;
+        // Only handle state changes from our viewModel, not from viewManagerModel
+        if (evt.getSource() != viewModel) {
+            controller.ensureCorrectSet();
+            return;
+        }
+        if (!CreateFlashcardViewModel.STATE_PROPERTY.equals(evt.getPropertyName())) {
+            return;
+        }
 
         CreateFlashcardState state = (CreateFlashcardState) evt.getNewValue();
         messageLabel.setText(state.getMessage());

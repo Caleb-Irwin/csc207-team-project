@@ -2,6 +2,7 @@ package use_case.create_flashcard;
 
 import entity.FlashCard;
 import entity.FlashCardSet;
+import interface_adapter.ViewManagerModel;
 import use_case.FlashCardSetsDataAccessInterface;
 
 import java.util.ArrayList;
@@ -11,67 +12,77 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
 
     private final FlashCardSetsDataAccessInterface dataAccess;
     private final CreateFlashcardOutputBoundary presenter;
+    private final ViewManagerModel viewManagerModel;
 
     public CreateFlashcardInteractor(FlashCardSetsDataAccessInterface dataAccess,
-                                     CreateFlashcardOutputBoundary presenter) {
+            CreateFlashcardOutputBoundary presenter,
+            ViewManagerModel viewManagerModel) {
         this.dataAccess = dataAccess;
         this.presenter = presenter;
+        this.viewManagerModel = viewManagerModel;
     }
 
     @Override
     public void saveFlashcards(CreateFlashcardInputData inputData) {
-
-        Integer id = inputData.getSetId();
         String setName = inputData.getSetName();
-
-        FlashCardSet existing = dataAccess.getFlashCardSetById(id);
-
-        FlashCardSet set;
-        if (existing != null) {
-            // update existing
-            set = existing;
-            set.setSetName(setName);
-            set.getFlashcards().clear();
-        } else {
-            // create new
-            set = new FlashCardSet(setName, new ArrayList<>(), id);
-        }
+        FlashCardSet set = getCurrentFlashCardSet();
+        Integer id = set.getId();
 
         List<String> questions = inputData.getQuestions();
         List<String> answers = inputData.getAnswers();
 
+        ArrayList<FlashCard> flashcards = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++) {
-            set.addFlashcard(new FlashCard(questions.get(i), answers.get(i)));
+            flashcards.add(new FlashCard(questions.get(i), answers.get(i)));
         }
+        set.setSetName(setName);
+        set.setFlashcards(flashcards);
 
-        if (existing == null) {
-            dataAccess.createFlashCardSet(set);
-        } else {
-            dataAccess.updateFlashCardSet(id, set);
-        }
+        dataAccess.updateFlashCardSet(id, set);
 
         presenter.present(new CreateFlashcardOutputData(
                 id,
                 setName,
                 true,
-                "Set saved!"
-        ));
+                "Set saved!",
+                false,
+                set));
     }
 
     @Override
-    public void deleteSet(Integer setId) {
-
-        boolean existed = dataAccess.getFlashCardSetById(setId) != null;
+    public void deleteSet() {
+        int currentFlashCardSetId = viewManagerModel.getCurrentFlashCardSetId();
+        boolean existed = dataAccess.getFlashCardSetById(currentFlashCardSetId) != null;
 
         if (existed) {
-            dataAccess.deleteFlashCardSet(setId);
+            dataAccess.deleteFlashCardSet(currentFlashCardSetId);
         }
 
         presenter.present(new CreateFlashcardOutputData(
-                setId,
+                currentFlashCardSetId,
                 null,
                 true,
-                existed ? "Set deleted!" : "Set does not exist."
-        ));
+                existed ? "Set deleted!" : "Set does not exist.", existed, getCurrentFlashCardSet()));
+    }
+
+    @Override
+    public void ensureCorrectSet() {
+        FlashCardSet currentSet = getCurrentFlashCardSet();
+        if (currentSet == null || currentSet.getId() == null) {
+            return;
+        } else {
+            presenter.present(new CreateFlashcardOutputData(
+                    currentSet.getId(),
+                    null,
+                    false,
+                    "Switching to a different set.",
+                    true,
+                    null));
+        }
+    }
+
+    private FlashCardSet getCurrentFlashCardSet() {
+        int currentFlashCardSetId = viewManagerModel.getCurrentFlashCardSetId();
+        return dataAccess.getFlashCardSetById(currentFlashCardSetId);
     }
 }

@@ -10,8 +10,12 @@ import java.util.Map;
  */
 public interface NavigationOutputBoundary {
     void presentPromptPage();
+
     void presentSettingsPage();
+
     void presentSet(int setId);
-    void presentCreateSetPage();
-    void presentExistingSets(List<Map.Entry<String, Integer>>setInfos);
+
+    void presentCreateSetPage(int newSetId);
+
+    void presentExistingSets(List<Map.Entry<String, Integer>> setInfos);
 }

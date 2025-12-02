@@ -140,7 +140,6 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         this.add(controlPanel, gbc);
 
         this.setPreferredSize(new Dimension(1000, 560));
-
         update(this.viewModel.getState());
     }
 

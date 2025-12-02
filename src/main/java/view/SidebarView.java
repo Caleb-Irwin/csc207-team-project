@@ -142,8 +142,10 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         // Add all sets
         for (Map.Entry<String, Integer> info : setInfos) {
             String setName = info.getKey();
-            int setId = info.getValue();
-            addSetButton(setName, setId);
+            Integer setId = info.getValue();
+            if (setId != null) {
+                addSetButton(setName, setId);
+            }
         }
 
         revalidate();
