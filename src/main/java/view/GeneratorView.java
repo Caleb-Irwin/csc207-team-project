@@ -72,6 +72,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
         errorMessageLabel.setForeground(Color.RED);
         loadingLabel.setForeground(Color.BLUE);
         loadingLabel.setVisible(false);
+        loadingLabel.setFont(loadingLabel.getFont().deriveFont(Font.BOLD, 12f));
 
         gbc.gridy = 1;
         this.add(errorMessageLabel, gbc);
@@ -155,8 +156,8 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
                 return;
             }
 
-            errorMessageLabel.setText(""); // Clear previous error
-            loadingLabel.setVisible(true); // Show loading immediately
+            errorMessageLabel.setText("");
+            loadingLabel.setVisible(true);
 
             generatorViewModel.setState(state);
             generatorViewModel.firePropertyChange();
@@ -171,7 +172,7 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
 
                 @Override
                 protected void done() {
-                    loadingLabel.setVisible(false); // hide loading after execution
+                    loadingLabel.setVisible(false);
                 }
             }.execute();
         }
@@ -181,13 +182,13 @@ public class GeneratorView extends JPanel implements ActionListener, PropertyCha
     public void propertyChange(PropertyChangeEvent evt) {
         GeneratorState state = (GeneratorState) evt.getNewValue();
 
-        // Update the error message label
+
         errorMessageLabel.setText(state.getGeneratorError());
 
-        // Clear the input field if no error was reported (implies success)
+
         if (state.getGeneratorError() == null || state.getGeneratorError().isEmpty()) {
-            // Note: This only clears the text field, not the state's subject property
             subjectInputField.setText(placeholder);
+            subjectInputField.setForeground(Color.GRAY);
         }
     }
 
