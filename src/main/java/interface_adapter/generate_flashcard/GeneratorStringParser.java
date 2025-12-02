@@ -1,6 +1,5 @@
 package interface_adapter.generate_flashcard;
 
-
 import use_case.generate_flashcard.GeneratorStringParserInterface;
 
 public class GeneratorStringParser implements GeneratorStringParserInterface {
