@@ -1,13 +1,20 @@
-# Team Project
+# FlashAI
+#### by Caleb, Faiyad, Qishan, Stephanie and Albert
 
-Please keep this up-to-date with information about your project throughout the term.
+### Desktop flashcard app for creating, reviewing, and managing flashcards, with AI-generated sets for any topic.
 
-The readme should include information such as:
-- a summary of what your application is all about
-- a list of the user stories, along with who is responsible for each one
-- information about the API(s) that your project uses 
-- screenshots or animations demonstrating current functionality
+### User Stories
+1. As a user, I want to **create my own flashcards** with custom questions and
+answers, so that I can study any topic (e.g. SOLID principles) [handled by Qishan].
+2. As a user, I want to **review my flashcards** to help me memorize information more
+effectively [handled by Caleb].
+3. As a user, I want to **prompt AI to generate flashcards** based on a topic I provide,
+so that I can quickly build a study set [handled by Faiyad].
+4. As a user, I want to **enable AI features**, so I enter an Gemini API key [handed by Albert].
+5. As a user, I want to **see all of my flashcard** sets so I can choose one to edit
+and/or use [handled by Stephanie].
 
-By keeping this README up-to-date,
-your team will find it easier to prepare for the final presentation
-at the end of the term.
+### API usage
+We leverage the Gemini API to create flashcard sets with a single prompt.
+
+### Features
