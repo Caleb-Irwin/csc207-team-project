@@ -8,20 +8,43 @@ import use_case.FlashCardSetsDataAccessInterface;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Interactor for the Create Flashcard use case.
+ * <p>
+ * This class handles the business logic for creating, saving, deleting, and ensuring the correct flashcard set.
+ * It communicates with the data access layer to retrieve, update, and delete flashcard sets.
+ * It also interacts with the presenter to pass information about the current operation to the view.
+ * </p>
+ */
 public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
 
     private final FlashCardSetsDataAccessInterface dataAccess;
     private final CreateFlashcardOutputBoundary presenter;
     private final ViewManagerModel viewManagerModel;
 
+    /**
+     * Constructs a CreateFlashcardInteractor instance.
+     *
+     * @param dataAccess The data access interface to interact with the flashcard sets in the database.
+     * @param presenter  The presenter to communicate the results to the view.
+     * @param viewManagerModel The model for managing view state and navigation.
+     */
     public CreateFlashcardInteractor(FlashCardSetsDataAccessInterface dataAccess,
-            CreateFlashcardOutputBoundary presenter,
-            ViewManagerModel viewManagerModel) {
+                                     CreateFlashcardOutputBoundary presenter,
+                                     ViewManagerModel viewManagerModel) {
         this.dataAccess = dataAccess;
         this.presenter = presenter;
         this.viewManagerModel = viewManagerModel;
     }
 
+    /**
+     * Saves the flashcards in the current flashcard set.
+     * <p>
+     * This method updates the flashcard set's name and its flashcards, then saves the updated set in the data access layer.
+     * </p>
+     *
+     * @param inputData The input data containing the set name, questions, and answers.
+     */
     @Override
     public void saveFlashcards(CreateFlashcardInputData inputData) {
         String setName = inputData.getSetName();
@@ -37,9 +60,7 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
         }
         set.setSetName(setName);
         set.setFlashcards(flashcards);
-
         dataAccess.updateFlashCardSet(id, set);
-
         presenter.present(new CreateFlashcardOutputData(
                 id,
                 setName,
@@ -49,15 +70,23 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
                 set));
     }
 
+    /**
+     * Deletes the current flashcard set.
+     * <p>
+     * This method deletes the flashcard set from the data access layer if it exists.
+     * </p>
+     */
     @Override
     public void deleteSet() {
         int currentFlashCardSetId = viewManagerModel.getCurrentFlashCardSetId();
         boolean existed = dataAccess.getFlashCardSetById(currentFlashCardSetId) != null;
 
         if (existed) {
+            // Delete the flashcard set
             dataAccess.deleteFlashCardSet(currentFlashCardSetId);
         }
 
+        // Present the result
         presenter.present(new CreateFlashcardOutputData(
                 currentFlashCardSetId,
                 null,
@@ -65,6 +94,12 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
                 existed ? "Set deleted!" : "Set does not exist.", existed, getCurrentFlashCardSet()));
     }
 
+    /**
+     * Ensures the current flashcard set is correctly loaded and updates the view with its details.
+     * <p>
+     * This method retrieves the current flashcard set from the data access layer and passes the data to the presenter.
+     * </p>
+     */
     @Override
     public void ensureCorrectSet() {
         FlashCardSet currentSet = getCurrentFlashCardSet();
@@ -78,6 +113,11 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
                 currentSet));
     }
 
+    /**
+     * Retrieves the current flashcard set using the view manager model.
+     *
+     * @return The current flashcard set.
+     */
     private FlashCardSet getCurrentFlashCardSet() {
         int currentFlashCardSetId = viewManagerModel.getCurrentFlashCardSetId();
         return dataAccess.getFlashCardSetById(currentFlashCardSetId);
