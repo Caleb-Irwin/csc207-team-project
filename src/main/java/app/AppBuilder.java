@@ -132,12 +132,10 @@ public class AppBuilder {
 
         CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
         CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel, viewManagerModel);
-        CreateFlashcardInputBoundary interactor = new CreateFlashcardInteractor(DAO, presenter);
+        CreateFlashcardInputBoundary interactor = new CreateFlashcardInteractor(DAO, presenter, viewManagerModel);
         CreateFlashcardController controller = new CreateFlashcardController(interactor);
 
-        CreateFlashcardView view = new CreateFlashcardView(viewModel, controller, viewManagerModel,
-                reviewFlashCardsController,
-                reviewFlashCardsViewModel);
+        CreateFlashcardView view = new CreateFlashcardView(viewModel, controller, viewManagerModel);
 
         cardPanel.add(view, view.getViewName());
 

@@ -45,8 +45,11 @@ public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCar
 
     @Override
     public FlashCardSet getFlashCardSetById(Integer setId) {
+        if (setId == null) {
+            return null;
+        }
         for (FlashCardSet set : flashCardSets) {
-            if (set.getId().equals(setId)) {
+            if (setId.equals(set.getId())) {
                 return set;
             }
         }
@@ -61,8 +64,11 @@ public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCar
 
     @Override
     public void updateFlashCardSet(Integer id, FlashCardSet flashCardSet) {
+        if (id == null) {
+            return;
+        }
         for (int i = 0; i < flashCardSets.size(); i++) {
-            if (flashCardSets.get(i).getId().equals(id)) {
+            if (id.equals(flashCardSets.get(i).getId())) {
                 flashCardSets.set(i, flashCardSet);
                 updateFile();
                 return;
@@ -72,8 +78,11 @@ public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCar
 
     @Override
     public void deleteFlashCardSet(Integer id) {
+        if (id == null) {
+            return;
+        }
         for (int i = 0; i < flashCardSets.size(); i++) {
-            if (flashCardSets.get(i).getId().equals(id)) {
+            if (id.equals(flashCardSets.get(i).getId())) {
                 flashCardSets.remove(i);
                 updateFile();
                 return;
@@ -85,8 +94,9 @@ public class JsonDataAccessObject implements ApiKeyDataAccessInterface, FlashCar
     public int getNextAvailableId() {
         int maxId = 0;
         for (FlashCardSet set : flashCardSets) {
-            if (set.getId() > maxId) {
-                maxId = set.getId();
+            Integer id = set.getId();
+            if (id != null && id > maxId) {
+                maxId = id;
             }
         }
         return maxId + 1;

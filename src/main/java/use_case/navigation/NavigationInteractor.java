@@ -25,17 +25,23 @@ public class NavigationInteractor implements NavigationInputBoundary {
     public void goToPromptPage() {
         presenter.presentPromptPage();
     }
+
     @Override
     public void goToSettingsPage() {
         presenter.presentSettingsPage();
     }
+
     @Override
     public void goToSet(int setId) {
         presenter.presentSet(setId);
     }
+
     @Override
     public void goToCreateSetPage() {
-        presenter.presentCreateSetPage();
+        int newSetId = dataAccess.getNextAvailableId();
+        FlashCardSet newSet = new FlashCardSet("Untitled Set " + newSetId, new ArrayList<>(), newSetId);
+        dataAccess.createFlashCardSet(newSet);
+        presenter.presentCreateSetPage(newSetId);
     }
 
     @Override
