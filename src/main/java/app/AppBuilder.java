@@ -1,136 +1,125 @@
 package app;
 
-import data_access.FileUserDataAccessObject;
+// Settings branch imports
 import data_access.FileSettingsDataAccessObject;
-import entity.UserFactory;
-import interface_adapter.ViewManagerModel;
-import interface_adapter.logged_in.ChangePasswordController;
-import interface_adapter.logged_in.ChangePasswordPresenter;
-import interface_adapter.logged_in.LoggedInViewModel;
-import interface_adapter.login.LoginController;
-import interface_adapter.login.LoginPresenter;
-import interface_adapter.login.LoginViewModel;
-import interface_adapter.logout.LogoutController;
-import interface_adapter.logout.LogoutPresenter;
 import interface_adapter.settings.SettingsController;
 import interface_adapter.settings.SettingsPresenter;
 import interface_adapter.settings.SettingsViewModel;
-import interface_adapter.signup.SignupController;
-import interface_adapter.signup.SignupPresenter;
-import interface_adapter.signup.SignupViewModel;
-import use_case.change_password.ChangePasswordInputBoundary;
-import use_case.change_password.ChangePasswordInteractor;
-import use_case.change_password.ChangePasswordOutputBoundary;
-import use_case.login.LoginInputBoundary;
-import use_case.login.LoginInteractor;
-import use_case.login.LoginOutputBoundary;
-import use_case.logout.LogoutInputBoundary;
-import use_case.logout.LogoutInteractor;
-import use_case.logout.LogoutOutputBoundary;
 import use_case.settings.SettingsDataAccessInterface;
 import use_case.settings.SettingsInputBoundary;
 import use_case.settings.SettingsInteractor;
-import use_case.settings.SettingsOutputBoundary;
-import use_case.signup.SignupInputBoundary;
-import use_case.signup.SignupInteractor;
-import use_case.signup.SignupOutputBoundary;
+
+// Main branch imports
+import data_access.JsonDataAccessObject;
+
+import interface_adapter.ViewManagerModel;
+
+import interface_adapter.create_flashcard.CreateFlashcardController;
+import interface_adapter.create_flashcard.CreateFlashcardPresenter;
+import interface_adapter.create_flashcard.CreateFlashcardViewModel;
+import interface_adapter.generate_flashcard.*;
+import interface_adapter.navigation.NavigationController;
+import interface_adapter.navigation.NavigationPresenter;
+
+import interface_adapter.review_flashcards.ReviewFlashCardsController;
+import interface_adapter.review_flashcards.ReviewFlashCardsPresenter;
+import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
+
+import use_case.FlashCardSetsDataAccessInterface;
+import use_case.create_flashcard.CreateFlashcardInputBoundary;
+import use_case.create_flashcard.CreateFlashcardInteractor;
+import use_case.generate_flashcard.GeneratorInputBoundary;
+import use_case.generate_flashcard.GeneratorInteractor;
+import use_case.generate_flashcard.GeneratorOutputBoundary;
+
+import use_case.navigation.NavigationInputBoundary;
+import use_case.navigation.NavigationInteractor;
+import use_case.navigation.NavigationOutputBoundary;
+import use_case.review_flashcards.ReviewFlashCardsInputBoundary;
+import use_case.review_flashcards.ReviewFlashCardsInteractor;
+import use_case.review_flashcards.ReviewFlashCardsOutputBoundary;
 import view.*;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class AppBuilder {
+
     private final JPanel cardPanel = new JPanel();
     private final CardLayout cardLayout = new CardLayout();
-    final UserFactory userFactory = new UserFactory();
-    final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // set which data access implementation to use, can be any
-    // of the classes from the data_access package
+    private final ViewManagerModel viewManagerModel = new ViewManagerModel();
+    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
-    // DAO version using local file storage
-    final FileUserDataAccessObject userDataAccessObject = new FileUserDataAccessObject("users.csv", userFactory);
+    private final JsonDataAccessObject DAO = new JsonDataAccessObject("data/");
 
-    // DAO version using a shared external database
-    // final DBUserDataAccessObject userDataAccessObject = new DBUserDataAccessObject(userFactory);
+    private SidebarView sidebarView;
 
-    private HomePage homePage;
-    private SignupView signupView;
-    private SignupViewModel signupViewModel;
-    private LoginViewModel loginViewModel;
-    private LoggedInViewModel loggedInViewModel;
-    private LoggedInView loggedInView;
-    private LoginView loginView;
+    // Main branch fields
+    private GeneratorView generatorView;
+    private GeneratorViewModel generatorViewModel;
+
+    private ReviewFlashCardsViewModel reviewFlashCardsViewModel;
+    private ReviewFlashCardsView reviewFlashCardsView;
+    private ReviewFlashCardsController reviewFlashCardsController;
+
+    // Settings branch fields
     private SettingsView settingsView;
     private SettingsViewModel settingsViewModel;
-    private SettingsController settingsController;
-
 
     public AppBuilder() {
         cardPanel.setLayout(cardLayout);
     }
 
-    public AppBuilder addHomePage() {
-        homePage = new HomePage(viewManagerModel);
-        cardPanel.add(homePage, homePage.getViewName());
+    public AppBuilder addSidebar() {
+        this.sidebarView = new SidebarView(null, viewManagerModel);
+
+        NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel, sidebarView);
+        NavigationInputBoundary interactor = new NavigationInteractor(presenter, DAO);
+        NavigationController navigationController = new NavigationController(interactor);
+
+        sidebarView.setController(navigationController);
+
         return this;
     }
 
-    public AppBuilder addSignupView() {
-        signupViewModel = new SignupViewModel();
-        signupView = new SignupView(signupViewModel);
-        cardPanel.add(signupView, signupView.getViewName());
+    public AppBuilder addGeneratorView() {
+        generatorViewModel = new GeneratorViewModel();
+        generatorView = new GeneratorView(generatorViewModel);
+        cardPanel.add(generatorView, generatorView.getViewName());
         return this;
     }
 
-    public AppBuilder addLoginView() {
-        loginViewModel = new LoginViewModel();
-        loginView = new LoginView(loginViewModel);
-        cardPanel.add(loginView, loginView.getViewName());
+    public AppBuilder addGeneratorUseCase() {
+        GeneratorOutputBoundary presenter = new GeneratorPresenter(generatorViewModel, viewManagerModel,
+                reviewFlashCardsViewModel);
+        GeneratorApiCaller apiCaller = new GeneratorApiCaller(DAO);
+        GeneratorStringParser parser = new GeneratorStringParser();
+        GeneratorSetSaver saver = new GeneratorSetSaver(DAO);
+
+        GeneratorInputBoundary interactor = new GeneratorInteractor(presenter, apiCaller, parser, saver);
+        GeneratorController controller = new GeneratorController(interactor);
+
+        generatorView.setGeneratorController(controller);
         return this;
     }
 
-    public AppBuilder addLoggedInView() {
-        loggedInViewModel = new LoggedInViewModel();
-        loggedInView = new LoggedInView(loggedInViewModel);
-        cardPanel.add(loggedInView, loggedInView.getViewName());
+    public AppBuilder addReviewFlashCardsUseCase() {
+        reviewFlashCardsViewModel = new ReviewFlashCardsViewModel();
+        ReviewFlashCardsOutputBoundary presenter = new ReviewFlashCardsPresenter(reviewFlashCardsViewModel,
+                viewManagerModel);
+        ReviewFlashCardsInputBoundary interactor = new ReviewFlashCardsInteractor(presenter, DAO, viewManagerModel);
+        reviewFlashCardsController = new ReviewFlashCardsController(interactor);
+        reviewFlashCardsView = new ReviewFlashCardsView(
+                reviewFlashCardsViewModel,
+                reviewFlashCardsController,
+                viewManagerModel);
         return this;
     }
 
-    public AppBuilder addSignupUseCase() {
-        final SignupOutputBoundary signupOutputBoundary = new SignupPresenter(viewManagerModel,
-                signupViewModel, loginViewModel);
-        final SignupInputBoundary userSignupInteractor = new SignupInteractor(
-                userDataAccessObject, signupOutputBoundary, userFactory);
-
-        SignupController controller = new SignupController(userSignupInteractor);
-        signupView.setSignupController(controller);
+    public AppBuilder addReviewFlashCardsView() {
+        cardPanel.add(reviewFlashCardsView, reviewFlashCardsView.getViewName());
         return this;
-    }
-
-    public AppBuilder addLoginUseCase() {
-        final LoginOutputBoundary loginOutputBoundary = new LoginPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-        final LoginInputBoundary loginInteractor = new LoginInteractor(
-                userDataAccessObject, loginOutputBoundary);
-
-        LoginController loginController = new LoginController(loginInteractor);
-        loginView.setLoginController(loginController);
-        return this;
-    }
-
-    public AppBuilder addChangePasswordUseCase() {
-        final ChangePasswordOutputBoundary changePasswordOutputBoundary = new ChangePasswordPresenter(viewManagerModel,
-                loggedInViewModel);
-
-        final ChangePasswordInputBoundary changePasswordInteractor =
-                new ChangePasswordInteractor(userDataAccessObject, changePasswordOutputBoundary, userFactory);
-
-        ChangePasswordController changePasswordController = new ChangePasswordController(changePasswordInteractor);
-        loggedInView.setChangePasswordController(changePasswordController);
-        return this;
-
     }
 
     public AppBuilder addSettingsView() {
@@ -153,34 +142,39 @@ public class AppBuilder {
         return this;
     }
 
-
-    /**
-     * Adds the Logout Use Case to the application.
-     * @return this builder
-     */
-    public AppBuilder addLogoutUseCase() {
-        final LogoutOutputBoundary logoutOutputBoundary = new LogoutPresenter(viewManagerModel,
-                loggedInViewModel, loginViewModel);
-
-        final LogoutInputBoundary logoutInteractor =
-                new LogoutInteractor(userDataAccessObject, logoutOutputBoundary);
-
-        final LogoutController logoutController = new LogoutController(logoutInteractor);
-        loggedInView.setLogoutController(logoutController);
-        return this;
-    }
-
     public JFrame build() {
-        final JFrame application = new JFrame("User Login Example");
+        JFrame application = new JFrame("Flash AI");
         application.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        application.setSize(1000, 700);
+        application.setLocationRelativeTo(null);
 
-        application.add(cardPanel);
+        JPanel cardContainer = new JPanel(new BorderLayout());
+        cardContainer.add(sidebarView, BorderLayout.WEST);
+        cardContainer.add(cardPanel, BorderLayout.CENTER);
 
-        viewManagerModel.setState(homePage.getViewName());
+        application.add(cardContainer);
+
+        viewManagerModel.setState(generatorView.getViewName());
         viewManagerModel.firePropertyChange();
 
+        application.setVisible(true);
         return application;
     }
 
+    public AppBuilder addCreateFlashcardView() {
+
+        CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
+        CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel, viewManagerModel);
+        CreateFlashcardInputBoundary interactor = new CreateFlashcardInteractor(DAO, presenter);
+        CreateFlashcardController controller = new CreateFlashcardController(interactor);
+
+        CreateFlashcardView view = new CreateFlashcardView(viewModel, controller, viewManagerModel,
+                reviewFlashCardsController,
+                reviewFlashCardsViewModel);
+
+        cardPanel.add(view, view.getViewName());
+
+        return this;
+    }
 
 }

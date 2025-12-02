@@ -39,4 +39,4 @@ build/
 
 .env
 
-.idea
+data/
