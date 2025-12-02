@@ -13,8 +13,6 @@ public class Main {
                 .addCreateFlashcardView()
                 .build();
 
-        // appBuilder.buildCreateFlashcardUI();
-
         application.pack();
         application.setLocationRelativeTo(null);
         application.setVisible(true);

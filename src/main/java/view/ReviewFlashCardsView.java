@@ -7,6 +7,7 @@ import javax.swing.text.StyledDocument;
 
 import entity.FlashCard;
 import entity.FlashCardSet;
+import interface_adapter.ViewManagerModel;
 import interface_adapter.review_flashcards.ReviewFlashCardsController;
 import interface_adapter.review_flashcards.ReviewFlashCardsState;
 import interface_adapter.review_flashcards.ReviewFlashCardsViewModel;
@@ -19,6 +20,7 @@ import java.beans.PropertyChangeListener;
 
 public class ReviewFlashCardsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final ReviewFlashCardsViewModel viewModel;
+    private final ViewManagerModel viewManagerModel;
     private final ReviewFlashCardsController controller;
     private final String viewName = "review flashcards";
 
@@ -36,9 +38,12 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     private static final Color NAV_BUTTON_COLOR = new Color(150, 130, 170);
 
     public ReviewFlashCardsView(ReviewFlashCardsViewModel reviewFlashCardsViewModel,
-            ReviewFlashCardsController reviewFlashCardsController) {
+            ReviewFlashCardsController reviewFlashCardsController,
+            ViewManagerModel viewManagerModel) {
         this.viewModel = reviewFlashCardsViewModel;
         this.viewModel.addPropertyChangeListener(this);
+        this.viewManagerModel = viewManagerModel;
+        this.viewManagerModel.addPropertyChangeListener(this);
         this.controller = reviewFlashCardsController;
 
         this.setLayout(new GridBagLayout());
@@ -162,8 +167,12 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
 
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
+        if (evt.getSource() == viewManagerModel) {
+            update(viewModel.getState());
+        } else {
             ReviewFlashCardsState state = (ReviewFlashCardsState) evt.getNewValue();
-        update(state);
+            update(state);
+        }
     }
 
     private void update(ReviewFlashCardsState state) {

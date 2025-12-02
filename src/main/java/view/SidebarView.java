@@ -17,18 +17,14 @@ import java.util.Map;
 public class SidebarView extends JPanel implements PropertyChangeListener {
     private final JButton newSetButton;
     private final JButton settingsButton;
-    private final NavigationController controller;
+    private NavigationController controller;
     private final JPanel scrollContent;
     private final JPanel bottomPanel;
-    private final ViewManagerModel viewManagerModel;
     private final JButton generateSetButton;
     private final ArrayList<Integer> existingSetIds = new ArrayList<>();
 
-
     public SidebarView(NavigationController controller, ViewManagerModel viewManagerModel) {
         this.controller = controller;
-        this.viewManagerModel = viewManagerModel;
-        controller.loadExistingSets();
         viewManagerModel.addPropertyChangeListener(this);
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -58,7 +54,7 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         generateSetButton.setPreferredSize(new Dimension(92, 16));
         generateSetButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
-        //  make white
+        // make white
         newSetButton = new JButton("+ New Set");
         newSetButton.setFont(newSetButton.getFont().deriveFont(Font.BOLD, 14f));
         newSetButton.setBackground(new Color(250, 250, 250));
@@ -68,7 +64,6 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         newSetButton.setPreferredSize(new Dimension(92, 16));
         newSetButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
 
-
         settingsButton = new JButton("Settings");
         settingsButton.setFont(settingsButton.getFont().deriveFont(Font.BOLD, 14f));
         settingsButton.setBackground(new Color(180, 180, 180));
@@ -77,7 +72,6 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         settingsButton.setOpaque(true);
         settingsButton.setPreferredSize(new Dimension(100, 25));
         settingsButton.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
-
 
         // create the bottom Panel that contains settings button
         bottomPanel = new JPanel();
@@ -97,13 +91,20 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         this.add(bottomPanel, BorderLayout.SOUTH);
 
         // action listener to go to prompt page when the user wants to create a new set
-        newSetButton.addActionListener(e -> controller.goToCreateSetPage());
+        newSetButton.addActionListener(e -> this.controller.goToCreateSetPage());
 
-        // action listener to go to prompt page when the user wants to go to generator page
-        generateSetButton.addActionListener(e -> controller.goToPromptPage());
+        // action listener to go to prompt page when the user wants to go to generator
+        // page
+        generateSetButton.addActionListener(e -> this.controller.goToPromptPage());
 
         // action listener to open the settings page when a user clicks settings
-        settingsButton.addActionListener(e -> controller.openSettings());
+        settingsButton.addActionListener(e -> this.controller.openSettings());
+    }
+
+    public void setController(NavigationController controller) {
+        this.controller = controller;
+        // Load existing sets now that we have the proper controller
+        controller.loadExistingSets();
     }
 
     // add set button called by generating or saving a new set
@@ -133,7 +134,6 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
         repaint();
     }
 
-
     public void updateSidebarButtons(List<Map.Entry<String, Integer>> setInfos) {
         // Clear existing
         scrollContent.removeAll();
@@ -153,11 +153,8 @@ public class SidebarView extends JPanel implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if ("state".equals(evt.getPropertyName())) {
-            String newState = (String) evt.getNewValue();
 
-            if (newState != null && newState.startsWith("review flashcards")) {
-                controller.loadExistingSets();
-            }
+            controller.loadExistingSets();
         }
     }
 }

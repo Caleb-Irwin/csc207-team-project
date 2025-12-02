@@ -1,6 +1,5 @@
 package interface_adapter.navigation;
 
-import entity.FlashCardSet;
 import interface_adapter.ViewManagerModel;
 import use_case.navigation.NavigationOutputBoundary;
 import view.SidebarView;
@@ -38,7 +37,7 @@ public class NavigationPresenter implements NavigationOutputBoundary {
     @Override
     public void presentSet(int setId) {
         viewManagerModel.setCurrentFlashCardSetId(setId);
-        viewManagerModel.setState("review flashcard");
+        viewManagerModel.setState("review flashcards");
         viewManagerModel.firePropertyChange();
     }
 
@@ -51,9 +50,11 @@ public class NavigationPresenter implements NavigationOutputBoundary {
     @Override
     public void presentExistingSets(List<Map.Entry<String, Integer>> setInfos) {
         SwingUtilities.invokeLater(() -> {
-            if (setInfos == null) {return;}
+            if (setInfos == null) {
+                return;
+            }
             sidebarView.updateSidebarButtons(setInfos);
         });
 
-        }
+    }
 }

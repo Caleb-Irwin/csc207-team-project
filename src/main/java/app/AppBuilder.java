@@ -59,11 +59,14 @@ public class AppBuilder {
     }
 
     public AppBuilder addSidebar() {
+        this.sidebarView = new SidebarView(null, viewManagerModel);
+
         NavigationOutputBoundary presenter = new NavigationPresenter(viewManagerModel, sidebarView);
         NavigationInputBoundary interactor = new NavigationInteractor(presenter, DAO);
         NavigationController navigationController = new NavigationController(interactor);
 
-        this.sidebarView = new SidebarView(navigationController, viewManagerModel);
+        sidebarView.setController(navigationController);
+
         return this;
     }
 
@@ -96,7 +99,8 @@ public class AppBuilder {
         reviewFlashCardsController = new ReviewFlashCardsController(interactor);
         reviewFlashCardsView = new ReviewFlashCardsView(
                 reviewFlashCardsViewModel,
-                reviewFlashCardsController);
+                reviewFlashCardsController,
+                viewManagerModel);
         return this;
     }
 
@@ -116,26 +120,24 @@ public class AppBuilder {
         cardContainer.add(cardPanel, BorderLayout.CENTER);
 
         application.add(cardContainer);
-        
+
         viewManagerModel.setState(generatorView.getViewName());
-//        viewManagerModel.setState("create flashcard");
         viewManagerModel.firePropertyChange();
 
         application.setVisible(true);
         return application;
     }
+
     public AppBuilder addCreateFlashcardView() {
 
         CreateFlashcardViewModel viewModel = new CreateFlashcardViewModel();
         CreateFlashcardPresenter presenter = new CreateFlashcardPresenter(viewModel, viewManagerModel);
-        CreateFlashcardInputBoundary interactor =
-                new CreateFlashcardInteractor(DAO, presenter);
-        CreateFlashcardController controller =
-                new CreateFlashcardController(interactor);
+        CreateFlashcardInputBoundary interactor = new CreateFlashcardInteractor(DAO, presenter);
+        CreateFlashcardController controller = new CreateFlashcardController(interactor);
 
-        CreateFlashcardView view =
-                new CreateFlashcardView(viewModel, controller, viewManagerModel, reviewFlashCardsController,
-                        reviewFlashCardsViewModel);
+        CreateFlashcardView view = new CreateFlashcardView(viewModel, controller, viewManagerModel,
+                reviewFlashCardsController,
+                reviewFlashCardsViewModel);
 
         cardPanel.add(view, view.getViewName());
 
