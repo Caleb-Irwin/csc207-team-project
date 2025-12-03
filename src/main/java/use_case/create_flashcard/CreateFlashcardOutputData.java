@@ -4,12 +4,10 @@ import entity.FlashCardSet;
 
 /**
  * OutputData for the Create Flashcard use case.
- * <p>
  * This class encapsulates the output data that will be passed between the interactor and the presenter.
  * It contains information about the flashcard set, whether the operation was successful,
  * and a message to be displayed in the view. Additionally, it includes a flag to indicate
  * whether the user should be redirected to the home page after the operation.
- * </p>
  */
 public class CreateFlashcardOutputData {
     private final Integer setId;

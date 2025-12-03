@@ -4,20 +4,16 @@ import entity.FlashCard;
 import entity.FlashCardSet;
 import interface_adapter.ViewManagerModel;
 import use_case.FlashCardSetsDataAccessInterface;
-
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Interactor for the Create Flashcard use case.
- * <p>
  * This class handles the business logic for creating, saving, deleting, and ensuring the correct flashcard set.
  * It communicates with the data access layer to retrieve, update, and delete flashcard sets.
  * It also interacts with the presenter to pass information about the current operation to the view.
- * </p>
  */
 public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
-
     private final FlashCardSetsDataAccessInterface dataAccess;
     private final CreateFlashcardOutputBoundary presenter;
     private final ViewManagerModel viewManagerModel;
@@ -39,9 +35,7 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
 
     /**
      * Saves the flashcards in the current flashcard set.
-     * <p>
      * This method updates the flashcard set's name and its flashcards, then saves the updated set in the data access layer.
-     * </p>
      *
      * @param inputData The input data containing the set name, questions, and answers.
      */
@@ -50,10 +44,8 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
         String setName = inputData.getSetName();
         FlashCardSet set = getCurrentFlashCardSet();
         Integer id = set.getId();
-
         List<String> questions = inputData.getQuestions();
         List<String> answers = inputData.getAnswers();
-
         ArrayList<FlashCard> flashcards = new ArrayList<>();
         for (int i = 0; i < questions.size(); i++) {
             flashcards.add(new FlashCard(questions.get(i), answers.get(i)));
@@ -72,21 +64,15 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
 
     /**
      * Deletes the current flashcard set.
-     * <p>
      * This method deletes the flashcard set from the data access layer if it exists.
-     * </p>
      */
     @Override
     public void deleteSet() {
         int currentFlashCardSetId = viewManagerModel.getCurrentFlashCardSetId();
         boolean existed = dataAccess.getFlashCardSetById(currentFlashCardSetId) != null;
-
         if (existed) {
-            // Delete the flashcard set
             dataAccess.deleteFlashCardSet(currentFlashCardSetId);
         }
-
-        // Present the result
         presenter.present(new CreateFlashcardOutputData(
                 currentFlashCardSetId,
                 null,
@@ -96,9 +82,7 @@ public class CreateFlashcardInteractor implements CreateFlashcardInputBoundary {
 
     /**
      * Ensures the current flashcard set is correctly loaded and updates the view with its details.
-     * <p>
      * This method retrieves the current flashcard set from the data access layer and passes the data to the presenter.
-     * </p>
      */
     @Override
     public void ensureCorrectSet() {

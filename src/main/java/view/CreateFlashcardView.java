@@ -4,7 +4,6 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.create_flashcard.CreateFlashcardController;
 import interface_adapter.create_flashcard.CreateFlashcardState;
 import interface_adapter.create_flashcard.CreateFlashcardViewModel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -14,12 +13,9 @@ import java.util.List;
 
 /**
  * View for the Create Flashcard use case.
- * <p>
  * This class represents the graphical user interface (GUI) for creating and managing flashcard sets.
  * It allows users to create new flashcard sets, add flashcards to a set, save the flashcard set,
- * and delete or modify existing flashcard sets. The view is connected to a controller and view model,
- * which handle the business logic and update the view accordingly.
- * <p>
+ * and delete or modify existing flashcard sets.
  */
 public class CreateFlashcardView extends JPanel implements PropertyChangeListener {
     private static final Color BACKGROUND_COLOR = new Color(217, 210, 230);
@@ -110,6 +106,13 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         this.setPreferredSize(new Dimension(1000, 560));
     }
 
+    /**
+     * Creates a styled JButton for consistent UI appearance.
+     *
+     * @param text the button label
+     * @param bgColor the background color
+     * @return a styled JButton
+     */
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
         button.setBackground(bgColor);
@@ -122,6 +125,11 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         return button;
     }
 
+    /**
+     * Creates a styled text field used for questions and answers.
+     *
+     * @return a styled JTextField
+     */
     private JTextField createStyledTextField() {
         JTextField field = new JTextField(25);
         field.setBackground(INPUT_FIELD_COLOR);
@@ -133,6 +141,12 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         return field;
     }
 
+    /**
+     * Creates a styled label used in the flashcard form.
+     *
+     * @param text the label text
+     * @return a styled JLabel
+     */
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(label.getFont().deriveFont(Font.BOLD, 14f));
@@ -140,8 +154,10 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         return label;
     }
 
-    /** ------------------- FORM BUILDING ------------------- **/
-
+    /**
+     * Builds the initial form layout for editing a flashcard set.
+     * Resets fields and loads the Set Name input.
+     */
     private void buildInitialForm() {
         formPanel.removeAll();
         questionFields.clear();
@@ -166,6 +182,9 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         formPanel.repaint();
     }
 
+    /**
+     * Applies consistent styling to the Set Name text field.
+     */
     private void styleSetNameField() {
         setNameField.setBackground(INPUT_FIELD_COLOR);
         setNameField.setFont(setNameField.getFont().deriveFont(14f));
@@ -175,6 +194,10 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         setNameField.setPreferredSize(new Dimension(300, 35));
     }
 
+    /**
+     * Adds a new question/answer input row to the form.
+     * Automatically adjusts layout and increments the counter.
+     */
     private void addNewFlashcardPair() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10);
@@ -211,50 +234,56 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         formPanel.repaint();
     }
 
-    /** ------------------- SAVE LOGIC ------------------- **/
-
+    /**
+     * Saves the current flashcard set using the controller.
+     */
     private void saveFlashcard() {
         String setName = setNameField.getText().trim();
-
         List<String> questions = new ArrayList<>();
         List<String> answers = new ArrayList<>();
-
         for (int i = 0; i < questionFields.size(); i++) {
             questions.add(questionFields.get(i).getText());
             answers.add(answerFields.get(i).getText());
         }
-
         controller.saveFlashcards(setName, questions, answers);
     }
 
-    /** ------------------- DELETE LOGIC ------------------- **/
-
+    /**
+     * Deletes the current flashcard set.
+     */
     private void deleteFlashcards() {
         controller.deleteSet();
         buildInitialForm();
     }
 
+    /**
+     * Starts reviewing the current flashcard set.
+     */
     private void startReview() {
         saveFlashcard();
         viewManagerModel.setState("review flashcards");
         viewManagerModel.firePropertyChange();
     }
 
+    /**
+     * Handles state updates from the ViewModel or ViewManager.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getSource() == viewManagerModel) {
             controller.ensureCorrectSet();
             return;
         }
-
         if (!CreateFlashcardViewModel.STATE_PROPERTY.equals(evt.getPropertyName())) {
             return;
         }
-
         CreateFlashcardState state = (CreateFlashcardState) evt.getNewValue();
         updateForm(state);
     }
 
+    /**
+     * Updates all UI fields (set name, questions, answers) to match the latest
+     */
     private void updateForm(CreateFlashcardState state) {
         messageLabel.setText(state.getMessage());
         setNameField.setText(state.getSetName());
@@ -293,6 +322,9 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         formPanel.repaint();
     }
 
+    /**
+     * Returns the view name used by the ViewManager.
+     */
     public String getViewName() {
         return "create flashcard";
     }

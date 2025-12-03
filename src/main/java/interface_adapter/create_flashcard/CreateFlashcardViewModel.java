@@ -5,7 +5,6 @@ import java.beans.PropertyChangeSupport;
 
 /**
  * ViewModel for Create Flashcard use case.
- * <p>
  * The ViewModel for the Create Flashcard use case manages the state of the view. It holds a reference to
  * the current state of the flashcard set being created (set name, questions, answers, etc.) and notifies
  * listeners when the state changes.

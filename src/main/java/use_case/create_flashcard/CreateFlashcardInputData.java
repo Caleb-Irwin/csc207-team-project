@@ -4,13 +4,11 @@ import java.util.List;
 
 /**
  * Input data for saving an entire flashcard set.
- * <p>
  * This class holds the data necessary for saving a flashcard set, including the set's name,
  * a list of questions, and a list of answers. It is used as the input for the save operation
  * in the "Create Flashcard" use case.
  */
 public class CreateFlashcardInputData {
-
     private final String setName;
     private final List<String> questions;
     private final List<String> answers;

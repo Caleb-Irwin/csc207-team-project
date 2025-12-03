@@ -2,7 +2,6 @@ package interface_adapter.create_flashcard;
 
 import use_case.create_flashcard.CreateFlashcardInputBoundary;
 import use_case.create_flashcard.CreateFlashcardInputData;
-
 import java.util.List;
 
 /**
@@ -14,8 +13,6 @@ public class CreateFlashcardController {
 
     /**
      * Constructs a CreateFlashcardController with the provided interactor.
-     *
-     * @param interactor the interactor that handles the business logic for the create flashcard use case
      */
     public CreateFlashcardController(CreateFlashcardInputBoundary interactor) {
         this.interactor = interactor;
@@ -50,7 +47,6 @@ public class CreateFlashcardController {
      * This method checks if the current flashcard set exists and is valid.
      */
     public void ensureCorrectSet() {
-        // Ensure the correct set is selected by the interactor
         interactor.ensureCorrectSet();
     }
 }

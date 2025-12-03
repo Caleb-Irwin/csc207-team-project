@@ -5,12 +5,10 @@ import java.util.List;
 
 /**
  * State for Create Flashcard use case.
- * <p>
  * This class holds the state of the flashcard set being created. It includes the set name,
  * the list of questions and answers, and any messages to be displayed to the user.
  */
 public class CreateFlashcardState {
-
     private String setName = "";
     private List<String> questions = new ArrayList<>();
     private List<String> answers = new ArrayList<>();
