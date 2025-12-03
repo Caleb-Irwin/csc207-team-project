@@ -18,6 +18,10 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
+/**
+ * The View for reviewing flashcards.
+ * Displays flashcards one at a time with controls to flip, navigate, and edit.
+ */
 public class ReviewFlashCardsView extends JPanel implements ActionListener, PropertyChangeListener {
     private final ReviewFlashCardsViewModel viewModel;
     private final ViewManagerModel viewManagerModel;
@@ -37,6 +41,14 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     private static final Color BUTTON_COLOR = new Color(229, 115, 180);
     private static final Color NAV_BUTTON_COLOR = new Color(150, 130, 170);
 
+    /**
+     * Constructs a ReviewFlashCardsView with the specified view model, controller,
+     * and view manager.
+     *
+     * @param reviewFlashCardsViewModel  the view model for this view
+     * @param reviewFlashCardsController the controller handling user actions
+     * @param viewManagerModel           the view manager model for navigation
+     */
     public ReviewFlashCardsView(ReviewFlashCardsViewModel reviewFlashCardsViewModel,
             ReviewFlashCardsController reviewFlashCardsController,
             ViewManagerModel viewManagerModel) {
@@ -143,6 +155,13 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         update(this.viewModel.getState());
     }
 
+    /**
+     * Creates a styled button with the specified text and background color.
+     *
+     * @param text    the button text
+     * @param bgColor the background color of the button
+     * @return a styled JButton
+     */
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
         button.setBackground(bgColor);
@@ -156,14 +175,21 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
     }
 
     /**
-     * React to a button click that results in evt.
-     * 
+     * Reacts to a button click event.
+     *
      * @param evt the ActionEvent to react to
      */
+    @Override
     public void actionPerformed(ActionEvent evt) {
         System.out.println("Click " + evt.getActionCommand());
     }
 
+    /**
+     * Responds to property change events from the view model or view manager.
+     * Updates the view when the state changes.
+     *
+     * @param evt the PropertyChangeEvent containing the state change information
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getSource() == viewManagerModel) {
@@ -174,6 +200,12 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         }
     }
 
+    /**
+     * Updates the view based on the current state.
+     * Refreshes the displayed flashcard, buttons, and title based on state data.
+     *
+     * @param state the current ReviewFlashCardsState
+     */
     private void update(ReviewFlashCardsState state) {
         int flashCardSetId = state.getFlashCardSetId();
         controller.ensureCorrectSet(flashCardSetId);
@@ -218,6 +250,11 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         centerTextVertically();
     }
 
+    /**
+     * Sets the text content of the flashcard display area with center alignment.
+     *
+     * @param text the text to display
+     */
     private void setContentText(String text) {
         contentArea.setText(text);
         // Re-apply center alignment after setting text
@@ -227,6 +264,10 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
     }
 
+    /**
+     * Centers the text vertically within the content area.
+     * Adjusts padding based on the text and view heights.
+     */
     private void centerTextVertically() {
         SwingUtilities.invokeLater(() -> {
             int textHeight = contentArea.getPreferredSize().height;
@@ -236,6 +277,11 @@ public class ReviewFlashCardsView extends JPanel implements ActionListener, Prop
         });
     }
 
+    /**
+     * Returns the name of this view.
+     *
+     * @return the view name string
+     */
     public String getViewName() {
         return viewName;
     }

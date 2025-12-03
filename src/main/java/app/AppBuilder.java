@@ -46,7 +46,6 @@ public class AppBuilder {
     private final CardLayout cardLayout = new CardLayout();
 
     private final ViewManagerModel viewManagerModel = new ViewManagerModel();
-    private final ViewManager viewManager = new ViewManager(cardPanel, cardLayout, viewManagerModel);
 
     private final JsonDataAccessObject DAO = new JsonDataAccessObject("data/");
 
@@ -60,6 +59,7 @@ public class AppBuilder {
     private ReviewFlashCardsController reviewFlashCardsController;
 
     public AppBuilder() {
+        new ViewManager(cardPanel, cardLayout, viewManagerModel);
         cardPanel.setLayout(cardLayout);
     }
 
@@ -154,8 +154,7 @@ public class AppBuilder {
 
         SettingsDataAccessInterface settingsDataAccess = DAO;
 
-        SettingsInputBoundary interactor =
-                new SettingsInteractor(settingsDataAccess, presenter);
+        SettingsInputBoundary interactor = new SettingsInteractor(settingsDataAccess, presenter);
 
         SettingsController controller = new SettingsController(interactor);
 
@@ -166,6 +165,5 @@ public class AppBuilder {
 
         return this;
     }
-
 
 }

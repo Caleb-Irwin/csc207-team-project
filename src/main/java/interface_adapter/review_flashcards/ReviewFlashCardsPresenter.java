@@ -4,16 +4,30 @@ import entity.FlashCardSet;
 import interface_adapter.ViewManagerModel;
 import use_case.review_flashcards.ReviewFlashCardsOutputBoundary;
 
+/**
+ * Presenter for the Review Flashcards feature.
+ * Transforms use case output data and updates the view model for display.
+ */
 public class ReviewFlashCardsPresenter implements ReviewFlashCardsOutputBoundary {
 
     private final ReviewFlashCardsViewModel viewModel;
     private final ViewManagerModel viewManagerModel;
 
+    /**
+     * Constructs a ReviewFlashCardsPresenter with the required view models.
+     *
+     * @param viewModel        the view model for the review flashcards view
+     * @param viewManagerModel the view manager model for navigation
+     */
     public ReviewFlashCardsPresenter(ReviewFlashCardsViewModel viewModel, ViewManagerModel viewManagerModel) {
         this.viewModel = viewModel;
         this.viewManagerModel = viewManagerModel;
     }
 
+    /**
+     * {@inheritDoc}
+     * Advances to the next card, wrapping around to the first card if at the end.
+     */
     @Override
     public void nextCard() {
         ReviewFlashCardsState state = viewModel.getState();
@@ -29,6 +43,11 @@ public class ReviewFlashCardsPresenter implements ReviewFlashCardsOutputBoundary
         viewModel.firePropertyChange();
     }
 
+    /**
+     * {@inheritDoc}
+     * Goes back to the previous card, wrapping to the last card if at the
+     * beginning.
+     */
     @Override
     public void previousCard() {
         ReviewFlashCardsState state = viewModel.getState();
@@ -43,6 +62,10 @@ public class ReviewFlashCardsPresenter implements ReviewFlashCardsOutputBoundary
         viewModel.firePropertyChange();
     }
 
+    /**
+     * {@inheritDoc}
+     * Toggles between showing the question and the answer side of the card.
+     */
     @Override
     public void flipCard() {
         ReviewFlashCardsState state = viewModel.getState();
@@ -51,12 +74,20 @@ public class ReviewFlashCardsPresenter implements ReviewFlashCardsOutputBoundary
         viewModel.firePropertyChange();
     }
 
+    /**
+     * {@inheritDoc}
+     * Navigates to the create flashcard view for editing.
+     */
     @Override
     public void editSet() {
         viewManagerModel.setState("create flashcard");
         viewManagerModel.firePropertyChange();
     }
 
+    /**
+     * {@inheritDoc}
+     * Sets the flashcard set in the view model state and resets the card index.
+     */
     @Override
     public void setFlashCardSet(FlashCardSet flashCardSet) {
         ReviewFlashCardsState state = viewModel.getState();

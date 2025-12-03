@@ -1,6 +1,11 @@
 package use_case.generate_flashcard;
 
+
+/**
+ * The interface for saving sets in the generator use case.
+ */
+
 public interface GeneratorSetSaverInterface {
 
-    public int save(String jsonString);
+    int save(String jsonString);
 }

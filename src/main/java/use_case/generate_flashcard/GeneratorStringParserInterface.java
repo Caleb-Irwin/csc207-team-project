@@ -1,6 +1,11 @@
 package use_case.generate_flashcard;
 
+
+/**
+ * The interface for parsing string (LLM output) in the generator use_case.
+ */
+
 public interface GeneratorStringParserInterface {
 
-    public String parse(String data);
+    String parse(String data);
 }

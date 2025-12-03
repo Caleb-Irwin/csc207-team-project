@@ -3,6 +3,11 @@ package interface_adapter.generate_flashcard;
 import use_case.generate_flashcard.GeneratorInputBoundary;
 import use_case.generate_flashcard.GeneratorInputData;
 
+
+/**
+ * The controller for the generator use_case
+ */
+
 public class GeneratorController {
 
     private final GeneratorInputBoundary generatorUseCaseInteractor;

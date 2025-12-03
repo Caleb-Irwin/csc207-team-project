@@ -12,6 +12,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.Objects;
 
+
+/**
+ * The main view for the generator use case.
+ */
+
 public class GeneratorView extends JPanel implements ActionListener, PropertyChangeListener {
 
     private static final String PLACEHOLDER = "What do you want to review today?";
