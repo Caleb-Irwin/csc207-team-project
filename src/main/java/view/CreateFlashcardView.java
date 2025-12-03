@@ -4,7 +4,6 @@ import interface_adapter.ViewManagerModel;
 import interface_adapter.create_flashcard.CreateFlashcardController;
 import interface_adapter.create_flashcard.CreateFlashcardState;
 import interface_adapter.create_flashcard.CreateFlashcardViewModel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
@@ -12,8 +11,13 @@ import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * View for the Create Flashcard use case.
+ * This class represents the graphical user interface (GUI) for creating and managing flashcard sets.
+ * It allows users to create new flashcard sets, add flashcards to a set, save the flashcard set,
+ * and delete or modify existing flashcard sets.
+ */
 public class CreateFlashcardView extends JPanel implements PropertyChangeListener {
-
     private static final Color BACKGROUND_COLOR = new Color(217, 210, 230);
     private static final Color INPUT_FIELD_COLOR = new Color(255, 255, 255);
     private static final Color BUTTON_COLOR = new Color(229, 115, 180);
@@ -21,37 +25,33 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
     private static final Color LABEL_COLOR = Color.DARK_GRAY;
 
     private final JTextField setNameField = new JTextField(25);
-
     private final List<JTextField> questionFields = new ArrayList<>();
     private final List<JTextField> answerFields = new ArrayList<>();
-
     private final JLabel messageLabel = new JLabel("");
-
-    private final JButton newButton;
-    private final JButton saveButton;
-    private final JButton deleteButton;
-    private final JButton startReviewButton;
-
-    private JPanel formPanel;
+    private final JPanel formPanel;
     private int questionCounter = 1;
 
     private final CreateFlashcardController controller;
-    private final CreateFlashcardViewModel viewModel;
     private final ViewManagerModel viewManagerModel;
 
+    /**
+     * Constructor to initialize the CreateFlashcardView.
+     *
+     * @param viewModel The view model that holds the current state of the flashcard set.
+     * @param controller The controller that handles the actions for this view.
+     * @param viewManagerModel The view manager that handles navigation and view state.
+     */
     public CreateFlashcardView(CreateFlashcardViewModel viewModel,
-            CreateFlashcardController controller,
-            ViewManagerModel viewManagerModel) {
-        this.viewModel = viewModel;
+                               CreateFlashcardController controller,
+                               ViewManagerModel viewManagerModel) {
         this.controller = controller;
         this.viewManagerModel = viewManagerModel;
-        this.viewModel.addPropertyChangeListener(this);
+        viewModel.addPropertyChangeListener(this);
         this.viewManagerModel.addPropertyChangeListener(this);
 
         setLayout(new BorderLayout());
         setBackground(BACKGROUND_COLOR);
 
-        // Header panel with title and message
         JPanel headerPanel = new JPanel(new BorderLayout());
         headerPanel.setBackground(BACKGROUND_COLOR);
         headerPanel.setBorder(BorderFactory.createEmptyBorder(15, 20, 10, 20));
@@ -70,7 +70,6 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
 
         add(headerPanel, BorderLayout.NORTH);
 
-        // Form panel
         formPanel = new JPanel(new GridBagLayout());
         formPanel.setBackground(BACKGROUND_COLOR);
         formPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
@@ -83,15 +82,14 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
 
         buildInitialForm();
 
-        // Buttons section
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 15));
         buttonPanel.setBackground(BACKGROUND_COLOR);
         buttonPanel.setBorder(BorderFactory.createEmptyBorder(10, 20, 20, 20));
 
-        newButton = createStyledButton("+ New Card", NAV_BUTTON_COLOR);
-        saveButton = createStyledButton("Save", BUTTON_COLOR);
-        deleteButton = createStyledButton("Delete Set", NAV_BUTTON_COLOR);
-        startReviewButton = createStyledButton("Start Review", BUTTON_COLOR);
+        JButton newButton = createStyledButton("+ New Card", NAV_BUTTON_COLOR);
+        JButton saveButton = createStyledButton("Save", BUTTON_COLOR);
+        JButton deleteButton = createStyledButton("Delete Set", NAV_BUTTON_COLOR);
+        JButton startReviewButton = createStyledButton("Start Review", BUTTON_COLOR);
 
         buttonPanel.add(newButton);
         buttonPanel.add(saveButton);
@@ -100,7 +98,6 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
 
         add(buttonPanel, BorderLayout.SOUTH);
 
-        // Button listeners
         newButton.addActionListener(e -> addNewFlashcardPair());
         saveButton.addActionListener(e -> saveFlashcard());
         deleteButton.addActionListener(e -> deleteFlashcards());
@@ -109,6 +106,13 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         this.setPreferredSize(new Dimension(1000, 560));
     }
 
+    /**
+     * Creates a styled JButton for consistent UI appearance.
+     *
+     * @param text the button label
+     * @param bgColor the background color
+     * @return a styled JButton
+     */
     private JButton createStyledButton(String text, Color bgColor) {
         JButton button = new JButton(text);
         button.setBackground(bgColor);
@@ -121,6 +125,11 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         return button;
     }
 
+    /**
+     * Creates a styled text field used for questions and answers.
+     *
+     * @return a styled JTextField
+     */
     private JTextField createStyledTextField() {
         JTextField field = new JTextField(25);
         field.setBackground(INPUT_FIELD_COLOR);
@@ -132,6 +141,12 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         return field;
     }
 
+    /**
+     * Creates a styled label used in the flashcard form.
+     *
+     * @param text the label text
+     * @return a styled JLabel
+     */
     private JLabel createStyledLabel(String text) {
         JLabel label = new JLabel(text);
         label.setFont(label.getFont().deriveFont(Font.BOLD, 14f));
@@ -139,8 +154,10 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         return label;
     }
 
-    /** ------------------- FORM BUILDING ------------------- **/
-
+    /**
+     * Builds the initial form layout for editing a flashcard set.
+     * Resets fields and loads the Set Name input.
+     */
     private void buildInitialForm() {
         formPanel.removeAll();
         questionFields.clear();
@@ -151,7 +168,6 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         gbc.insets = new Insets(8, 10, 8, 10);
         gbc.anchor = GridBagConstraints.WEST;
 
-        // Row 0: Set Name
         gbc.gridx = 0;
         gbc.gridy = 0;
         formPanel.add(createStyledLabel("Set Name:"), gbc);
@@ -166,6 +182,9 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         formPanel.repaint();
     }
 
+    /**
+     * Applies consistent styling to the Set Name text field.
+     */
     private void styleSetNameField() {
         setNameField.setBackground(INPUT_FIELD_COLOR);
         setNameField.setFont(setNameField.getFont().deriveFont(14f));
@@ -175,6 +194,10 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         setNameField.setPreferredSize(new Dimension(300, 35));
     }
 
+    /**
+     * Adds a new question/answer input row to the form.
+     * Automatically adjusts layout and increments the counter.
+     */
     private void addNewFlashcardPair() {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10);
@@ -188,24 +211,19 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         questionFields.add(questionField);
         answerFields.add(answerField);
 
-        // Question label
         gbc.gridx = 0;
         gbc.gridy = baseRow;
         gbc.fill = GridBagConstraints.NONE;
         formPanel.add(createStyledLabel("Question " + questionCounter + ":"), gbc);
 
-        // Question input
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         formPanel.add(questionField, gbc);
 
-        // Answer label
         gbc.gridx = 0;
         gbc.gridy = baseRow + 1;
         gbc.fill = GridBagConstraints.NONE;
         formPanel.add(createStyledLabel("Answer:"), gbc);
-
-        // Answer input
         gbc.gridx = 1;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         formPanel.add(answerField, gbc);
@@ -216,59 +234,60 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         formPanel.repaint();
     }
 
-    /** ------------------- SAVE LOGIC ------------------- **/
-
+    /**
+     * Saves the current flashcard set using the controller.
+     */
     private void saveFlashcard() {
         String setName = setNameField.getText().trim();
-
         List<String> questions = new ArrayList<>();
         List<String> answers = new ArrayList<>();
-
         for (int i = 0; i < questionFields.size(); i++) {
             questions.add(questionFields.get(i).getText());
             answers.add(answerFields.get(i).getText());
         }
-
         controller.saveFlashcards(setName, questions, answers);
     }
 
-    /** ------------------- DELETE LOGIC ------------------- **/
-
+    /**
+     * Deletes the current flashcard set.
+     */
     private void deleteFlashcards() {
         controller.deleteSet();
         buildInitialForm();
     }
 
+    /**
+     * Starts reviewing the current flashcard set.
+     */
     private void startReview() {
-        saveFlashcard(); // Ensure latest changes are saved
-        // Navigate to ReviewFlashCardsView
+        saveFlashcard();
         viewManagerModel.setState("review flashcards");
         viewManagerModel.firePropertyChange();
     }
 
-    /** ------------------- VIEWMODEL UPDATE ------------------- **/
-
+    /**
+     * Handles state updates from the ViewModel or ViewManager.
+     */
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         if (evt.getSource() == viewManagerModel) {
-            // View navigation changed, ensure we have the correct set loaded
             controller.ensureCorrectSet();
             return;
         }
-
         if (!CreateFlashcardViewModel.STATE_PROPERTY.equals(evt.getPropertyName())) {
             return;
         }
-
         CreateFlashcardState state = (CreateFlashcardState) evt.getNewValue();
         updateForm(state);
     }
 
+    /**
+     * Updates all UI fields (set name, questions, answers) to match the latest
+     */
     private void updateForm(CreateFlashcardState state) {
         messageLabel.setText(state.getMessage());
         setNameField.setText(state.getSetName());
 
-        // Rebuild form with the state's questions/answers
         formPanel.removeAll();
         questionFields.clear();
         answerFields.clear();
@@ -277,8 +296,6 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(8, 10, 8, 10);
         gbc.anchor = GridBagConstraints.WEST;
-
-        // Row 0: Set Name
         gbc.gridx = 0;
         gbc.gridy = 0;
         formPanel.add(createStyledLabel("Set Name:"), gbc);
@@ -292,10 +309,8 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         List<String> answers = state.getAnswers();
 
         if (questions.isEmpty()) {
-            // Add one empty pair for new sets
             addNewFlashcardPair();
         } else {
-            // Populate with existing questions/answers
             for (int i = 0; i < questions.size(); i++) {
                 addNewFlashcardPair();
                 questionFields.get(i).setText(questions.get(i));
@@ -307,6 +322,9 @@ public class CreateFlashcardView extends JPanel implements PropertyChangeListene
         formPanel.repaint();
     }
 
+    /**
+     * Returns the view name used by the ViewManager.
+     */
     public String getViewName() {
         return "create flashcard";
     }
